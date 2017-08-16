@@ -54,11 +54,11 @@ def all_handler(params=None):
 # 方法视图
 class GetView(MethodView):
 
-    @filter_params(get=get_field)
+    @filter_params(get=get_field, response='json')
     def get(self, params=None):
         return str(params)
 
-    @filter_params(post=post_field)
+    @filter_params(post=post_field, response='html')
     def post(self, params=None):
         return str(params)
 
@@ -66,7 +66,7 @@ class GetView(MethodView):
 # 标准视图demo
 class BaseView(View):
 
-    @filter_params(get=get_field, post=post_field)
+    @filter_params(get=get_field, post=post_field, response='html')
     def dispatch_request(self, params=None):
         return str(params)
 
