@@ -85,7 +85,7 @@ class JSONResponse(BaseResponse):
     def __call__(self, message=None, code=500):
         result = super(JSONResponse, self).__call__(message, code)
         response = make_response(json.dumps(result))
-        response.headers["Content-Type"] = "application/json; charset=utf8"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response
 
 
@@ -94,7 +94,7 @@ class HTMLResponse(BaseResponse):
         result = super(HTMLResponse, self).__call__(message, code)
         html = '<p>code:%s message:%s</p>' % (result["code"], result["message"])
         response = make_response(html)
-        response.headers["Content-Type"] = "text/html; charset=utf8"
+        response.headers["Content-Type"] = "text/html; charset=utf-8"
         return response
 
 
@@ -127,13 +127,29 @@ def filter_params(rules=None, **options):
                 try:
                     result[key] = get_param(key, value)
                 except ParamsValueError as error:
-                    return RESPONSE(error.code, error.value)
+                    return get_response_with_error(error, options.get("response"))
 
             kwargs = dict({"params": result}, **kwargs)
 
             return func(*args, **kwargs,)
         return wrapper
     return decorator
+
+
+def get_response_with_error(error=None, response=None):
+    """
+    获取出错时的响应模式
+    :param error: 自定义错误
+    :param response: 用户定义响应样式
+    """
+    # 使用特定的响应模式
+    if response == 'json':
+        return JSONResponse(error.value, error.code)()
+    elif response == 'html':
+        return HTMLResponse(error.value, error.code)()
+    # 未预料的情况，则使用RESPONSE中定义的响应模式
+    else:
+        return RESPONSE(error.value, error.code)
 
 
 def get_param(param_key=None, rule=None):
