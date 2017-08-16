@@ -2,6 +2,7 @@ from flask import request
 import json
 import MySQLdb
 import re
+from functools import wraps
 
 _false_str_list = ["False", "false", "No", "no", "0", "None", "", "[]", "()", "{}", "0.0"]
 
@@ -65,15 +66,29 @@ class Rule(object):
         self.safe = safe
 
 
-def filter_params(rules=None):
+def filter_params(rules=None, **options):
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             # 过滤规则判断
-            if not rules or not isinstance(rules, dict):
+            if not options and not rules:
                 return func(*args, **kwargs)
 
+            # 如果设置了get或者post方法的过滤方式，则优先处理
+            if request.method == "GET":
+                param_rules = options.get("get")
+            else:
+                param_rules = options.get("post")
+
+            # 如果未处理get或者post，则使用rules
+            if not param_rules:
+                if rules:
+                    param_rules = rules
+                else:
+                    return func(*args, **kwargs)
+
             result = dict()
-            for key, value in rules.items():
+            for key, value in param_rules.items():
                 try:
                     result[key] = get_param(key, value)
                 except ParamsValueError as error:
