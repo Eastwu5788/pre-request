@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, make_response
 import json
 import MySQLdb
 import re
@@ -9,7 +9,8 @@ _false_str_list = ["False", "false", "No", "no", "0", "None", "", "[]", "()", "{
 
 class ParamsValueError(ValueError):
     """自定义异常"""
-    def __init__(self, value):
+    def __init__(self, code, value):
+        self.code = code
         self.value = value
 
 
@@ -66,6 +67,40 @@ class Rule(object):
         self.safe = safe
 
 
+class BaseResponse(object):
+    def __init__(self, message=None, code=500):
+        self.message = message
+        self.code = code
+
+    def __call__(self, message=None, code=None):
+        if not message:
+            message = self.message
+        if not code:
+            code = self.code
+
+        return {"code": code, "message": message}
+
+
+class JSONResponse(BaseResponse):
+    def __call__(self, message=None, code=500):
+        result = super(JSONResponse, self).__call__(message, code)
+        response = make_response(json.dumps(result))
+        response.headers["Content-Type"] = "application/json; charset=utf8"
+        return response
+
+
+class HTMLResponse(BaseResponse):
+    def __call__(self, message=None, code=500):
+        result = super(HTMLResponse, self).__call__(message, code)
+        html = '<p>code:%s message:%s</p>' % (result["code"], result["message"])
+        response = make_response(html)
+        response.headers["Content-Type"] = "text/html; charset=utf8"
+        return response
+
+
+RESPONSE = JSONResponse("请求参数错误!", 500)
+
+
 def filter_params(rules=None, **options):
     def decorator(func):
         @wraps(func)
@@ -92,22 +127,13 @@ def filter_params(rules=None, **options):
                 try:
                     result[key] = get_param(key, value)
                 except ParamsValueError as error:
-                    return json_fail_response(error.value)
+                    return RESPONSE(error.code, error.value)
 
             kwargs = dict({"params": result}, **kwargs)
 
             return func(*args, **kwargs,)
         return wrapper
     return decorator
-
-
-def json_fail_response(message='', code=500):
-    result = {
-        "code": code,
-        "message": message,
-        "data": None
-    }
-    return json.dumps(result)
 
 
 def get_param(param_key=None, rule=None):
@@ -122,7 +148,7 @@ def get_param(param_key=None, rule=None):
     # 非空判断
     if not rule.allow_empty and not param:
         error_str = "%s字段不能为空." % param_key
-        raise ParamsValueError(error_str)
+        raise ParamsValueError(500, error_str)
 
     # 默认值处理
     if rule.allow_empty and not param:
@@ -131,7 +157,7 @@ def get_param(param_key=None, rule=None):
     # 字段长度校验
     if rule.len and rule.len.need_check():
         if not rule.len.check_length(param):
-            raise ParamsValueError("%s字段的长度超出限定范围" % param_key)
+            raise ParamsValueError(500, "%s字段的长度超出限定范围" % param_key)
 
     # 类型处理
     param = trans_type_param(param, rule)
@@ -139,7 +165,7 @@ def get_param(param_key=None, rule=None):
     # 枚举判断
     if rule.enum and param not in rule.enum:
         err_str = '"%s"字段超出取值范围:%s' % (param_key, str(rule.enum))
-        raise ParamsValueError(err_str)
+        raise ParamsValueError(500, err_str)
 
     # 邮箱判断
     if rule.email:
@@ -176,7 +202,7 @@ def trans_type_param(param, rule):
         try:
             return rule.direct_type(param)
         except ValueError:
-            raise ParamsValueError("%s参数必须是%s类型" % (param, rule.direct_type.__name__))
+            raise ParamsValueError(500, "%s参数必须是%s类型" % (param, rule.direct_type.__name__))
 
 
 class Regexp(object):
@@ -190,7 +216,7 @@ class Regexp(object):
     def __call__(self, data):
         match = self.regex.match(data or '')
         if not match:
-            raise ParamsValueError(self.message)
+            raise ParamsValueError(500, self.message)
         return True
 
 
