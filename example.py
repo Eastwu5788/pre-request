@@ -1,4 +1,5 @@
 from flask import Flask
+from flask.views import MethodView, View
 
 from rule import Rule, filter_params, Length
 
@@ -48,6 +49,30 @@ def post_handler(params=None):
 @filter_params(get=get_field, post=post_field)
 def all_handler(params=None):
     return str(params)
+
+
+# 方法视图
+class GetView(MethodView):
+
+    @filter_params(get=get_field)
+    def get(self, params=None):
+        return str(params)
+
+    @filter_params(post=post_field)
+    def post(self, params=None):
+        return str(params)
+
+
+# 标准视图demo
+class BaseView(View):
+
+    @filter_params(get=get_field, post=post_field)
+    def dispatch_request(self, params=None):
+        return str(params)
+
+
+app.add_url_rule('/getview', view_func=GetView.as_view('getview'))
+app.add_url_rule('/baseview', view_func=BaseView.as_view('baseview'))
 
 
 if __name__ == "__main__":
