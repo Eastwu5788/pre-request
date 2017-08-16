@@ -17,11 +17,36 @@ field = {
 ```
 2. 通过@filter_params()装饰器，过滤请求参数.注意在正常处理函数中添加params参数，接收过滤后的请求参数
 ```
+# 不指定get和post时，不论get请求或者post请求都会使用同一个过滤参数
+# 如果指定了get或者post时，直接设置的过滤参数会被覆盖
 @app.route("/test", methods=['get', 'post'])
 @filter_params(field)
 def test_handler(params=None):
     return str(params)
 ```
+3. 单独设置某一个请求的get或post请求
+```
+# 单独设置get请求的过滤参数
+@app.route("/get", methods=['get'])
+@filter_params(get=get_field)
+def get_handler(params=None):
+    return str(params)
+    
+# 单独设置post请求的过滤参数
+@app.route("/post", methods=['post'])
+@filter_params(post=post_field)
+def post_handler(params=None):
+    return str(params)
+```
+4. 也可以同时设置get和post请求的不同过滤参数
+```
+# 同时设置get和post的过滤参数
+@app.route("/all", methods=['get', 'post'])
+@filter_params(get=get_field, post=post_field)
+def all_handler(params=None):
+    return str(params)
+```
+
 # Rule规则参数介绍
 ```
 # 当前字段是否允许为空
