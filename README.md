@@ -46,6 +46,30 @@ def post_handler(params=None):
 def all_handler(params=None):
     return str(params)
 ```
+5. 指定响应类型，通过response参数指定响应类型为json或者html
+```
+# 方法视图
+@filter_params(get=get_field, response='json')
+def get(self, params=None):
+return str(params)
+
+@filter_params(post=post_field, response='html')
+def post(self, params=None):
+return str(params)
+```
+6. 修改默认响应类型,修改rule.py中的RESPONSE变量
+```
+RESPONSE = JSONResponse("请求参数错误!", 500)
+```
+7. 设置自定义响应,主要是继承BaseResponse，具体实现可以参考JSONResponse或HTMLResponse类的实现
+```
+class JSONResponse(BaseResponse):
+    def __call__(self, message=None, code=500):
+        result = super(JSONResponse, self).__call__(message, code)
+        response = make_response(json.dumps(result))
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
+```
 
 # Rule规则参数介绍
 ```
