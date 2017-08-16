@@ -95,27 +95,6 @@ def json_fail_response(message='', code=500):
     return json.dumps(result)
 
 
-def get_params(rules=None):
-    """
-    获取请求的所有属性值
-    :param rules: 请求规则
-    :return: 属性字典
-    """
-    # 请求为空判断
-    if not rules:
-        return dict()
-    # 规则类型判断
-    if not isinstance(rules, dict):
-        return dict()
-
-    # 依次处理每一个键值对
-    result = dict()
-    for key, value in rules.items():
-        result[key] = get_param(key, value)
-
-    return result
-
-
 def get_param(param_key=None, rule=None):
     """
     获取单个属性的取值

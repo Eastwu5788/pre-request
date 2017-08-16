@@ -1,7 +1,6 @@
 from flask import Flask
 
-from rule import Rule,filter_params, Length
-import rule
+from rule import Rule, filter_params, Length
 
 
 app = Flask(__name__)
