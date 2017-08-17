@@ -4,8 +4,8 @@
 针对Flask框架设计的请求预处理类
 
 # 用法
-0. 讲rule.py导入到项目中
-1. 设置请求参数规则
+1. 将rule.py导入到项目中
+2. 设置请求参数规则
 ```
 field = {
     "age": Rule(direct_type=int, enum=[1, 2]),
@@ -15,7 +15,7 @@ field = {
     "empty": Rule(allow_empty=True, default="sssss_empty")
 }
 ```
-2. 通过@filter_params()装饰器，过滤请求参数.注意在正常处理函数中添加params参数，接收过滤后的请求参数
+3. 通过@filter_params()装饰器，过滤请求参数.注意在正常处理函数中添加params参数，接收过滤后的请求参数
 ```
 # 不指定get和post时，不论get请求或者post请求都会使用同一个过滤参数
 # 如果指定了get或者post时，直接设置的过滤参数会被覆盖
@@ -24,7 +24,7 @@ field = {
 def test_handler(params=None):
     return str(params)
 ```
-3. 单独设置某一个请求的get或post请求
+4. 单独设置某一个请求的get或post请求
 ```
 # 单独设置get请求的过滤参数
 @app.route("/get", methods=['get'])
@@ -38,7 +38,7 @@ def get_handler(params=None):
 def post_handler(params=None):
     return str(params)
 ```
-4. 也可以同时设置get和post请求的不同过滤参数
+5. 也可以同时设置get和post请求的不同过滤参数
 ```
 # 同时设置get和post的过滤参数
 @app.route("/all", methods=['get', 'post'])
@@ -46,7 +46,7 @@ def post_handler(params=None):
 def all_handler(params=None):
     return str(params)
 ```
-5. 指定响应类型，通过response参数指定响应类型为json或者html
+6. 指定响应类型，通过response参数指定响应类型为json或者html
 ```
 # 方法视图
 @filter_params(get=get_field, response='json')
@@ -57,11 +57,11 @@ return str(params)
 def post(self, params=None):
 return str(params)
 ```
-6. 修改默认响应类型,修改rule.py中的RESPONSE变量
+7. 修改默认响应类型,修改rule.py中的RESPONSE变量
 ```
 RESPONSE = JSONResponse("请求参数错误!", 500)
 ```
-7. 设置自定义响应,主要是继承BaseResponse，具体实现可以参考JSONResponse或HTMLResponse类的实现
+8. 设置自定义响应,主要是继承BaseResponse，具体实现可以参考JSONResponse或HTMLResponse类的实现
 ```
 class JSONResponse(BaseResponse):
     def __call__(self, message=None, code=500):
