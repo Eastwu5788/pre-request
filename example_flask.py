@@ -1,7 +1,8 @@
 from flask import Flask
 from flask.views import MethodView, View
 
-from rule import Rule, filter_params, Length
+from pre_request.flask import filter_params
+from pre_request.filter_rules import Rule, Length
 
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ get_field = {
 }
 
 post_field = {
+    "year": Rule(direct_type=int),
     "empty": Rule(allow_empty=True, default="asdf")
 }
 
