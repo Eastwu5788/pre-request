@@ -32,4 +32,8 @@ class ParamsValueError(ValueError):
             message = "%s字段不符合手机号格式!" % param_filter.key
         elif self.code == 566:
             message = "%s字段不符合格式要求!" % param_filter.key
+        elif self.code == 567:
+            message = "%s字段取值不在限定范围内!" % param_filter.key
+        elif self.code == 568:
+            message = "%s字段无法进行范围判断，请检查!" % param_filter.key
         return message
