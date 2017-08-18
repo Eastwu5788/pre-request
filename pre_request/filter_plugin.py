@@ -1,3 +1,4 @@
+import re
 from pre_request.filter_rules import Rule
 from pre_request.filter_error import ParamsValueError
 
@@ -56,6 +57,24 @@ class LengthFilter(BaseFilter):
 
         if self.rule.len and self.rule.len.need_check():
             if not self.rule.len.check_length(self.value):
+                raise ParamsValueError(self.error_code, filter=self)
+        return self.value
+
+
+class RegexpFilter(BaseFilter):
+    """
+    正则表达式过滤器
+    """
+    error_code = 566
+
+    def __call__(self, *args, **kwargs):
+        super(RegexpFilter, self).__call__()
+
+        # 判断是否需要进行正则匹配
+        if self.rule.reg and isinstance(self.rule.reg, str):
+            # 判断是否符合正则
+            from .filter_regexp import Regexp
+            if not Regexp(self.rule.reg, re.IGNORECASE)(self.value):
                 raise ParamsValueError(self.error_code, filter=self)
         return self.value
 
