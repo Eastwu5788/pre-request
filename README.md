@@ -39,6 +39,7 @@ field = {
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),
     "empty": Rule(allow_empty=True, default="sssss_empty"),
+    "range": Rule(direct_type=int, range=Range(10, 30)),
     "reg": Rule(reg=r'^h\w{3,5}o$'),
 }
 ```
@@ -128,22 +129,29 @@ class JSONResponse(BaseResponse):
 
 # Rule规则参数介绍
 ```
-# 当前字段是否允许为空
-self.allow_empty = allow_empty
-# 当前字段默认值，如果不允许为空，则次字段无意义
-self.default = default
 # 字段目标数据类型
-self.direct_type = direct_type
-# 自定义正则表达式
-self.reg = reg
-# 字段枚举值，限定取值范围
-self.enum = enum
+self.direct_type = kwargs.get("direct_type", str)
+
+# 当前字段是否允许为空
+self.allow_empty = kwargs.get("allow_empty", False)
+# 当前字段默认值，如果不允许为空，则次字段无意义
+self.default = kwargs.get("default", None)
+
+# 字段枚举值设置
+self.enum = kwargs.get("enum", list())
+# range,整数范围限定, 只在direct_type为数字时有效
+self.range = kwargs.get("range", Range())
+
+# 正则表达式
+self.reg = kwargs.get("reg", None)
 # Email判断
-self.email = email
+self.email = kwargs.get("email", False)
 # 手机号判断
-self.mobile = mobile
+self.mobile = kwargs.get("mobile", False)
+
 # 字符串长度判断
-self.len = length
+self.len = kwargs.get("length", Length())
+
 # 字段是否是安全的，否则会进行转义，防止SQL注入
-self.safe = safe
+self.safe = kwargs.get("safe", False)
 ```
