@@ -30,4 +30,6 @@ class ParamsValueError(ValueError):
             message = "%s字段不符合邮件格式!" % param_filter.key
         elif self.code == 565:
             message = "%s字段不符合手机号格式!" % param_filter.key
+        elif self.code == 566:
+            message = "%s字段不符合格式要求!" % param_filter.key
         return message

@@ -43,7 +43,7 @@ class Rule(object):
     # TODO：3.正则、Range()
     # TODO: 4.字符串转义修改
     # TODO: 5.支持自定义规则
-    def __init__(self, allow_empty=False, direct_type=str, default=None, enum=list(), email=False, mobile=False,
+    def __init__(self, allow_empty=False, direct_type=str, reg=None, default=None, enum=list(), email=False, mobile=False,
                  length=Length(), safe=False):
         # 当前字段是否允许为空
         self.allow_empty = allow_empty
@@ -51,6 +51,8 @@ class Rule(object):
         self.default = default
         # 字段目标数据类型
         self.direct_type = direct_type
+        # 正则表达式
+        self.reg = reg
         # 字段枚举值，限定取值范围
         self.enum = enum
         # Email判断

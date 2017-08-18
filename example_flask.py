@@ -21,11 +21,13 @@ get_field = {
     "string": Rule(length=Length(6, 12)),
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),
+    "reg": Rule(reg=r'^h\w{3,5}o$')
 }
 
 post_field = {
     "year": Rule(direct_type=int),
-    "empty": Rule(allow_empty=True, default="asdf")
+    "empty": Rule(allow_empty=True, default="asdf"),
+    "reg": Rule(reg=r'^m\d+m$')
 }
 
 
