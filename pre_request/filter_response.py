@@ -1,5 +1,5 @@
 import json
-from pre_request.filter_config import RequestTypeEnum
+from pre_request.filter_config import RequestTypeEnum, RESPONSE_TYPE
 from pre_request.filter_error import ParamsValueError
 
 
@@ -71,11 +71,6 @@ class HTMLResponse(BaseResponse):
             self.handler.set_header("Content-Type", "text/html; charset=utf-8")
             return self.handler.write(html)
 
-"""
-默认响应类型
-"""
-RESPONSE = JSONResponse()
-
 
 def get_response_with_error(handler=None, error=None, response=None, request_type=RequestTypeEnum.Flask):
     """
@@ -85,11 +80,15 @@ def get_response_with_error(handler=None, error=None, response=None, request_typ
     :param handler: 原始请求
     :param request_type: 请求类型
     """
+    # 如果未设置响应类型，则使用配置文件中的响应类型
+    if not response:
+        response = RESPONSE_TYPE
+
     # 使用特定的响应模式
     if response == 'json':
         return JSONResponse(handler, error, request_type)()
     elif response == 'html':
         return HTMLResponse(handler, error, request_type)()
-    # 未预料的情况，则使用RESPONSE中定义的响应模式
+    # 未预料的情况，使用JSON格式的响应类型
     else:
-        return RESPONSE(handler, error, request_type)
+        return JSONResponse(handler, error, request_type)()
