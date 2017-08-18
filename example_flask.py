@@ -2,7 +2,7 @@ from flask import Flask
 from flask.views import MethodView, View
 
 from pre_request.flask import filter_params
-from pre_request.filter_rules import Rule, Length
+from pre_request.filter_rules import Rule, Length, Range
 
 
 app = Flask(__name__)
@@ -19,6 +19,7 @@ field = {
 get_field = {
     "year": Rule(direct_type=int, enum=[1920, 1922]),
     "string": Rule(length=Length(6, 12)),
+    "range": Rule(range=Range('ab', 'zg')),
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),
     "reg": Rule(reg=r'^h\w{3,5}o$')
@@ -27,6 +28,7 @@ get_field = {
 post_field = {
     "year": Rule(direct_type=int),
     "empty": Rule(allow_empty=True, default="asdf"),
+    "range": Rule(direct_type=int, range=Range(10, 30)),
     "reg": Rule(reg=r'^m\d+m$')
 }
 

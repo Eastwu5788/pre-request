@@ -10,9 +10,10 @@ FILTER_LIST = [
     LengthFilter,   # 2.字符长度过滤器
     RegexpFilter,   # 3.正则表达式过滤器
     TypeFilter,     # 4.类型转换过滤器
-    EnumFilter,     # 5.枚举过滤器
-    EmailFilter,    # 6.邮箱过滤器
-    MobileFilter,   # 7.手机号过滤器
+    RangeFilter,    # 5.取值范围过滤器
+    EnumFilter,     # 6.枚举过滤器
+    EmailFilter,    # 7.邮箱过滤器
+    MobileFilter,   # 8.手机号过滤器
 ]
 
 

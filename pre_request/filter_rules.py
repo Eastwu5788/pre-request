@@ -27,10 +27,40 @@ class Length(object):
         """检查字符串长度"""
         length = len(ori_str)
         if self.min_len != -1:
-            if length < self.min_len:
+            if length <= self.min_len:
                 return False
         if self.max_len != -1:
-            if length > self.max_len:
+            if length >= self.max_len:
+                return False
+        return True
+
+
+class Range(object):
+    """
+    数值范围限定 仅在direct_type为float，int时生效
+    """
+    def __init__(self, num_min=-1, num_max=-1):
+        """
+        数字范围限定
+        :param num_min: 最小值，如果为-1表示不加限制
+        :param num_max: 最大值，如果为-1表示不加限制
+        """
+        self.num_min = num_min
+        self.num_max = num_max
+        if self.num_min != -1 and self.num_max != -1 and self.num_max < self.num_min:
+            raise ValueError("范围限定设置失败,最大值不能小于最小值!")
+
+    def need_check(self):
+        """是否需要进行长度校验"""
+        return self.num_min != -1 or self.num_max != -1
+
+    def check_range(self, ori_num):
+        """检查字符串长度"""
+        if self.num_min != -1:
+            if ori_num <= self.num_min:
+                return False
+        if self.num_max != -1:
+            if ori_num >= self.num_max:
                 return False
         return True
 
@@ -40,26 +70,30 @@ class Rule(object):
     字段遵守的规则定义类
     """
     # TODO: 1.使用继承来扩展其它规则
-    # TODO：3.正则、Range()
     # TODO: 4.字符串转义修改
-    # TODO: 5.支持自定义规则
-    def __init__(self, allow_empty=False, direct_type=str, reg=None, default=None, enum=list(), email=False, mobile=False,
-                 length=Length(), safe=False):
-        # 当前字段是否允许为空
-        self.allow_empty = allow_empty
-        # 当前字段默认值，如果不允许为空，则次字段无意义
-        self.default = default
+    def __init__(self, **kwargs):
         # 字段目标数据类型
-        self.direct_type = direct_type
+        self.direct_type = kwargs.get("direct_type", str)
+
+        # 当前字段是否允许为空
+        self.allow_empty = kwargs.get("allow_empty", False)
+        # 当前字段默认值，如果不允许为空，则次字段无意义
+        self.default = kwargs.get("default", None)
+
+        # 字段枚举值设置
+        self.enum = kwargs.get("enum", list())
+        # range,整数范围限定, 只在direct_type为数字时有效
+        self.range = kwargs.get("range", Range())
+
         # 正则表达式
-        self.reg = reg
-        # 字段枚举值，限定取值范围
-        self.enum = enum
+        self.reg = kwargs.get("reg", None)
         # Email判断
-        self.email = email
+        self.email = kwargs.get("email", False)
         # 手机号判断
-        self.mobile = mobile
+        self.mobile = kwargs.get("mobile", False)
+
         # 字符串长度判断
-        self.len = length
+        self.len = kwargs.get("length", Length())
+
         # 字段是否是安全的，否则会进行转义，防止SQL注入
-        self.safe = safe
+        self.safe = kwargs.get("safe", False)
