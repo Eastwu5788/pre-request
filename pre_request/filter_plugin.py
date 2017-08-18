@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 from pre_request.filter_rules import Rule
 from pre_request.filter_error import ParamsValueError

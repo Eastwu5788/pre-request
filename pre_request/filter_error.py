@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 This class is designed to identifier custom errors and
 get format error message

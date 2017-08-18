@@ -60,7 +60,7 @@ def all_handler(params=None):
 # 方法视图
 class GetView(MethodView):
 
-    @filter_params(get=get_field, response='json')
+    @filter_params(get=get_field)
     def get(self, params=None):
         return str(params)
 

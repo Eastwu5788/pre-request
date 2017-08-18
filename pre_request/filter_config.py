@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pre_request.filter_plugin import *
 from enum import Enum
 
@@ -22,6 +24,12 @@ K_EMAIL_REG = r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4
 
 """手机号正则表达式"""
 K_MOBILE_REG = r'^0\d{2,3}\d{7,8}$|^1[3578]\d{9}$|^14[579]\d{8}$'
+
+
+"""
+默认响应类型
+"""
+RESPONSE_TYPE = "json"
 
 
 class RequestTypeEnum(Enum):
