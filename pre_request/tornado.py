@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from functools import wraps
 from pre_request.filter_error import ParamsValueError
 from pre_request.filter_config import FILTER_LIST

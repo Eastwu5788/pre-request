@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 from pre_request.filter_config import RequestTypeEnum, RESPONSE_TYPE
 from pre_request.filter_error import ParamsValueError

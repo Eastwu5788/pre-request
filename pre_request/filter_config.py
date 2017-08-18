@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pre_request.filter_plugin import *
 from enum import Enum
 
