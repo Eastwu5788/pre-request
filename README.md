@@ -38,7 +38,8 @@ field = {
     "name": Rule(length=Length(6, 12)),
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),
-    "empty": Rule(allow_empty=True, default="sssss_empty")
+    "empty": Rule(allow_empty=True, default="sssss_empty"),
+    "reg": Rule(reg=r'^h\w{3,5}o$'),
 }
 ```
 
@@ -133,6 +134,8 @@ self.allow_empty = allow_empty
 self.default = default
 # 字段目标数据类型
 self.direct_type = direct_type
+# 自定义正则表达式
+self.reg = reg
 # 字段枚举值，限定取值范围
 self.enum = enum
 # Email判断
