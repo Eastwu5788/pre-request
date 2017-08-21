@@ -22,7 +22,8 @@ get_field = {
     "range": Rule(range=Range('ab', 'zg')),
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),
-    "reg": Rule(reg=r'^h\w{3,5}o$')
+    "reg": Rule(reg=r'^h\w{3,5}o$'),
+    "trim": Rule(trim=True)
 }
 
 post_field = {
