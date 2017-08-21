@@ -81,6 +81,8 @@ class Rule(object):
         self.allow_empty = kwargs.get("allow_empty", False)
         # 当前字段默认值，如果不允许为空，则次字段无意义
         self.default = kwargs.get("default", None)
+        # 去除前后的空格
+        self.trim = kwargs.get("trim", False)
 
         # 字段枚举值设置
         self.enum = kwargs.get("enum", list())

@@ -48,6 +48,17 @@ class EmptyFilter(BaseFilter):
         return self.value
 
 
+class TrimFilter(BaseFilter):
+    """
+    去除字符串前后空格的过滤器
+    """
+    error_code = 569
+
+    def __call__(self, *args, **kwargs):
+        super(TrimFilter, self).__call__()
+        return self.value.strip()
+
+
 class LengthFilter(BaseFilter):
     """
     判断字符串长度的过滤器
