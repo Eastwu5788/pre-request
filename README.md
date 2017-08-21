@@ -41,6 +41,7 @@ field = {
     "empty": Rule(allow_empty=True, default="sssss_empty"),
     "range": Rule(direct_type=int, range=Range(10, 30)),
     "reg": Rule(reg=r'^h\w{3,5}o$'),
+    "trim": Rule(trim=True)
 }
 ```
 
@@ -136,6 +137,8 @@ self.direct_type = kwargs.get("direct_type", str)
 self.allow_empty = kwargs.get("allow_empty", False)
 # 当前字段默认值，如果不允许为空，则次字段无意义
 self.default = kwargs.get("default", None)
+# 去除前后的空格
+self.trim = kwargs.get("trim", False)
 
 # 字段枚举值设置
 self.enum = kwargs.get("enum", list())
