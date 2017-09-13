@@ -1,3 +1,5 @@
+# -*- coding:utf8 -*-
+
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web

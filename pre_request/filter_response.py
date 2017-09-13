@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import json
-from pre_request.filter_config import RequestTypeEnum, RESPONSE_TYPE
-from pre_request.filter_error import ParamsValueError
+from .filter_config import RequestTypeEnum, RESPONSE_TYPE
+from .filter_error import ParamsValueError
 
 
 class BaseResponse(object):

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
-from pre_request.filter_error import ParamsValueError
-from pre_request.filter_config import FILTER_LIST
-from pre_request.filter_response import get_response_with_error
-from pre_request.filter_config import RequestTypeEnum
+from .filter_error import ParamsValueError
+from .filter_config import FILTER_LIST
+from .filter_response import get_response_with_error
+from .filter_config import RequestTypeEnum
 
 
 def filter_params(rules=None, **options):
@@ -45,6 +45,6 @@ def filter_params(rules=None, **options):
 
             kwargs = dict({"params": result}, **kwargs)
 
-            return func(*args, **kwargs,)
+            return func(*args, **kwargs)
         return wrapper
     return decorator

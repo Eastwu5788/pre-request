@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pre_request.filter_plugin import *
-from enum import Enum
+from .filter_plugin import *
 
 
 """
@@ -33,12 +32,14 @@ K_MOBILE_REG = r'^0\d{2,3}\d{7,8}$|^1[3578]\d{9}$|^14[579]\d{8}$'
 RESPONSE_TYPE = "json"
 
 
-class RequestTypeEnum(Enum):
-    """
-    当前请求类型的枚举
-    """
-    Flask = 1
-    Tornado = 2
-    Django = 3
+class Enum(set):
+
+    def __getattr__(self, item):
+        if item in self:
+            return item
+        raise AttributeError
+
+RequestTypeEnum = Enum(["Flask", "Tornado", "Django"])
+
 
 

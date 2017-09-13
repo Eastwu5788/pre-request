@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-from pre_request.filter_rules import Rule
-from pre_request.filter_error import ParamsValueError
+from .filter_rules import Rule
+from .filter_error import ParamsValueError
 
 _false_str_list = ["False", "false", "No", "no", "0", "None", "", "[]", "()", "{}", "0.0"]
 

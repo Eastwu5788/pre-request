@@ -1,3 +1,5 @@
+# -*- coding:utf8 -*-
+
 from flask import Flask
 from flask.views import MethodView, View
 
