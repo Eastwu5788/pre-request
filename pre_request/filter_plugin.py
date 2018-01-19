@@ -56,7 +56,7 @@ class TrimFilter(BaseFilter):
 
     def __call__(self, *args, **kwargs):
         super(TrimFilter, self).__call__()
-        return self.value.strip()
+        return self.value.strip() if isinstance(self.value, str) else self.value
 
 
 class LengthFilter(BaseFilter):
