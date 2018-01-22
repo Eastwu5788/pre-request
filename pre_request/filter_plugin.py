@@ -69,6 +69,8 @@ class LengthFilter(BaseFilter):
         super(LengthFilter, self).__call__()
 
         if self.rule.len and self.rule.len.need_check():
+            if self.rule.allow_empty and not self.value:
+                return self.value
             if not self.rule.len.check_length(self.value):
                 raise ParamsValueError(self.error_code, filter=self)
         return self.value
@@ -111,6 +113,9 @@ class TypeFilter(BaseFilter):
             if self.rule.safe:
                 return self.value
             else:
+                if self.rule.allow_empty and not self.value:
+                    return self.value
+
                 import MySQLdb
                 self.value = MySQLdb.escape_string(self.value)
                 if isinstance(self.value, bytes):

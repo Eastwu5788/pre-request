@@ -27,7 +27,7 @@ class Length(object):
 
     def check_length(self, ori_str=""):
         """检查字符串长度"""
-        length = len(ori_str)
+        length = len(ori_str) if ori_str else 0
         if self.min_len != -1:
             if length <= self.min_len:
                 return False
