@@ -1,5 +1,8 @@
-# -*- coding:utf8 -*-
-
+# -*- coding: utf-8 -*-
+# (C) Wu Dong, 2018
+# All rights reserved
+__author__ = 'Wu Dong <wudong@eastwu.cn>'
+__time__ = '2018/9/6 11:21'
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -23,13 +26,13 @@ post_field = {
 
 class MainTestHandler(tornado.web.RequestHandler):
 
-    @filter_params(get=get_filed, response="html")
+    @filter_params(get=get_filed, response="json")
     def get(self, params=None):
         self.write(str(params))
 
-    @filter_params(post=post_field, response="html")
+    @filter_params(post=post_field, response="json")
     def post(self, params=None):
-        self.write(str(params))
+        self.finish(str(params))
 
 
 def make_app():
@@ -48,3 +51,4 @@ if __name__ == "__main__":
     server.bind(8000)
     server.start()
     tornado.ioloop.IOLoop.current().start()
+

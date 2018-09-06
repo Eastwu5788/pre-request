@@ -13,7 +13,9 @@
 
 # 用法
 1. 将pre-request包导入到项目中
-
+```
+python setup.py install
+```
 
 2. 导入处理请求参数的装饰器
 ```

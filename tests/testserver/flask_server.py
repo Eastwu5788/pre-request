@@ -1,5 +1,8 @@
-# -*- coding:utf8 -*-
-
+# -*- coding: utf-8 -*-
+# (C) Wu Dong, 2018
+# All rights reserved
+__author__ = 'Wu Dong <wudong@eastwu.cn>'
+__time__ = '2018/9/6 11:21'
 from flask import Flask
 from flask.views import MethodView, View
 
@@ -86,3 +89,4 @@ app.add_url_rule('/baseview', view_func=BaseView.as_view('baseview'))
 
 if __name__ == "__main__":
     app.run()
+
