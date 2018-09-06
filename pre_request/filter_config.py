@@ -39,7 +39,9 @@ class Enum(set):
             return item
         raise AttributeError
 
-RequestTypeEnum = Enum(["Flask", "Tornado", "Django"])
+
+RequestTypeEnum = Enum(["Flask", "Tornado"])
+
 
 
 
