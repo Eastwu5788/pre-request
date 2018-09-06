@@ -12,9 +12,15 @@
 
 
 # 用法
-1. 将pre-request包导入到项目中
+1.1 源码安装
 ```
+git clone git@github.com:Eastwu5788/pre-request.git
 python setup.py install
+```
+
+1.2 PIP安装
+```
+pip install pre-request
 ```
 
 2. 导入处理请求参数的装饰器
