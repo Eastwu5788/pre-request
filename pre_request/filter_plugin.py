@@ -116,8 +116,6 @@ class TypeFilter(BaseFilter):
                 if self.rule.allow_empty and not self.value:
                     return self.value
 
-                import MySQLdb
-                self.value = MySQLdb.escape_string(self.value)
                 if isinstance(self.value, bytes):
                     self.value = self.value.decode('utf-8')
                 return self.value
