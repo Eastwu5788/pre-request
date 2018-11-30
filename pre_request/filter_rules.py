@@ -29,10 +29,10 @@ class Length(object):
         """检查字符串长度"""
         length = len(ori_str) if ori_str else 0
         if self.min_len != -1:
-            if length <= self.min_len:
+            if length < self.min_len:
                 return False
         if self.max_len != -1:
-            if length >= self.max_len:
+            if length > self.max_len:
                 return False
         return True
 
@@ -41,7 +41,7 @@ class Range(object):
     """
     数值范围限定 仅在direct_type为float，int时生效
     """
-    def __init__(self, num_min=-1, num_max=-1):
+    def __init__(self, num_min=None, num_max=None):
         """
         数字范围限定
         :param num_min: 最小值，如果为-1表示不加限制
@@ -49,20 +49,20 @@ class Range(object):
         """
         self.num_min = num_min
         self.num_max = num_max
-        if self.num_min != -1 and self.num_max != -1 and self.num_max < self.num_min:
+        if self.num_min is not None and self.num_max is not None and self.num_max < self.num_min:
             raise ValueError("范围限定设置失败,最大值不能小于最小值!")
 
     def need_check(self):
         """是否需要进行长度校验"""
-        return self.num_min != -1 or self.num_max != -1
+        return self.num_min is not None or self.num_max is not None
 
     def check_range(self, ori_num):
         """检查字符串长度"""
-        if self.num_min != -1:
-            if ori_num <= self.num_min:
+        if self.num_min is not None:
+            if ori_num < self.num_min:
                 return False
-        if self.num_max != -1:
-            if ori_num >= self.num_max:
+        if self.num_max is not None:
+            if ori_num > self.num_max:
                 return False
         return True
 
@@ -99,5 +99,8 @@ class Rule(object):
         # 字符串长度判断
         self.len = kwargs.get("length", Length())
 
-        # 字段是否是安全的，否则会进行转义，防止SQL注入
-        self.safe = kwargs.get("safe", False)
+        # key映射
+        self.key_map = kwargs.get("key_map", None)
+
+        # 是否需要进行json解析
+        self.json_load = kwargs.get("json", False)

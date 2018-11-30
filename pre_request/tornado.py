@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
+
 from .filter_error import ParamsValueError
 from .filter_config import FILTER_LIST
 from .filter_response import get_response_with_error
@@ -39,7 +40,7 @@ def filter_params(rules=None, **options):
                     for filter_class in FILTER_LIST:
                         param = filter_class(key, param, rule)()
                     # 存储过滤后的值
-                    result[key] = param
+                    result[rule.key_map or key] = param
                 except ParamsValueError as error:
                     return get_response_with_error(handler, error, options.get("response"), RequestTypeEnum.Tornado)
 
@@ -48,3 +49,4 @@ def filter_params(rules=None, **options):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+

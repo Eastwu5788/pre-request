@@ -5,6 +5,17 @@ __author__ = 'Wu Dong <wudong@eastwu.cn>'
 __time__ = '2018/9/6 11:16'
 import pytest
 import requests
+import json
+
+test_dict = {
+    "lStocks": 0.2,
+    "smStocks": 0.4,
+    "hkStocks": 0.4,
+    "convertBond": 0.6,
+    "interestBond": 0.3,
+    "creditBond": 0.2,
+    "notStand": 0.1
+}
 
 
 class TestFlask(object):
@@ -31,3 +42,14 @@ class TestFlask(object):
         resp = requests.post("http://127.0.0.1:5000/test", params)
         assert resp.status_code == 200
         assert resp.json() == expected
+
+    @pytest.mark.parametrize(
+        'params, expected', (
+                ({"year": 2018, "empty": "as", "range": "22", "reg": "m22m", "js": json.dumps(test_dict)},
+                 {'code': 563, 'message': 'age字段的取值只能是以下几种[1, 2]!'}),
+        )
+    )
+    def test_post_request(self, params, expected):
+        resp = requests.post("http://127.0.0.1:5000/post", params)
+        assert resp.status_code == 200
+        print(resp.json())

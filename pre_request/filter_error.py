@@ -38,4 +38,6 @@ class ParamsValueError(ValueError):
             message = "%s字段取值不在限定范围内!" % param_filter.key
         elif self.code == 568:
             message = "%s字段无法进行范围判断，请检查!" % param_filter.key
+        elif self.code == 570:
+            message = "%s字段无法通过json进行解析" % param_filter.key
         return message
