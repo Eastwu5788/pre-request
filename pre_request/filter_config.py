@@ -16,6 +16,7 @@ FILTER_LIST = [
     EnumFilter,     # 7.枚举过滤器
     EmailFilter,    # 8.邮箱过滤器
     MobileFilter,   # 9.手机号过滤器
+    JsonFilter,     # 10.Json解析器
 ]
 
 

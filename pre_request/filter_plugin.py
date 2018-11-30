@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import re
+import json
+from json.decoder import JSONDecodeError
+
 from .filter_rules import Rule
 from .filter_error import ParamsValueError
 
@@ -106,19 +109,16 @@ class TypeFilter(BaseFilter):
         direct_type = self.rule.direct_type
 
         # 初始类型就是字符串，并且默认是安全的，则不需要处理
-        if isinstance(self.value, direct_type) and self.rule.safe:
+        if isinstance(self.value, direct_type):
             return self.value
 
         if direct_type == str:
-            if self.rule.safe:
+            if self.rule.allow_empty and not self.value:
                 return self.value
-            else:
-                if self.rule.allow_empty and not self.value:
-                    return self.value
 
-                if isinstance(self.value, bytes):
-                    self.value = self.value.decode('utf-8')
-                return self.value
+            if isinstance(self.value, bytes):
+                self.value = self.value.decode('utf-8')
+            return self.value
         # 特殊的字符串转bool类型
         elif direct_type == bool and self.value in _false_str_list:
             return False
@@ -186,5 +186,33 @@ class MobileFilter(BaseFilter):
             from .filter_regexp import MobileRegexp
             if not MobileRegexp()(self.value):
                 raise ParamsValueError(self.error_code, filter=self)
+
+        return self.value
+
+
+class JsonFilter(BaseFilter):
+    """Json解析过滤器"""
+
+    error_code = 570
+
+    def __call__(self, *args, **kwargs):
+        super(JsonFilter, self).__call__()
+
+        # 不需要转换成json
+        if not self.rule.json_load:
+            return self.value
+
+        # 不是字符串类型，将被忽略
+        if self.rule.direct_type != str:
+            return self.value
+
+        # 允许为空的情况下，不需要处理
+        if self.rule.allow_empty and (self.value is None or not isinstance(self.value, str)):
+            return self.value
+
+        try:
+            self.value = json.loads(self.value)
+        except JSONDecodeError:
+            raise ParamsValueError(self.error_code, filter=self)
 
         return self.value

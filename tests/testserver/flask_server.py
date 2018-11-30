@@ -9,6 +9,7 @@ from flask.views import MethodView, View
 from pre_request.flask import filter_params
 from pre_request.filter_rules import Rule, Length, Range
 
+import json
 
 app = Flask(__name__)
 app.debug = True
@@ -35,7 +36,8 @@ post_field = {
     "year": Rule(direct_type=int),
     "empty": Rule(allow_empty=True, default="asdf"),
     "range": Rule(direct_type=int, range=Range(10, 30)),
-    "reg": Rule(reg=r'^m\d+m$')
+    "reg": Rule(reg=r'^m\d+m$', key_map="reg_exp"),
+    "js": Rule(json=True)
 }
 
 
@@ -54,7 +56,8 @@ def get_handler(params=None):
 @app.route("/post", methods=['post'])
 @filter_params(post=post_field)
 def post_handler(params=None):
-    return str(params)
+    print(params)
+    return json.dumps(params)
 
 
 @app.route("/all", methods=['get', 'post'])

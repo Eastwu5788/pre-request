@@ -20,3 +20,4 @@ Usage:
 from .flask import filter_params
 from .filter_rules import Rule
 from .filter_rules import Length
+from .filter_rules import Range
