@@ -29,10 +29,13 @@ def filter_params(rules=None, **options):
                 else:
                     return func(*args, **kwargs)
 
-            result = dict()
+            result, row_params = dict(), request.json
             for key, value in param_rules.items():
                 try:
                     param = request.values.get(key, default=None)
+                    if not param and row_params and isinstance(row_params, dict):
+                        param = row_params.get(key, None)
+
                     for filter_class in FILTER_LIST:
                         param = filter_class(key, param, value)()
                     # result[key] = param

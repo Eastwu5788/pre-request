@@ -48,8 +48,8 @@ field = {
     "mobile": Rule(mobile=True),
     "empty": Rule(allow_empty=True, default="sssss_empty"),
     "range": Rule(direct_type=int, range=Range(10, 30)),
-    "reg": Rule(reg=r'^h\w{3,5}o$'),
-    "trim": Rule(trim=True)
+    "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
+    "trim": Rule(trim=True, json=True)
 }
 ```
 
@@ -163,6 +163,9 @@ self.mobile = kwargs.get("mobile", False)
 # 字符串长度判断
 self.len = kwargs.get("length", Length())
 
-# 字段是否是安全的，否则会进行转义，防止SQL注入
-self.safe = kwargs.get("safe", False)
+# key映射
+self.key_map = kwargs.get("key_map", None)
+
+# 是否需要进行json解析
+self.json_load = kwargs.get("json", False)
 ```

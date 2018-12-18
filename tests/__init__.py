@@ -8,11 +8,11 @@ from tornado.escape import json_decode
 
 
 def get_request():
-    request_params = {"year": 1, "test": "word"}
-    resp = requests.post("http://127.0.0.1:8000/test", request_params)
+    request_params = {"year": "2018-11-11 ", "test": "word"}
+    resp = requests.post("http://127.0.0.1:5000/post", request_params)
 
     # print(json_decode(resp.content))
-    print(str(resp.content, encoding='utf-8'))
+    print(resp.json())
 
 
 if __name__ == "__main__":
