@@ -33,11 +33,11 @@ get_field = {
 }
 
 post_field = {
-    "year": Rule(direct_type=int),
+    "year": Rule(direct_type=str, trim=True, reg=r"^\d{4}-\d{2}-\d{2}$"),
     "empty": Rule(allow_empty=True, default="asdf"),
-    "range": Rule(direct_type=int, range=Range(10, 30)),
-    "reg": Rule(reg=r'^m\d+m$', key_map="reg_exp"),
-    "js": Rule(json=True)
+    # "range": Rule(direct_type=int, range=Range(10, 30)),
+    # "reg": Rule(reg=r'^m\d+m$', key_map="reg_exp"),
+    # "js": Rule(json=True)
 }
 
 
