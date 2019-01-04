@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
+from inspect import isfunction
 
 from .filter_error import ParamsValueError
 from .filter_config import FILTER_LIST
@@ -39,6 +40,11 @@ def filter_params(rules=None, **options):
                     # 依次执行过滤器
                     for filter_class in FILTER_LIST:
                         param = filter_class(key, param, rule)()
+
+                    # 处理用户自定义回调
+                    if rule.callback is not None and isfunction(rule.callback):
+                        param = rule.callback(param)
+
                     # 存储过滤后的值
                     result[rule.key_map or key] = param
                 except ParamsValueError as error:
