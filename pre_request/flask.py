@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from urllib.parse import parse_qs, urlparse
 from functools import wraps
+from inspect import isfunction
 from .filter_config import FILTER_LIST
 from .filter_error import ParamsValueError
 from .filter_response import get_response_with_error
 from .filter_config import RequestTypeEnum
-from .filter_rules import Rule
 
 
 def filter_params(rules=None, **options):
@@ -41,7 +41,7 @@ def filter_params(rules=None, **options):
                         param = filter_class(key, param, value)()
 
                     # 处理用户自定义回调
-                    if value and isinstance(value, Rule) and value.callback is not None:
+                    if value.callback is not None and isfunction(value.callback):
                         param = value.callback(param)
 
                     result[value.key_map or key] = param
