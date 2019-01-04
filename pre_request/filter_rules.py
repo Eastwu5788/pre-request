@@ -71,8 +71,6 @@ class Rule(object):
     """
     字段遵守的规则定义类
     """
-    # TODO: 1.使用继承来扩展其它规则
-    # TODO: 4.字符串转义修改
     def __init__(self, **kwargs):
         # 字段目标数据类型
         self.direct_type = kwargs.get("direct_type", str)
@@ -104,3 +102,6 @@ class Rule(object):
 
         # 是否需要进行json解析
         self.json_load = kwargs.get("json", False)
+
+        # 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
+        self.callback = kwargs.get("callback", None)

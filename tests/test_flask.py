@@ -45,8 +45,8 @@ class TestFlask(object):
 
     @pytest.mark.parametrize(
         'params, expected', (
-                ({"year": 2018, "empty": "as", "range": "22", "reg": "m22m", "js": json.dumps(test_dict)},
-                 {'code': 563, 'message': 'age字段的取值只能是以下几种[1, 2]!'}),
+                ({"year": "2018-01-11", "empty": "as", "call": "22"},
+                 {'code': 200, 'message': 'age字段的取值只能是以下几种[1, 2]!'}),
         )
     )
     def test_post_request(self, params, expected):

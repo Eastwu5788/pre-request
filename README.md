@@ -9,7 +9,7 @@
 2. 取值范围限制，显示参数的取值内容的范围
 3. 字符串转义处理，防止SQL注入
 4. 请求参数为空和默认值处理，如果允许为空则可以设置默认值
-
+5. 用户可以自定义callback, 自己处理任何参数（callback的调用在所有filter处理之后）
 
 # 用法
 1.1 源码安装
@@ -168,4 +168,7 @@ self.key_map = kwargs.get("key_map", None)
 
 # 是否需要进行json解析
 self.json_load = kwargs.get("json", False)
+
+# 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
+self.callback = kwargs.get("callback", None)
 ```
