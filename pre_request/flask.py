@@ -5,6 +5,7 @@ from .filter_config import FILTER_LIST
 from .filter_error import ParamsValueError
 from .filter_response import get_response_with_error
 from .filter_config import RequestTypeEnum
+from .filter_rules import Rule
 
 
 def filter_params(rules=None, **options):
@@ -38,7 +39,11 @@ def filter_params(rules=None, **options):
 
                     for filter_class in FILTER_LIST:
                         param = filter_class(key, param, value)()
-                    # result[key] = param
+
+                    # 处理用户自定义回调
+                    if value and isinstance(value, Rule) and value.callback is not None:
+                        param = value.callback(param)
+
                     result[value.key_map or key] = param
                 except ParamsValueError as error:
                     return get_response_with_error(request, error, options.get("response"), RequestTypeEnum.Flask)
@@ -64,6 +69,8 @@ def all_params():
             # 获取POST请求参数
             if request.method == "POST":
                 param = request.form.to_dict()
+                if not param and request.json is not None:
+                    param = request.json
 
                 # 处理POST请求时，又在URL中传入了参数
                 param_query = dict(
