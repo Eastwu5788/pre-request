@@ -49,7 +49,8 @@ field = {
     "empty": Rule(allow_empty=True, default="sssss_empty"),
     "range": Rule(direct_type=int, range=Range(10, 30)),
     "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
-    "trim": Rule(trim=True, json=True)
+    "trim": Rule(trim=True, json=True),
+    "call": Rule(direct_type=int, callback=lambda x: x+100)
 }
 ```
 
