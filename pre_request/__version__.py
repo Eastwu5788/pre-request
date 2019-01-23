@@ -5,10 +5,10 @@ __author__ = 'Wu Dong <wudong@eastwu.cn>'
 __title__ = 'pre_request'
 __description__ = 'Deal with request params for Flask and Tornado'
 __url__ = 'https://github.com/Eastwu5788/pre-request'
-__version__ = '1.0.4'
+__version__ = '1.0.6'
 __build__ = 0x000001
 __author_email__ = 'wudong@eastwu.cn'
-__license__ = 'Apache 2.0'
-__copyright__ = 'Copyright 2018 Wu Dong'
+__license__ = 'MIT License'
+__copyright__ = 'Copyright 2019 Wu Dong'
 __cake__ = u'\u2728 \U0001f370 \u2728'
 
