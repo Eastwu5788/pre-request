@@ -30,7 +30,13 @@ def filter_params(rules=None, **options):
                 else:
                     return func(*args, **kwargs)
 
-            result, row_params = dict(), request.json
+            result, row_params = dict(), None
+
+            try:
+                row_params = request.json
+            except Exception as e:
+                pass
+
             for key, value in param_rules.items():
                 try:
                     param = request.values.get(key, default=None)
