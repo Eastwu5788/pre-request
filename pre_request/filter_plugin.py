@@ -43,7 +43,9 @@ class EmptyFilter(BaseFilter):
         super(EmptyFilter, self).__call__()
 
         # 参数输入值为空
-        if not self.value:
+        # BUG: 只有用户不输入的情况下才为None，判断为空应该是当前这种情况
+        # 如果是 not self.value 则包括了多种false情况
+        if self.value is None:
             if self.rule.allow_empty:
                 self.value = self.rule.default
             else:
