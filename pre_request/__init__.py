@@ -14,7 +14,7 @@ Usage:
     >>>     print(kwargs)
 
 
-:copyright: (c) 2018 by Wu Dong
+:copyright: (c) 2019 by Wu Dong
 :license: Apache 2.0, see LICENSE for more details.
 """
 from .flask import filter_params
