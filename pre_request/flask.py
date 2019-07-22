@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from urllib.parse import parse_qs, urlparse
 from functools import wraps
 from inspect import isfunction
 from .filter_config import FILTER_LIST
@@ -30,12 +29,8 @@ def filter_params(rules=None, **options):
                 else:
                     return func(*args, **kwargs)
 
-            result, row_params = dict(), None
-
-            try:
-                row_params = request.json
-            except Exception as e:
-                pass
+            result = None
+            row_params = getattr(request, "json", None)
 
             for key, value in param_rules.items():
                 try:
@@ -71,18 +66,16 @@ def all_params():
 
             # 获取GET请求参数
             param = request.args.to_dict()
+            # 获取POST参数
+            param = dict(param, **request.form.to_dict())
 
-            # 获取POST请求参数
-            if request.method == "POST":
-                param = request.form.to_dict()
-                if not param and request.json is not None:
-                    param = request.json
-
-                # 处理POST请求时，又在URL中传入了参数
-                param_query = dict(
-                    [(k, v[0]) for k, v in parse_qs(urlparse(request.url).query).items()])
-                if param_query:
-                    param = dict(param, **param_query)
+            # 获取json请求
+            json_params = getattr(request, "json", None)
+            if json_params is not None:
+                if isinstance(json_params, dict):
+                    param = dict(param, **json_params)
+                else:
+                    param = dict(param, **{"json": json_params})
 
             # 将获取的参数返回给函数
             kwargs = dict({"params": param}, **kwargs)
