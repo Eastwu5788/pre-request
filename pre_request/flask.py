@@ -29,7 +29,7 @@ def filter_params(rules=None, **options):
                 else:
                     return func(*args, **kwargs)
 
-            result = None
+            result = dict()
             row_params = getattr(request, "json", None)
 
             for key, value in param_rules.items():
