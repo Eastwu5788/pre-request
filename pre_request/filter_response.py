@@ -27,7 +27,7 @@ class BaseResponse(object):
         if request_type:
             self.request_type = request_type
 
-        return {"code": self.error.code, "message": self.error.form_message()}
+        return {"respCode": self.error.code, "respMsg": self.error.form_message(), "result": {}}
 
 
 class JSONResponse(BaseResponse):
