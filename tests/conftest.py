@@ -1,18 +1,19 @@
+# !/usr/local/python/bin/python
 # -*- coding: utf-8 -*-
-# (C) Wu Dong, 2018
+# (C) Wu Dong, 2019
 # All rights reserved
-__author__ = 'Wu Dong <wudong@eastwu.cn>'
-__time__ = '2018/9/6 11:21'
+# @Author: 'Wu Dong <wudong@eastwu.cn>'
+# @Time: '2020-03-17 16:02'
+import pytest
 from flask import Flask
 from flask.views import MethodView, View
 
 from pre_request.flask import filter_params
-from pre_request.filter_rules import Rule, Length, Range
+from pre_request.rules import Rule, Length, Range
 
 import json
 
 app = Flask(__name__)
-app.debug = True
 
 field = {
     "age": Rule(direct_type=int, enum=[1, 2]),
@@ -36,10 +37,10 @@ get_field = {
 post_field = {
     "year": Rule(direct_type=str, trim=True, reg=r"^\d{4}-\d{2}-\d{2}$"),
     "empty": Rule(allow_empty=True, default="asdf"),
-    "call": Rule(direct_type=int, callback=lambda x: x*1000)
-    # "range": Rule(direct_type=int, range=Range(10, 30)),
-    # "reg": Rule(reg=r'^m\d+m$', key_map="reg_exp"),
-    # "js": Rule(json=True)
+    "call": Rule(direct_type=int, callback=lambda x: x*1000),
+    "range": Rule(direct_type=int, range=Range(10, 30)),
+    "reg": Rule(reg=r'^m\d+m$', key_map="reg_exp"),
+    "js": Rule(json=True)
 }
 
 
@@ -92,6 +93,9 @@ app.add_url_rule('/getview', view_func=GetView.as_view('getview'))
 app.add_url_rule('/baseview', view_func=BaseView.as_view('baseview'))
 
 
-if __name__ == "__main__":
-    app.run()
-
+@pytest.fixture
+def client():
+    """ 构建测试用例
+    """
+    app.config["TESTING"] = True
+    return app.test_client()

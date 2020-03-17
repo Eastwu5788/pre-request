@@ -1,0 +1,13 @@
+[flake8]
+exclude =
+    *.pyc,
+    .git,
+    __pycache__,
+    *.md,
+
+max-line-length=125
+max-complexity=16
+format=pylint
+show_source = True
+statistics = True
+count = True

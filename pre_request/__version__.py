@@ -11,4 +11,3 @@ __author_email__ = 'wudong@eastwu.cn'
 __license__ = 'MIT License'
 __copyright__ = 'Copyright 2019 Wu Dong'
 __cake__ = u'\u2728 \U0001f370 \u2728'
-

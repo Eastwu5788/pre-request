@@ -67,7 +67,7 @@ class Range(object):
         return True
 
 
-class Rule(object):
+class Rule(object):  # pylint: disable=too-many-instance-attributes
     """
     字段遵守的规则定义类
     """
