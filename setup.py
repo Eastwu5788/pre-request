@@ -4,20 +4,10 @@
 __author__ = 'Wu Dong <wudong@eastwu.cn>'
 __time__ = '2018/9/6 11:07'
 import os
-import sys
-
 from codecs import open
-
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist bdist_wheel')
-    os.system('twine upload dist/*')
-    sys.exit()
-
-packages = ['pre_request']
 
 requires = []
 
@@ -36,10 +26,11 @@ setup(
     version=about['__version__'],
     description=about['__description__'],
     long_description=readme,
+    long_description_content_type="text/markdown",
     author=about['__author__'],
     author_email=about['__author_email__'],
     url=about['__url__'],
-    packages=packages,
+    packages=find_packages(exclude=["tests", "tests.*", "examples", "examples.*"]),
     package_data={"": ["LICENSE"], "pre-request": ["*.pem"]},
     package_dir={'pre-request': 'pre-request'},
     include_package_data=True,

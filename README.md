@@ -1,4 +1,7 @@
 # pre-request
+[![Build Status](https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master)](https://www.travis-ci.org/Eastwu5788/pre-request)
+[![Coverage Status](https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master)](https://coveralls.io/github/Eastwu5788/pre-request?branch=master)
+
 
 # 介绍
 针对Flask、Tornado框架设计的请求预处理类

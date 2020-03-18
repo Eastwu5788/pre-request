@@ -15,7 +15,7 @@ script:
 deploy:
   provider: pypi
   user: __token__
-  password: ${PYPIPASS}
+  password: ${REQTOKEN}
   skip_cleanup: true
   on:
     python: 3.6
