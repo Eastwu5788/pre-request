@@ -20,6 +20,13 @@ class LengthFilter(BaseFilter):
         if self.rule.len and self.rule.len.need_check():
             if self.rule.allow_empty and not self.value:
                 return self.value
+
+            # 长度检查过滤器仅对字符串有效
+            if not isinstance(self.value, str):
+                raise ParamsValueError(self.error_code, filter=self)
+
+            # 检查结果
             if not self.rule.len.check_length(self.value):
                 raise ParamsValueError(self.error_code, filter=self)
+
         return self.value

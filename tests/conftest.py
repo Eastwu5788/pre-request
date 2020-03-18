@@ -4,93 +4,192 @@
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 16:02'
+import json
+
 import pytest
 from flask import Flask
-from flask.views import MethodView, View
+from flask import make_response
 
-from pre_request.flask import filter_params
-from pre_request.rules import Rule, Length, Range
+from pre_request import filter_params
+from pre_request import Rule, Length, Range
 
-import json
 
 app = Flask(__name__)
 
-field = {
-    "age": Rule(direct_type=int, enum=[1, 2]),
-    "name": Rule(length=Length(6, 12)),
-    "email": Rule(email=True),
-    "mobile": Rule(mobile=True),
-    "empty": Rule(allow_empty=True, default="sssss_empty")
-}
 
-get_field = {
-    "year": Rule(direct_type=int, enum=[1920, 1922]),
-    "string": Rule(length=Length(6, 12)),
-    "range": Rule(range=Range('ab', 'zg')),
-    "email": Rule(email=True),
-    "mobile": Rule(mobile=True),
-    "reg": Rule(reg=r'^h\w{3,5}o$'),
-    "trim": Rule(trim=True)
+def json_resp(result):
+    result = json.dumps(result)
+    resp = make_response(result)
+    resp.headers['Content-Type'] = 'application/json'
+    return resp
+
+
+email_params = {
+    "email": Rule(email=True)
 }
 
 
-post_field = {
-    "year": Rule(direct_type=str, trim=True, reg=r"^\d{4}-\d{2}-\d{2}$"),
-    "empty": Rule(allow_empty=True, default="asdf"),
-    "call": Rule(direct_type=int, callback=lambda x: x*1000),
-    "range": Rule(direct_type=int, range=Range(10, 30)),
-    "reg": Rule(reg=r'^m\d+m$', key_map="reg_exp"),
-    "js": Rule(json=True)
+@app.route("/email", methods=['get', 'post'])
+@filter_params(email_params)
+def test_email_handler(params):
+    """ 测试邮件验证
+    """
+    return json_resp(params)
+
+
+empty_params = {
+    "int": Rule(allow_empty=False),
+    "str": Rule(allow_empty=False),
+    "str2": Rule(allow_empty=True),
+    "int2": Rule(allow_empty=True, default=1)
 }
 
 
-@app.route("/test", methods=['get', 'post'])
-@filter_params(field)
-def test_handler(params=None):
-    return str(params)
+@app.route("/empty", methods=['get', 'post'])
+@filter_params(empty_params)
+def test_empty_handler(params):
+    """ 测试缺失判断验证
+    """
+    return json_resp(params)
 
 
-@app.route("/get", methods=['get'])
-@filter_params(get=get_field)
-def get_handler(params=None):
-    return str(params)
+enum_params = {
+    "params": Rule(direct_type=int, enum=[1, 2, 3]),
+    "params2": Rule(direct_type=str, enum=["a", "b", "c"])
+}
 
 
-@app.route("/post", methods=['post'])
-@filter_params(post=post_field)
-def post_handler(params=None):
-    print(params)
-    return json.dumps(params)
+@app.route("/enum", methods=['get', 'post'])
+@filter_params(enum_params)
+def test_enum_handler(params):
+    """ 测试枚举判断验证
+    """
+    return json_resp(params)
 
 
-@app.route("/all", methods=['get', 'post'])
-@filter_params(get=get_field, post=post_field)
-def all_handler(params=None):
-    return str(params)
+json_params = {
+    "params": Rule(json=True)
+}
 
 
-# 方法视图
-class GetView(MethodView):
-
-    @filter_params(get=get_field)
-    def get(self, params=None):
-        return str(params)
-
-    @filter_params(post=post_field, response='html')
-    def post(self, params=None):
-        return str(params)
+@app.route("/json", methods=['get', 'post'])
+@filter_params(json_params)
+def test_json_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
 
 
-# 标准视图demo
-class BaseView(View):
-
-    @filter_params(get=get_field, post=post_field, response='html')
-    def dispatch_request(self, params=None):
-        return str(params)
+length_params = {
+    "params": Rule(length=Length(1, 3)),
+    "params2": Rule(length=Length(3, 3))
+}
 
 
-app.add_url_rule('/getview', view_func=GetView.as_view('getview'))
-app.add_url_rule('/baseview', view_func=BaseView.as_view('baseview'))
+@app.route("/length", methods=['get', 'post'])
+@filter_params(length_params)
+def test_length_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+mobile_params = {
+    "params": Rule(mobile=True)
+}
+
+
+@app.route("/mobile", methods=['get', 'post'])
+@filter_params(mobile_params)
+def test_mobile_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+range_params = {
+    "params": Rule(direct_type=int, range=Range(10, 20))
+}
+
+
+@app.route("/range", methods=['get', 'post'])
+@filter_params(range_params)
+def test_range_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+regexp_params = {
+    "params": Rule(reg=r"^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
+}
+
+
+@app.route("/regexp", methods=['get', 'post'])
+@filter_params(regexp_params)
+def test_regexp_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+trim_params = {
+    "params": Rule(trim=True)
+}
+
+
+@app.route("/trim", methods=['get', 'post'])
+@filter_params(trim_params)
+def test_trim_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+type_params = {
+    "int": Rule(direct_type=int),
+    "str": Rule(direct_type=str)
+}
+
+
+@app.route("/type", methods=['get', 'post'])
+@filter_params(type_params)
+def test_type_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+def call_back_func(value):
+    if value == "3":
+        return 999
+    return value
+
+
+callback_params = {
+    "params": Rule(direct_type=str, callback=call_back_func)
+}
+
+
+@app.route("/callback", methods=['get', 'post'])
+@filter_params(callback_params)
+def test_callback_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+key_map_params = {
+    "params": Rule(direct_type=str, key_map="ttt")
+}
+
+
+@app.route("/keymap", methods=['get', 'post'])
+@filter_params(key_map_params)
+def test_keymap_handler(params):
+    """ 测试JSON转换
+    """
+    return json_resp(params)
 
 
 @pytest.fixture

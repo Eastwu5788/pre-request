@@ -10,7 +10,7 @@ class Length(object):
     使用Length类限定字符串长度范围
     """
 
-    def __init__(self, min_len=-1, max_len=-1):
+    def __init__(self, min_len=None, max_len=None):
         """
         初始化字符串长度
         :param min_len: 字符串最小值，如果为0表示不加限制
@@ -18,20 +18,27 @@ class Length(object):
         """
         self.min_len = min_len
         self.max_len = max_len
-        if self.min_len != -1 and self.max_len != -1 and self.max_len < self.min_len:
+
+        if self.min_len is not None and self.min_len < 0:
+            raise ValueError("参数'min_len'不应小于0")
+
+        if self.max_len is not None and self.max_len < 0:
+            raise ValueError("参数'max_len'不应小于0")
+
+        if self.min_len is not None and self.max_len is not None and self.max_len < self.min_len:
             raise ValueError("字符串长度设置失败,最大长度不能小于最小长度!")
 
     def need_check(self):
         """是否需要进行长度校验"""
-        return self.min_len != -1 or self.max_len != -1
+        return self.min_len is not None or self.max_len is not None
 
     def check_length(self, ori_str=""):
         """检查字符串长度"""
         length = len(ori_str) if ori_str else 0
-        if self.min_len != -1:
+        if self.min_len is not None:
             if length < self.min_len:
                 return False
-        if self.max_len != -1:
+        if self.max_len is not None:
             if length > self.max_len:
                 return False
         return True
