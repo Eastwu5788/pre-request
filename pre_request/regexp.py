@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from .filter_config import K_EMAIL_REG, K_MOBILE_REG
+from .macro import K_EMAIL_REG, K_MOBILE_REG
 
 
 class Regexp(object):

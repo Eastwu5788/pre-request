@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from functools import wraps
 from inspect import isfunction
-from .filter_config import FILTER_LIST
-from .filter_error import ParamsValueError
-from .filter_response import get_response_with_error
-from .filter_config import RequestTypeEnum
+
+from pre_request import plugins
+from .exception import ParamsValueError
+from .response import get_response_with_error
+from .config import RequestTypeEnum
 
 
 def filter_params(rules=None, **options):
@@ -16,7 +17,7 @@ def filter_params(rules=None, **options):
                 return func(*args, **kwargs)
 
             # 如果设置了get或者post方法的过滤方式，则优先处理
-            from flask import request
+            from flask import request  # pylint: disable=no-name-in-module
             if request.method == "GET":
                 param_rules = options.get("get")
             else:
@@ -38,8 +39,8 @@ def filter_params(rules=None, **options):
                     if not param and row_params and isinstance(row_params, dict):
                         param = row_params.get(key, None)
 
-                    for filter_class in FILTER_LIST:
-                        param = filter_class(key, param, value)()
+                    for filter_class in plugins.__all__:
+                        param = getattr(plugins, filter_class)(key, param, value)()
 
                     # 处理用户自定义回调
                     if value.callback is not None and isfunction(value.callback):
@@ -62,7 +63,7 @@ def all_params():
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            from flask import request
+            from flask import request  # pylint: disable=no-name-in-module
 
             # 获取GET请求参数
             param = request.args.to_dict()
@@ -83,4 +84,3 @@ def all_params():
             return func(*args, **kwargs)
         return wrapper
     return decorator
-
