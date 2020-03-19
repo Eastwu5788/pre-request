@@ -4,13 +4,12 @@
 
 
 # 介绍
-针对Flask、Tornado框架设计的请求预处理类
+针对Flask框架设计的请求预处理类
 
 
 # 处理内容
 1. 格式限制和转换处理，如果类型不符合或者无法转换成需求的类型，则抛出错误
 2. 取值范围限制，显示参数的取值内容的范围
-3. 字符串转义处理，防止SQL注入
 4. 请求参数为空和默认值处理，如果允许为空则可以设置默认值
 5. 用户可以自定义callback, 自己处理任何参数（callback的调用在所有filter处理之后）
 
@@ -28,17 +27,13 @@ pip install pre-request
 
 2. 导入处理请求参数的装饰器
 ```
-# 在Flask环境下
-from pre_request.flask import filter_params
-
-# 在Tornado环境下
-from pre_request.tornado import filter_params
+from pre_request import filter_params
 ```
 
 
-3. 导入参数规则类(Flask、Tornado通用)
+3. 导入参数规则类
 ```
-from pre_request.filter_rules import Rule, Length
+from pre_request import Rule, Length
 ```
 
 
