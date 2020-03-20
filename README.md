@@ -1,43 +1,45 @@
 # pre-request
-[![Build Status](https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master)](https://www.travis-ci.org/Eastwu5788/pre-request)
-[![Coverage Status](https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master)](https://coveralls.io/github/Eastwu5788/pre-request?branch=master)
+[![Build Status](https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master)](https://www.travis-ci.org/Eastwu5788/pre-request) 
+[![Coverage Status](https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master)](https://coveralls.io/github/Eastwu5788/pre-request?branch=master) 
+[![PyPI - License](https://img.shields.io/pypi/l/pre-request?color=brightgreen)](https://github.com/Eastwu5788/pre-request/blob/develop/LICENSE) 
+[![Documentation Status](https://readthedocs.org/projects/pre-request/badge/?version=latest)](https://pre-request.readthedocs.io/en/latest/?badge=latest) 
+[![PyPI](https://img.shields.io/pypi/v/pre-request)](https://pypi.org/project/pre-request/)
 
 
-# 介绍
-针对Flask框架设计的请求预处理类
+欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
+网络请求参数验证提供了解决方案。
+
+pre-request提供了非常方便的使用的方法，也提供了灵活的扩展接口方便您实现自定义的
+业务逻辑。
 
 
-# 处理内容
-1. 格式限制和转换处理，如果类型不符合或者无法转换成需求的类型，则抛出错误
-2. 取值范围限制，显示参数的取值内容的范围
+### 特点
+1. 验证邮箱、手机号等特殊字段是否符合要求
+2. 格式限制和转换处理，如果类型不符合或者无法转换成需求的类型，则抛出错误
+3. 取值范围限制，显示参数的取值内容的范围
 4. 请求参数为空和默认值处理，如果允许为空则可以设置默认值
 5. 用户可以自定义callback, 自己处理任何参数（callback的调用在所有filter处理之后）
+6. 可以将字段映射为内部使用的字段
 
-# 用法
-1.1 源码安装
-```
-git clone git@github.com:Eastwu5788/pre-request.git
-python setup.py install
-```
-
-1.2 PIP安装
+### 安装
 ```
 pip install pre-request
 ```
 
-2. 导入处理请求参数的装饰器
+### 快速开始
+1. 导入处理请求参数的装饰器
 ```
 from pre_request import filter_params
 ```
 
 
-3. 导入参数规则类
+2. 导入参数规则类
 ```
 from pre_request import Rule, Length
 ```
 
 
-４. 设置请求参数规则
+3. 设置请求参数规则
 ```
 field = {
     "age": Rule(direct_type=int, enum=[1, 2]),
@@ -53,7 +55,7 @@ field = {
 ```
 
 
-５. 通过@filter_params()装饰器，过滤请求参数.注意在正常处理函数中添加params参数，接收过滤后的请求参数
+4. 通过@filter_params()装饰器，过滤请求参数.注意在正常处理函数中添加params参数，接收过滤后的请求参数
 ```
 # 不指定get和post时，不论get请求或者post请求都会使用同一个过滤参数
 # 如果指定了get或者post时，直接设置的过滤参数会被覆盖
@@ -64,7 +66,7 @@ def test_handler(params=None):
 ```
 
 
-６. 单独设置某一个请求的get或post请求
+5. 单独设置某一个请求的get或post请求
 ```
 # 单独设置get请求的过滤参数
 @app.route("/get", methods=['get'])
@@ -80,7 +82,7 @@ def post_handler(params=None):
 ```
 
 
-７. 也可以同时设置get和post请求的不同过滤参数
+6. 也可以同时设置get和post请求的不同过滤参数
 ```
 # 同时设置get和post的过滤参数
 @app.route("/all", methods=['get', 'post'])
@@ -90,7 +92,7 @@ def all_handler(params=None):
 ```
 
 
-８. 指定响应类型，通过response参数指定响应类型为json或者html
+7. 指定响应类型，通过response参数指定响应类型为json或者html
 ```
 # 方法视图
 @filter_params(get=get_field, response='json')
@@ -102,40 +104,7 @@ def post(self, params=None):
 return str(params)
 ```
 
-
-９. 修改默认响应类型,修改filter_response.py中的RESPONSE变量
-```
-RESPONSE = JSONResponse()
-```
-
-
-10. 设置自定义响应,主要是继承BaseResponse，具体实现可以参考JSONResponse或HTMLResponse类的实现
-```
-class JSONResponse(BaseResponse):
-    """
-    以JSON格式响应出错的情况
-    """
-    def __call__(self, handler=None, error=None, request_type=None):
-        """
-        :type error: 错误
-        :param request_type: 请求类型
-        :return:
-        """
-        result = super(JSONResponse, self).__call__(handler, error, request_type)
-        # Flask的处理
-        if self.request_type == RequestTypeEnum.Flask:
-            from flask import make_response
-            response = make_response(json.dumps(result))
-            response.headers["Content-Type"] = "application/json; charset=utf-8"
-            return response
-        # Tornado的处理　
-        else:
-            self.handler.set_header("Content-Type", "application/json; charset=utf-8")
-            return self.handler.write(json.dumps(result))
-```
-
-
-# Rule规则参数介绍
+### Rule规则参数介绍
 ```
 # 字段目标数据类型
 self.direct_type = kwargs.get("direct_type", str)
