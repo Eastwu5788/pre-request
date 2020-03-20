@@ -2,7 +2,7 @@
 [![Build Status](https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master)](https://www.travis-ci.org/Eastwu5788/pre-request) 
 [![Coverage Status](https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master)](https://coveralls.io/github/Eastwu5788/pre-request?branch=master) 
 [![PyPI - License](https://img.shields.io/pypi/l/pre-request?color=brightgreen)](https://github.com/Eastwu5788/pre-request/blob/develop/LICENSE) 
-[![Documentation Status](https://readthedocs.org/projects/pre-request/badge/?version=latest)](https://pre-request.readthedocs.io/en/latest/?badge=latest) 
+[![Documentation Status](https://readthedocs.org/projects/pre-request/badge/?version=master)](https://pre-request.readthedocs.io/en/master/?badge=master)
 [![PyPI](https://img.shields.io/pypi/v/pre-request)](https://pypi.org/project/pre-request/)
 
 
