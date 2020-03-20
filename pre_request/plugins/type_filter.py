@@ -39,6 +39,11 @@ class TypeFilter(BaseFilter):
             return False
 
         try:
+            # FIX: invalid literal for int() with base 10
+            # 处理int仅能转换纯数字字符串问题
+            if self.rule.direct_type == int and "." in self.value:
+                self.value = self.value.split(".")[0]
+
             return self.rule.direct_type(self.value)
         except ValueError:
             raise ParamsValueError(self.error_code, filter=self)
