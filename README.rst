@@ -1,21 +1,22 @@
 Pre-request
 ===========
-.. image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
-   :target: https://www.travis-ci.org/Eastwu5788/pre-request
 
-.. image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
-   :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
+..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
+    :target: https://www.travis-ci.org/Eastwu5788/pre-request
 
-.. image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
-   :alt: PyPI - License
+..  image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
+    :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
 
-.. image:: https://readthedocs.org/projects/pre-request/badge/?version=master
-   :target: https://pre-request.readthedocs.io/en/master/?badge=master
-   :alt: Documentation Status
+..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
+    :alt: PyPI - License
 
-.. image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen
-   :target: https://pypi.org/project/pre-request/
-   :alt: PyPI
+..  image:: https://readthedocs.org/projects/pre-request/badge/?version=master
+    :target: https://pre-request.readthedocs.io/en/master/?badge=master
+    :alt: Documentation Status
+
+..  image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen
+    :target: https://pypi.org/project/pre-request/
+    :alt: PyPI
 
 
 欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
