@@ -5,7 +5,7 @@
 Welcome to pre-request
 ======================
 
-.. image:: _static/logo.jpg
+.. image:: _static/pr-logo.jpg
    :alt: pre-request: 请求预处理框架
    :align: center
    :target: https://github.com/Eastwu5788/pre-request
