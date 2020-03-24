@@ -1,6 +1,9 @@
 Pre-request
 ===========
 
+.. image:: https://github.com/Eastwu5788/pre-request/tree/master/docs/_static/logo.jpg
+   :align: center
+
 ..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
     :target: https://www.travis-ci.org/Eastwu5788/pre-request
 

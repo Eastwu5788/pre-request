@@ -23,3 +23,4 @@ from .rules import Rule
 from .rules import Length
 from .rules import Range
 from .exception import PreRequestException, ParamsValueError
+from .__version__ import __version__
