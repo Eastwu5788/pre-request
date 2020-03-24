@@ -1,7 +1,7 @@
 Pre-request
 ===========
 
-.. image:: https://github.com/Eastwu5788/pre-request/tree/master/docs/_static/logo.jpg
+.. image:: https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/_static/logo.jpg
    :align: center
 
 ..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
