@@ -14,7 +14,7 @@ Pre-request
     :alt: PyPI - License
 
 ..  image:: https://readthedocs.org/projects/pre-request/badge/?version=master
-    :target: https://pre-request.readthedocs.io/en/master/?badge=master
+    :target: https://pre-request.readthedocs.io/en/master/
     :alt: Documentation Status
 
 ..  image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen

@@ -2,7 +2,7 @@
 
 .. rst-class:: hide-header
 
-Welcome to pre-request
+欢迎使用 pre-request 框架
 ======================
 
 .. image:: static/logo.jpg
@@ -25,7 +25,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 .. toctree::
     :maxdepth: 2
 
-    forward
+    intro
     installation
     quickstart
 
