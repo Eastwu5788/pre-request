@@ -138,3 +138,12 @@ Rule规则参数介绍
 
     # 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
     self.callback = kwargs.get("callback", None)
+
+
+Links
+------------
+* Documentaion: https://pre-request.readthedocs.io/en/master/index.html
+* Release: https://pypi.org/project/pre-request/
+* Code: https://github.com/Eastwu5788/pre-request
+* Issue tracker: https://github.com/Eastwu5788/pre-request/issues
+* Test status: https://coveralls.io/github/Eastwu5788/pre-request
