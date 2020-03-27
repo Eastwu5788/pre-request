@@ -1,7 +1,5 @@
-.. _installation:
-
-Pre-request 安装
-=================
+pre-request 安装
+====================
 
 本部分文档将向您介绍如何安装pre-request框架到您的环境中
 
