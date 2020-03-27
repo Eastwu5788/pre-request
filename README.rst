@@ -3,12 +3,15 @@ Pre-request
 
 .. image:: https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg
    :align: center
+   :alt: pre-request
 
 ..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
     :target: https://www.travis-ci.org/Eastwu5788/pre-request
+    :alt: Travis
 
 ..  image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
     :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
+    :alt: Coveralls
 
 ..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
     :alt: PyPI - License
