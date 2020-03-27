@@ -14,11 +14,11 @@ Pre-request
     :alt: Coveralls
 
 ..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
-    :alt: PyPI - License
+    :alt: License
 
 ..  image:: https://readthedocs.org/projects/pre-request/badge/?version=master
     :target: https://pre-request.readthedocs.io/en/master/
-    :alt: Documentation Status
+    :alt: Docs
 
 ..  image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen
     :target: https://pypi.org/project/pre-request/
