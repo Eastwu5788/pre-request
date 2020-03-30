@@ -89,7 +89,7 @@ length_params = {
 @app.route("/length", methods=['get', 'post'])
 @filter_params(length_params)
 def test_length_handler(params):
-    """ 测试JSON转换
+    """ 测试字符串数据长度校验
     """
     return json_resp(params)
 
@@ -102,7 +102,7 @@ mobile_params = {
 @app.route("/mobile", methods=['get', 'post'])
 @filter_params(mobile_params)
 def test_mobile_handler(params):
-    """ 测试JSON转换
+    """ 测试手机号格式校验
     """
     return json_resp(params)
 
@@ -116,7 +116,7 @@ range_params = {
 @app.route("/range", methods=['get', 'post'])
 @filter_params(range_params)
 def test_range_handler(params):
-    """ 测试JSON转换
+    """ 测试int类型数据范围校验
     """
     return json_resp(params)
 
@@ -145,7 +145,7 @@ regexp_params = {
 @app.route("/regexp", methods=['get', 'post'])
 @filter_params(regexp_params)
 def test_regexp_handler(params):
-    """ 测试JSON转换
+    """ 测试正则校验
     """
     return json_resp(params)
 
@@ -158,7 +158,7 @@ trim_params = {
 @app.route("/trim", methods=['get', 'post'])
 @filter_params(trim_params)
 def test_trim_handler(params):
-    """ 测试JSON转换
+    """ 测试去除前后空格校验
     """
     return json_resp(params)
 
@@ -172,7 +172,7 @@ type_params = {
 @app.route("/type", methods=['get', 'post'])
 @filter_params(type_params)
 def test_type_handler(params):
-    """ 测试JSON转换
+    """ 测试字段目标数据类型校验
     """
     return json_resp(params)
 
@@ -191,7 +191,7 @@ callback_params = {
 @app.route("/callback", methods=['get', 'post'])
 @filter_params(callback_params)
 def test_callback_handler(params):
-    """ 测试JSON转换
+    """ 测试自定义处理callback校验
     """
     return json_resp(params)
 
@@ -204,7 +204,7 @@ key_map_params = {
 @app.route("/keymap", methods=['get', 'post'])
 @filter_params(key_map_params)
 def test_keymap_handler(params):
-    """ 测试JSON转换
+    """ 测试key映射校验
     """
     return json_resp(params)
 
