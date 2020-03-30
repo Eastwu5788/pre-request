@@ -1,5 +1,3 @@
-.. _quickstart:
-
 快速开始
 ===============
 
@@ -10,7 +8,7 @@ Minimal Usage
 
 pre-request最简单的使用方式
 
-.. code-block::
+.. code-block:: python
 
    from flask import Flask
 
@@ -41,7 +39,7 @@ Rule 规则介绍
 
 :class:`~pre_request.Rule` 类是用来定义请求参数规则的类，目前支持以下规则
 
-.. code-block::
+.. code-block:: python
 
     # 字段目标数据类型
     self.direct_type = kwargs.get("direct_type", str)
@@ -85,7 +83,7 @@ pre-request的过滤能力主要是通过`filter_params`装饰器来实现的
 
 我们可以使用`filter_params`过滤指定method的请求参数，目前支持 get 和 post
 
-.. code-block::
+.. code-block:: python
 
     @app.route("/get", methods=['get'])
     @filter_params(get=req_params)
@@ -99,7 +97,7 @@ pre-request的过滤能力主要是通过`filter_params`装饰器来实现的
 
 当然我们也为使用不同请求方式解析不同参数的情况提供了支持
 
-.. code-block::
+.. code-block:: python
 
     # 同时设置get和post的过滤参数
     @app.route("/all", methods=['get', 'post'])

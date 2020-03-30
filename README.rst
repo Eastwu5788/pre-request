@@ -3,19 +3,22 @@ Pre-request
 
 .. image:: https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg
    :align: center
+   :alt: pre-request
 
 ..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
     :target: https://www.travis-ci.org/Eastwu5788/pre-request
+    :alt: Travis
 
 ..  image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
     :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
+    :alt: Coveralls
 
 ..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
-    :alt: PyPI - License
+    :alt: License
 
 ..  image:: https://readthedocs.org/projects/pre-request/badge/?version=master
     :target: https://pre-request.readthedocs.io/en/master/
-    :alt: Documentation Status
+    :alt: Docs
 
 ..  image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen
     :target: https://pypi.org/project/pre-request/
@@ -41,25 +44,25 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 安装
 ----
 
-.. code-block::
+.. code-block:: text
 
     pip install pre-request
 
 快速开始
 --------
 
-.. code-block::
+.. code-block:: python
 
     from pre_request import filter_params
-    from pre_request import Rule, Length
+    from pre_request import Rule
 
     field = {
         "age": Rule(direct_type=int, enum=[1, 2]),
-        "name": Rule(length=Length(6, 12)),
+        "name": Rule(gt=6, lt=12),
         "email": Rule(email=True),
         "mobile": Rule(mobile=True),
         "empty": Rule(allow_empty=True, default="sssss_empty"),
-        "range": Rule(direct_type=int, range=Range(10, 30)),
+        "range": Rule(direct_type=int, gt=10, lt=30),
         "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
         "trim": Rule(trim=True, json=True),
         "call": Rule(direct_type=int, callback=lambda x: x+100)
@@ -103,7 +106,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 Rule规则参数介绍
 ----------------
 
-.. code-block::
+.. code-block:: python
 
     # 字段目标数据类型
     self.direct_type = kwargs.get("direct_type", str)
@@ -117,8 +120,6 @@ Rule规则参数介绍
 
     # 字段枚举值设置
     self.enum = kwargs.get("enum", list())
-    # range,整数范围限定, 只在direct_type为数字时有效
-    self.range = kwargs.get("range", Range())
 
     # 正则表达式
     self.reg = kwargs.get("reg", None)
@@ -127,8 +128,20 @@ Rule规则参数介绍
     # 手机号判断
     self.mobile = kwargs.get("mobile", False)
 
-    # 字符串长度判断
-    self.len = kwargs.get("length", Length())
+    # 等于
+    self.eq = kwargs.get("eq", None)
+    # 不等于
+    self.neq = kwargs.get("neq", None)
+
+    # 范围限定 direct_type 为数字时限定数字大小，为字符串时限定字符串长度
+    # 大于
+    self.gt = kwargs.get("gt", None)
+    # 大于等于
+    self.gte = kwargs.get("gte", None)
+    # 小于
+    self.lt = kwargs.get("lt", None)
+    # 小于等于
+    self.lte = kwargs.get("lte", None)
 
     # key映射
     self.key_map = kwargs.get("key_map", None)
@@ -138,3 +151,12 @@ Rule规则参数介绍
 
     # 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
     self.callback = kwargs.get("callback", None)
+
+
+Links
+------------
+* Documentaion: https://pre-request.readthedocs.io/en/master/index.html
+* Release: https://pypi.org/project/pre-request/
+* Code: https://github.com/Eastwu5788/pre-request
+* Issue tracker: https://github.com/Eastwu5788/pre-request/issues
+* Test status: https://coveralls.io/github/Eastwu5788/pre-request

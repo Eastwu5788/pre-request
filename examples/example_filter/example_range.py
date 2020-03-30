@@ -6,8 +6,10 @@
 # @Time: '2020-03-19 10:59'
 """ 演示 pre-request 框架如何使用数字范围校验
 """
+import json
+
 from flask import Flask
-from pre_request import filter_params, Rule, Range
+from pre_request import filter_params, Rule
 
 
 app = Flask(__name__)
@@ -17,7 +19,7 @@ client = app.test_client()
 
 # 指定range范围，则框架会对数字范围作出校验
 range_params = {
-    "params": Rule(direct_type=int, range=Range(10, 20))
+    "params": Rule(direct_type=int, gt=5, lt=10)
 }
 
 
@@ -31,14 +33,19 @@ def example_range_filter():
     """ 演示邮箱验证
     """
     resp = client.get("/range", data={
-        "params": 12
+        "params": 8
     })
     print(resp.data)
 
     resp = client.get("/range", data={
-        "params": 9
+        "params": 3
     })
-    print(resp.data)
+    print(json.loads(resp.data))
+
+    resp = client.get("/range", data={
+        "params": 12
+    })
+    print(json.loads(resp.data))
 
 
 if __name__ == "__main__":
