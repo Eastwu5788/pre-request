@@ -5,75 +5,6 @@
 """
 
 
-class Length(object):
-    """
-    使用Length类限定字符串长度范围
-    """
-
-    def __init__(self, min_len=None, max_len=None):
-        """
-        初始化字符串长度
-        :param min_len: 字符串最小值，如果为0表示不加限制
-        :param max_len: 字符串长度最大值，如果为0表示不加限制
-        """
-        self.min_len = min_len
-        self.max_len = max_len
-
-        if self.min_len is not None and self.min_len < 0:
-            raise ValueError("参数'min_len'不应小于0")
-
-        if self.max_len is not None and self.max_len < 0:
-            raise ValueError("参数'max_len'不应小于0")
-
-        if self.min_len is not None and self.max_len is not None and self.max_len < self.min_len:
-            raise ValueError("字符串长度设置失败,最大长度不能小于最小长度!")
-
-    def need_check(self):
-        """是否需要进行长度校验"""
-        return self.min_len is not None or self.max_len is not None
-
-    def check_length(self, ori_str=""):
-        """检查字符串长度"""
-        length = len(ori_str) if ori_str else 0
-        if self.min_len is not None:
-            if length < self.min_len:
-                return False
-        if self.max_len is not None:
-            if length > self.max_len:
-                return False
-        return True
-
-
-class Range(object):
-    """
-    数值范围限定 仅在direct_type为float，int时生效
-    """
-    def __init__(self, num_min=None, num_max=None):
-        """
-        数字范围限定
-        :param num_min: 最小值，如果为-1表示不加限制
-        :param num_max: 最大值，如果为-1表示不加限制
-        """
-        self.num_min = num_min
-        self.num_max = num_max
-        if self.num_min is not None and self.num_max is not None and self.num_max < self.num_min:
-            raise ValueError("范围限定设置失败,最大值不能小于最小值!")
-
-    def need_check(self):
-        """是否需要进行长度校验"""
-        return self.num_min is not None or self.num_max is not None
-
-    def check_range(self, ori_num):
-        """检查字符串长度"""
-        if self.num_min is not None:
-            if ori_num < self.num_min:
-                return False
-        if self.num_max is not None:
-            if ori_num > self.num_max:
-                return False
-        return True
-
-
 class Rule(object):  # pylint: disable=too-many-instance-attributes
     """
     字段遵守的规则定义类
@@ -91,8 +22,6 @@ class Rule(object):  # pylint: disable=too-many-instance-attributes
 
         # 字段枚举值设置
         self.enum = kwargs.get("enum", list())
-        # range,整数范围限定, 只在direct_type为数字时有效
-        self.range = kwargs.get("range", Range())
 
         # 正则表达式
         self.reg = kwargs.get("reg", None)
@@ -101,8 +30,20 @@ class Rule(object):  # pylint: disable=too-many-instance-attributes
         # 手机号判断
         self.mobile = kwargs.get("mobile", False)
 
-        # 字符串长度判断
-        self.len = kwargs.get("length", Length())
+        # 等于
+        self.eq = kwargs.get("eq", None)
+        # 不等于
+        self.neq = kwargs.get("neq", None)
+
+        # 范围限定 direct_type 为数字时限定数字大小，为字符串时限定字符串长度
+        # 大于
+        self.gt = kwargs.get("gt", None)
+        # 大于等于
+        self.gte = kwargs.get("gte", None)
+        # 小于
+        self.lt = kwargs.get("lt", None)
+        # 小于等于
+        self.lte = kwargs.get("lte", None)
 
         # key映射
         self.key_map = kwargs.get("key_map", None)
@@ -112,3 +53,95 @@ class Rule(object):  # pylint: disable=too-many-instance-attributes
 
         # 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
         self.callback = kwargs.get("callback", None)
+
+    @property
+    def gt(self):
+        """ 将`gt`属性变更为动态属性
+        """
+        return self._gt
+
+    @gt.setter
+    def gt(self, value):
+        """ Add input value type check
+
+        :param value: User input gt value
+        """
+        # Ignore None
+        if value is None:
+            self._gt = value
+            return
+
+        # check input value type
+        if not isinstance(value, int) and not isinstance(value, float):
+            raise TypeError("property `gt` must be type of int or float")
+
+        self._gt = value
+
+    @property
+    def gte(self):
+        """ 将`gte`属性变更为动态属性
+        """
+        return self._gte
+
+    @gte.setter
+    def gte(self, value):
+        """ Add input value type check
+
+        :param value: User input gte value
+        """
+        # Ignore None
+        if value is None:
+            self._gte = value
+            return
+
+        # check input value type
+        if not isinstance(value, int) and not isinstance(value, float):
+            raise TypeError("property `gte` must be type of int or float")
+
+        self._gte = value
+
+    @property
+    def lt(self):
+        """ 将`lt`属性变更为动态属性
+        """
+        return self._lt
+
+    @lt.setter
+    def lt(self, value):
+        """ Add input value type check
+
+        :param value: User input lt value
+        """
+        # Ignore None
+        if value is None:
+            self._lt = value
+            return
+
+        # check input value type
+        if not isinstance(value, int) and not isinstance(value, float):
+            raise TypeError("property `lt` must be type of int or float")
+
+        self._lt = value
+
+    @property
+    def lte(self):
+        """ 将`lte`属性变更为动态属性
+        """
+        return self._lte
+
+    @lte.setter
+    def lte(self, value):
+        """ Add input value type check
+
+        :param value: User input lte value
+        """
+        # Ignore None
+        if value is None:
+            self._lte = value
+            return
+
+        # check input value type
+        if not isinstance(value, int) and not isinstance(value, float):
+            raise TypeError("property `lte` must be type of int or float")
+
+        self._lte = value

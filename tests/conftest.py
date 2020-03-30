@@ -11,7 +11,7 @@ from flask import Flask
 from flask import make_response
 
 from pre_request import filter_params
-from pre_request import Rule, Length, Range
+from pre_request import Rule
 
 
 app = Flask(__name__)
@@ -81,8 +81,8 @@ def test_json_handler(params):
 
 
 length_params = {
-    "params": Rule(length=Length(1, 3)),
-    "params2": Rule(length=Length(3, 3))
+    "params": Rule(gt=1, lt=3),
+    "params2": Rule(gte=3, lte=3)
 }
 
 
@@ -108,7 +108,8 @@ def test_mobile_handler(params):
 
 
 range_params = {
-    "params": Rule(direct_type=int, range=Range(10, 20))
+    "params": Rule(direct_type=int, gt=10, lt=20),
+    "params2": Rule(direct_type=int, gte=10, lte=10)
 }
 
 
@@ -116,6 +117,22 @@ range_params = {
 @filter_params(range_params)
 def test_range_handler(params):
     """ 测试JSON转换
+    """
+    return json_resp(params)
+
+
+eq_params = {
+    "p1": Rule(direct_type=int, eq=1),
+    "p2": Rule(eq="1"),
+    "p3": Rule(direct_type=int, neq=1),
+    "p4": Rule(neq="1")
+}
+
+
+@app.route("/equal", methods=['get', 'post'])
+@filter_params(eq_params)
+def test_eq_handler(params):
+    """ 测试eq判断
     """
     return json_resp(params)
 
