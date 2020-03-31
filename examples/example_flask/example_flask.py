@@ -5,25 +5,24 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-19 13:07'
 from flask import Flask
-from pre_request import filter_params, Rule, Length, Range
+
+from pre_request import filter_params, Rule
 
 app = Flask(__name__)
 app.config["TESTING"] = True
 client = app.test_client()
 
-
 fields = {
     "age": Rule(direct_type=int, enum=[1, 2]),
-    "name": Rule(length=Length(6, 12)),
+    "name": Rule(gt=6, lt=12),
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),
     "empty": Rule(allow_empty=True, default="sssss_empty"),
-    "range": Rule(direct_type=int, range=Range(10, 30)),
+    "range": Rule(direct_type=int, gt=10, lt=30),
     "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
     "trim": Rule(trim=True, json=True),
-    "call": Rule(direct_type=int, callback=lambda x: x+100)
+    "call": Rule(direct_type=int, callback=lambda x: x + 100)
 }
-
 
 fields2 = {
     "tot": Rule(allow_empty=True, default="hello")

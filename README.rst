@@ -61,7 +61,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
         "name": Rule(gt=6, lt=12),
         "email": Rule(email=True),
         "mobile": Rule(mobile=True),
-        "empty": Rule(allow_empty=True, default="sssss_empty"),
+        "empty": Rule(allow_empty=True, default="sssss_empty"),
         "range": Rule(direct_type=int, gt=10, lt=30),
         "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
         "trim": Rule(trim=True, json=True),

@@ -20,6 +20,8 @@ def filter_params(rules=None, **options):
             from flask import request  # pylint: disable=no-name-in-module
             if request.method == "GET":
                 param_rules = options.get("get")
+            elif request.method == 'PUT':
+                param_rules = options.get("put")
             else:
                 param_rules = options.get("post")
 
@@ -53,7 +55,9 @@ def filter_params(rules=None, **options):
             kwargs = dict({"params": result}, **kwargs)
 
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -82,5 +86,7 @@ def all_params():
             kwargs = dict({"params": param}, **kwargs)
 
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
