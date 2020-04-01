@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用trim参数自动去除字符串首尾空格
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ trim_params = {
 
 
 @app.route("/trim", methods=["GET", "POST"])
-@filter_params(trim_params)
+@pre.catch(trim_params)
 def example_trim_handler(params):
     return str(params)
 

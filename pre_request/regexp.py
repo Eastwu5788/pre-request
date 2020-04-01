@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
-
+# sys
 import re
-from .macro import K_EMAIL_REG, K_MOBILE_REG
 
 
-class Regexp(object):
-    """
-    正则表达式基类
+"""邮箱正则表达式"""
+K_EMAIL_REG = r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$'
+
+"""手机号正则表达式"""
+K_MOBILE_REG = r'^0\d{2,3}\d{7,8}$|^1[3578]\d{9}$|^14[579]\d{8}$'
+
+
+class Regexp:
+    """ Base class of regexp handler
     """
     def __init__(self, regex, flags=0):
         if isinstance(regex, str):
@@ -19,11 +24,9 @@ class Regexp(object):
 
 
 class EmailRegexp(Regexp):
-    """
-    邮箱正则表达式
+    """ Regexp handler class for email
     """
     def __init__(self):
-        # TODO：邮箱正则修改
         super(EmailRegexp, self).__init__(K_EMAIL_REG, re.IGNORECASE)
 
     def __call__(self, email=None):
@@ -31,8 +34,7 @@ class EmailRegexp(Regexp):
 
 
 class MobileRegexp(Regexp):
-    """
-    手机号正则表达式
+    """ Regexp handler class for mobile
     """
     def __init__(self):
         super(MobileRegexp, self).__init__(K_MOBILE_REG, re.IGNORECASE)

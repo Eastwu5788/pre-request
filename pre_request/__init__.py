@@ -9,16 +9,19 @@ Pre-request Library
 Pre-request is a library, which help us deal with request params before handler.
 
 Usage:
-    >>> import pre_request
-    >>> @filter_params()
-    >>> def handler_info(**kwargs):
-    >>>     print(kwargs)
+    >>> from pre_request import pre, Rule
+    >>> @pre.catch(rule={"userId": Rule(direct_type=int)})
+    >>> def handler_info(params):
+    >>>     print(params)
 
 
-:copyright: (c) 2019 by Wu Dong
+:copyright: (c) 2020 by Wu Dong
 :license: Apache 2.0, see LICENSE for more details.
 """
-from .flask import filter_params
+from .request import PreRequest as _PreRequest
 from .rules import Rule
-from .exception import PreRequestException, ParamsValueError
+from .exception import ParamsValueError
 from .__version__ import __version__
+
+
+pre = _PreRequest()

@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用空值校验
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -23,7 +23,7 @@ empty_params = {
 
 
 @app.route("/empty", methods=["GET", "POST"])
-@filter_params(empty_params)
+@pre.catch(empty_params)
 def example_empty_handler(params):
     return str(params)
 

@@ -9,7 +9,7 @@
 import json
 
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ equal_params = {
 
 
 @app.route("/equal", methods=["GET", "POST"])
-@filter_params(equal_params)
+@pre.catch(equal_params)
 def example_equal_handler(params):
     return str(params)
 

@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用参数字段映射
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ map_params = {
 
 
 @app.route("/map", methods=["GET", "POST"])
-@filter_params(map_params)
+@pre.catch(map_params)
 def example_map_handler(params):
     return str(params)
 
