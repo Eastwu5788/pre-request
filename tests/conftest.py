@@ -10,7 +10,7 @@ import pytest
 from flask import Flask
 from flask import make_response
 
-from pre_request import filter_params
+from pre_request import pre
 from pre_request import Rule
 
 
@@ -30,7 +30,7 @@ email_params = {
 
 
 @app.route("/email", methods=['get', 'post'])
-@filter_params(email_params)
+@pre.catch(email_params)
 def test_email_handler(params):
     """ 测试邮件验证
     """
@@ -46,7 +46,7 @@ empty_params = {
 
 
 @app.route("/empty", methods=['get', 'post'])
-@filter_params(empty_params)
+@pre.catch(empty_params)
 def test_empty_handler(params):
     """ 测试缺失判断验证
     """
@@ -60,7 +60,7 @@ enum_params = {
 
 
 @app.route("/enum", methods=['get', 'post'])
-@filter_params(enum_params)
+@pre.catch(enum_params)
 def test_enum_handler(params):
     """ 测试枚举判断验证
     """
@@ -73,7 +73,7 @@ json_params = {
 
 
 @app.route("/json", methods=['get', 'post'])
-@filter_params(json_params)
+@pre.catch(json_params)
 def test_json_handler(params):
     """ 测试JSON转换
     """
@@ -87,7 +87,7 @@ length_params = {
 
 
 @app.route("/length", methods=['get', 'post'])
-@filter_params(length_params)
+@pre.catch(length_params)
 def test_length_handler(params):
     """ 测试字符串数据长度校验
     """
@@ -100,7 +100,7 @@ mobile_params = {
 
 
 @app.route("/mobile", methods=['get', 'post'])
-@filter_params(mobile_params)
+@pre.catch(mobile_params)
 def test_mobile_handler(params):
     """ 测试手机号格式校验
     """
@@ -114,7 +114,7 @@ range_params = {
 
 
 @app.route("/range", methods=['get', 'post'])
-@filter_params(range_params)
+@pre.catch(range_params)
 def test_range_handler(params):
     """ 测试int类型数据范围校验
     """
@@ -130,7 +130,7 @@ eq_params = {
 
 
 @app.route("/equal", methods=['get', 'post'])
-@filter_params(eq_params)
+@pre.catch(eq_params)
 def test_eq_handler(params):
     """ 测试eq判断
     """
@@ -143,7 +143,7 @@ regexp_params = {
 
 
 @app.route("/regexp", methods=['get', 'post'])
-@filter_params(regexp_params)
+@pre.catch(regexp_params)
 def test_regexp_handler(params):
     """ 测试正则校验
     """
@@ -156,7 +156,7 @@ trim_params = {
 
 
 @app.route("/trim", methods=['get', 'post'])
-@filter_params(trim_params)
+@pre.catch(trim_params)
 def test_trim_handler(params):
     """ 测试去除前后空格校验
     """
@@ -170,7 +170,7 @@ type_params = {
 
 
 @app.route("/type", methods=['get', 'post'])
-@filter_params(type_params)
+@pre.catch(type_params)
 def test_type_handler(params):
     """ 测试字段目标数据类型校验
     """
@@ -189,7 +189,7 @@ callback_params = {
 
 
 @app.route("/callback", methods=['get', 'post'])
-@filter_params(callback_params)
+@pre.catch(callback_params)
 def test_callback_handler(params):
     """ 测试自定义处理callback校验
     """
@@ -202,7 +202,7 @@ key_map_params = {
 
 
 @app.route("/keymap", methods=['get', 'post'])
-@filter_params(key_map_params)
+@pre.catch(key_map_params)
 def test_keymap_handler(params):
     """ 测试key映射校验
     """

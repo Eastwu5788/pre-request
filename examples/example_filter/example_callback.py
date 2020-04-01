@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用回调函数自定义处理函数
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -26,7 +26,7 @@ callback_params = {
 
 
 @app.route("/callback", methods=["GET", "POST"])
-@filter_params(callback_params)
+@pre.catch(callback_params)
 def example_callback_handler(params):
     return str(params)
 

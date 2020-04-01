@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用枚举校验
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ enum_params = {
 
 
 @app.route("/enum", methods=["GET", "POST"])
-@filter_params(enum_params)
+@pre.catch(enum_params)
 def example_enum_handler(params):
     return str(params)
 

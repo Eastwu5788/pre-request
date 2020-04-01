@@ -9,7 +9,7 @@
 目前使用的正则表达式为: ^0\d{2,3}\d{7,8}$|^1[3578]\d{9}$|^14[579]\d{8}$
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ mobile_params = {
 
 
 @app.route("/mobile", methods=["GET", "POST"])
-@filter_params(mobile_params)
+@pre.catch(mobile_params)
 def example_mobile_handler(params):
     return str(params)
 

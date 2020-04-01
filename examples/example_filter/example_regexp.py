@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用正则表达式验证
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ regexp_params = {
 
 
 @app.route("/regexp", methods=["GET", "POST"])
-@filter_params(regexp_params)
+@pre.catch(regexp_params)
 def example_regexp_handler(params):
     return str(params)
 

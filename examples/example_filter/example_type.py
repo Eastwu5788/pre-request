@@ -7,7 +7,7 @@
 """ 演示 pre-request 框架如何使用邮箱校验
 """
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ type_params = {
 
 
 @app.route("/type", methods=["GET", "POST"])
-@filter_params(type_params)
+@pre.catch(type_params)
 def example_type_handler(params):
     return str(params)
 
