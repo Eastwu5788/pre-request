@@ -1,6 +1,3 @@
-Pre-request
-===========
-
 .. raw:: html
 
     <p align="center">
@@ -88,11 +85,11 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
         return str(params)
 
     # 方法视图
-    @pre.catch(get=get_field, response='json')
+    @pre.catch(get=get_field)
     def get(self, params=None):
     return str(params)
 
-    @pre.catch(post=post_field, response='html')
+    @pre.catch(post=post_field)
     def post(self, params=None):
     return str(params)
 
