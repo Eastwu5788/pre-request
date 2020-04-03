@@ -8,7 +8,7 @@
 """
 import json
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -23,7 +23,7 @@ json_params = {
 
 
 @app.route("/json", methods=["GET", "POST"])
-@filter_params(json_params)
+@pre.catch(json_params)
 def example_json_handler(params):
     return str(params)
 

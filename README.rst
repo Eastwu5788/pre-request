@@ -1,28 +1,18 @@
-Pre-request
-===========
+.. raw:: html
 
-.. image:: https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg
-   :align: center
-   :alt: pre-request
+    <p align="center">
+        <a href="#readme">
+            <img alt="Pre-request logo" src="https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg">
+        </a>
+    </p>
+    <p align="center">
+        <a href="https://www.travis-ci.org/Eastwu5788/pre-request"><img alt="Travis" src="https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master"></a>
+        <a href="https://coveralls.io/github/Eastwu5788/pre-request?branch=master"><img alt="Coveralls" src="https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master"></a>
+        <a href="https://github.com/Eastwu5788/pre-request/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/pre-request?color=brightgreen"></a>
+        <a href="https://pre-request.readthedocs.io/en/master/"><img alt="Docs" src="https://readthedocs.org/projects/pre-request/badge/?version=master"></a>
+        <a href="https://pypi.org/project/pre-request/"><img alt="PyPI" src="https://img.shields.io/pypi/v/pre-request?color=brightgreen"></a>
+    </p>
 
-..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
-    :target: https://www.travis-ci.org/Eastwu5788/pre-request
-    :alt: Travis
-
-..  image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
-    :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
-    :alt: Coveralls
-
-..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
-    :alt: License
-
-..  image:: https://readthedocs.org/projects/pre-request/badge/?version=master
-    :target: https://pre-request.readthedocs.io/en/master/
-    :alt: Docs
-
-..  image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen
-    :target: https://pypi.org/project/pre-request/
-    :alt: PyPI
 
 
 欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
@@ -53,7 +43,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 
 .. code-block:: python
 
-    from pre_request import filter_params
+    from pre_request import pre
     from pre_request import Rule
 
     field = {
@@ -61,7 +51,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
         "name": Rule(gt=6, lt=12),
         "email": Rule(email=True),
         "mobile": Rule(mobile=True),
-        "empty": Rule(allow_empty=True, default="sssss_empty"),
+        "empty": Rule(allow_empty=True, default="sssss_empty"),
         "range": Rule(direct_type=int, gt=10, lt=30),
         "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
         "trim": Rule(trim=True, json=True),
@@ -71,35 +61,35 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
     # 不指定get和post时，不论get请求或者post请求都会使用同一个过滤参数
     # 如果指定了get或者post时，直接设置的过滤参数会被覆盖
     @app.route("/test", methods=['get', 'post'])
-    @filter_params(field)
+    @pre.catch(field)
     def test_handler(params=None):
         return str(params)
 
 
     # 单独设置get请求的过滤参数
     @app.route("/get", methods=['get'])
-    @filter_params(get=get_field)
+    @pre.catch(get=get_field)
     def get_handler(params=None):
         return str(params)
 
     # 单独设置post请求的过滤参数
     @app.route("/post", methods=['post'])
-    @filter_params(post=post_field)
+    @pre.catch(post=post_field)
     def post_handler(params=None):
         return str(params)
 
     # 同时设置get和post的过滤参数
     @app.route("/all", methods=['get', 'post'])
-    @filter_params(get=get_field, post=post_field)
+    @pre.catch(get=get_field, post=post_field)
     def all_handler(params=None):
         return str(params)
 
     # 方法视图
-    @filter_params(get=get_field, response='json')
+    @pre.catch(get=get_field)
     def get(self, params=None):
     return str(params)
 
-    @filter_params(post=post_field, response='html')
+    @pre.catch(post=post_field)
     def post(self, params=None):
     return str(params)
 

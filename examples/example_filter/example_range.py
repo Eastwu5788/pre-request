@@ -9,7 +9,7 @@
 import json
 
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ range_params = {
 
 
 @app.route("/range", methods=["GET", "POST"])
-@filter_params(range_params)
+@pre.catch(range_params)
 def example_range_handler(params):
     return str(params)
 

@@ -9,7 +9,7 @@
 import json
 
 from flask import Flask
-from pre_request import filter_params, Rule
+from pre_request import pre, Rule
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ length_params = {
 
 
 @app.route("/length", methods=["GET", "POST"])
-@filter_params(length_params)
+@pre.catch(length_params)
 def example_length_handler(params):
     return str(params)
 
