@@ -19,6 +19,10 @@ class RangeFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(RangeFilter, self).__call__()
 
+        # 默认值过滤
+        if self.rule.allow_empty and self.value == self.rule.default:
+            return self.value
+
         # 允许为空值时的过滤
         if self.rule.allow_empty and self.value is None:
             return self.value

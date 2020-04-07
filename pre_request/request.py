@@ -52,7 +52,7 @@ class PreRequest:
 
         :param key: params key
         """
-        from flask import request  # pylint: disable=no-name-in-module
+        from flask import request  # pylint: disable=import-outside-toplevel
 
         # query params from simple method
         value = request.values.get(key, default)
@@ -79,7 +79,7 @@ class PreRequest:
                     return func(*args, **kwargs)
 
                 # query rules with special method
-                from flask import request  # pylint: disable=no-name-in-module
+                from flask import request  # pylint: disable=import-outside-toplevel
                 rules = options.get(request.method) or options.get(request.method.lower())
 
                 # common rule
@@ -125,8 +125,7 @@ class PreRequest:
         if self.response is not None:
             return self.response()(error)
 
-        if self.content_type == "application/json":
-            return JSONResponse()(self.formatter, error)
-
         if self.content_type == "text/html":
             return HTMLResponse()(self.formatter, error)
+
+        return JSONResponse()(self.formatter, error)

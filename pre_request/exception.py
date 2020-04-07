@@ -19,7 +19,7 @@ class ParamsValueError(ValueError):
         self.code = code
         self.context = context
 
-    def form_message(self):
+    def form_message(self):  # noqa: disable
         """
         格式化JSON格式的错误消息
         :return:
