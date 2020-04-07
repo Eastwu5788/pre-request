@@ -26,6 +26,9 @@ class TypeFilter(BaseFilter):
         if isinstance(self.value, direct_type):
             return self.value
 
+        if self.rule.allow_empty and self.value == self.rule.default:
+            return self.value
+
         if direct_type == str:
             if self.rule.allow_empty and not self.value:
                 return self.value
@@ -41,7 +44,7 @@ class TypeFilter(BaseFilter):
         try:
             # FIX: invalid literal for int() with base 10
             # 处理int仅能转换纯数字字符串问题
-            if self.rule.direct_type == int and "." in self.value:
+            if self.rule.direct_type == int and self.value is not None and "." in self.value:
                 self.value = self.value.split(".")[0]
 
             return self.rule.direct_type(self.value)

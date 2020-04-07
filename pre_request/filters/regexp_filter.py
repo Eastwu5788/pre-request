@@ -20,6 +20,9 @@ class RegexpFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(RegexpFilter, self).__call__()
 
+        if self.rule.allow_empty and self.value == self.rule.default:
+            return self.value
+
         # 判断是否需要进行正则匹配
         if self.rule.reg and isinstance(self.rule.reg, str):
             # 判断是否符合正则

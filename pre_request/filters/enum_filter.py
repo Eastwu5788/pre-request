@@ -15,6 +15,9 @@ class EnumFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(EnumFilter, self).__call__()
 
+        if self.rule.allow_empty and self.value == self.rule.default:
+            return self.value
+
         if self.rule.enum and self.value not in self.rule.enum:
             raise ParamsValueError(self.error_code, filter=self)
 

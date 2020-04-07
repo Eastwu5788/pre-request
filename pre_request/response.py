@@ -36,7 +36,7 @@ class JSONResponse(BaseResponse):
         if formatter and error:
             result = formatter(error.code, error.form_message())
 
-        from flask import make_response  # pylint: disable=no-name-in-module
+        from flask import make_response  # pylint: disable=import-outside-toplevel
         response = make_response(json.dumps(result))
         response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response
@@ -53,7 +53,7 @@ class HTMLResponse(BaseResponse):
         """
         result = super(HTMLResponse, self).__call__(error)
 
-        from flask import make_response  # pylint: disable=no-name-in-module
+        from flask import make_response  # pylint: disable=import-outside-toplevel
         html = '<p>code:%s message:%s</p>' % (result["code"], result["message"])
         if formatter and error:
             html = formatter(error.code, error.form_message())
