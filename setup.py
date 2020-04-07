@@ -18,14 +18,15 @@ with open(os.path.join(here, 'pre_request', '__version__.py'), 'r', 'utf-8') as 
 readme = None
 
 if os.path.exists('README.rst'):
-    with open('README.rst', 'r', 'utf-8') as f:
-        readme = f.read()
+    with open('DESCRIPTION.rst', 'rb') as f:
+        readme = f.read().decode("utf-8")
 
 setup(
     name=about['__title__'],
     version=about['__version__'],
     description=about['__description__'],
     long_description=readme,
+    long_description_content_type="text/x-rst",
     author=about['__author__'],
     author_email=about['__author_email__'],
     url=about['__url__'],
