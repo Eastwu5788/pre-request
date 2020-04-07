@@ -23,12 +23,19 @@ class JsonFilter(BaseFilter):
         if not self.rule.json_load:
             return self.value
 
+        if self.rule.allow_empty and self.value == self.rule.default:
+            return self.value
+
         # 不是字符串类型，将被忽略
         if self.rule.direct_type != str:
             return self.value
 
         # 允许为空的情况下，不需要处理
         if self.rule.allow_empty and (self.value is None or not isinstance(self.value, str)):
+            return self.value
+
+        # 本身就是字典或者list，则不需要处理
+        if not isinstance(self.value, str):
             return self.value
 
         try:

@@ -16,6 +16,9 @@ class TrimFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(TrimFilter, self).__call__()
 
+        if self.rule.allow_empty and self.value == self.rule.default:
+            return self.value
+
         if self.rule.trim and isinstance(self.value, str):
             return self.value.strip()
         return self.value
