@@ -1,20 +1,26 @@
-.. raw:: html
+Pre-request
+===========
 
-    <p align="center">
-        <a href="#readme">
-            <img alt="Pre-request logo" src="https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg">
-        </a>
-    </p>
-    <p align="center">
-        <a href="https://www.travis-ci.org/Eastwu5788/pre-request"><img alt="Travis" src="https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master"></a>
-        <a href="https://coveralls.io/github/Eastwu5788/pre-request?branch=master"><img alt="Coveralls" src="https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master"></a>
-        <a href="https://github.com/Eastwu5788/pre-request/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/pre-request?color=brightgreen"></a>
-        <a href="https://pre-request.readthedocs.io/en/master/"><img alt="Docs" src="https://readthedocs.org/projects/pre-request/badge/?version=master"></a>
-        <a href="https://pypi.org/project/pre-request/"><img alt="PyPI" src="https://img.shields.io/pypi/v/pre-request?color=brightgreen"></a>
-    </p>
+.. image:: https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg
+   :align: center
 
+..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
+    :target: https://www.travis-ci.org/Eastwu5788/pre-request
 
-========
+..  image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
+    :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
+
+..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
+    :alt: PyPI - License
+
+..  image:: https://readthedocs.org/projects/pre-request/badge/?version=master
+    :target: https://pre-request.readthedocs.io/en/master/?badge=master
+    :alt: Documentation Status
+
+..  image:: https://img.shields.io/pypi/v/pre-request?color=brightgreen
+    :target: https://pypi.org/project/pre-request/
+    :alt: PyPI
+
 
 欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
 网络请求参数验证提供了解决方案。

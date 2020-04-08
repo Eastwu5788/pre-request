@@ -5,7 +5,7 @@
 """
 
 
-class Rule(object):  # pylint: disable=too-many-instance-attributes
+class Rule:  # pylint: disable=too-many-instance-attributes
     """
     字段遵守的规则定义类
     """

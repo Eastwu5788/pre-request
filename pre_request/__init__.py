@@ -19,6 +19,7 @@ Usage:
 :license: Apache 2.0, see LICENSE for more details.
 """
 from .request import PreRequest as _PreRequest
+from .response import BaseResponse
 from .rules import Rule
 from .exception import ParamsValueError
 from .__version__ import __version__

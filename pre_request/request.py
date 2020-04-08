@@ -31,7 +31,7 @@ class PreRequest:
 
         :param resp: response class which is subclass of BaseResponse
         """
-        if not resp or not issubclass(resp, BaseResponse):
+        if resp and not issubclass(resp, BaseResponse):
             raise TypeError("custom response must be subclass of `pre_request.BaseResponse`")
 
         self.response = resp
@@ -41,8 +41,11 @@ class PreRequest:
 
         :param fmt: format function
         """
-        if not fmt or not isfunction(fmt):
+        if fmt and not isfunction(fmt):
             raise TypeError("custom format function must be a type of function")
+
+        if fmt and fmt.__code__.co_argcount < 2:
+            raise TypeError("custom format function requires at least 2 arguments")
 
         self.formatter = fmt
 
@@ -123,7 +126,7 @@ class PreRequest:
         :param error: ParamsValueError
         """
         if self.response is not None:
-            return self.response()(error)
+            return self.response()(self.formatter, error)
 
         if self.content_type == "text/html":
             return HTMLResponse()(self.formatter, error)
