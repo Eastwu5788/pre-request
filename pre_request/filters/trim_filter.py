@@ -11,7 +11,6 @@ class TrimFilter(BaseFilter):
     """
     去除字符串前后空格的过滤器
     """
-    error_code = 569
 
     def __call__(self, *args, **kwargs):
         super(TrimFilter, self).__call__()

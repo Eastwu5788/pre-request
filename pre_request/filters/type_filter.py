@@ -17,6 +17,11 @@ class TypeFilter(BaseFilter):
     """
     error_code = 562
 
+    def fmt_error_message(self, _):
+        """ 格式化错误消息
+        """
+        return "%s字段无法转换成(%s)类型!" % (self.key, self.rule.direct_type.__name__)
+
     def __call__(self, *args, **kwargs):
         super(TypeFilter, self).__call__()
 
