@@ -17,6 +17,11 @@ class RegexpFilter(BaseFilter):
     """
     error_code = 566
 
+    def fmt_error_message(self, _):
+        """ 格式化错误消息
+        """
+        return "%s字段不符合格式要求!" % self.key
+
     def __call__(self, *args, **kwargs):
         super(RegexpFilter, self).__call__()
 

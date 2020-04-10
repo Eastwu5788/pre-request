@@ -18,6 +18,23 @@ class LengthFilter(BaseFilter):
     length_code_lt = 576
     length_code_lte = 577
 
+    def fmt_error_message(self, code):
+        """ 格式化错误消息
+        """
+        if code == 574:
+            return "%s字段长度必须大于%s!" % (self.key, str(self.rule.gt))
+
+        if code == 575:
+            return "%s字段长度必须大于等于%s!" % (self.key, str(self.rule.gte))
+
+        if code == 576:
+            return "%s字段长度必须小于%s!" % (self.key, str(self.rule.lt))
+
+        if code == 577:
+            return "%s字段长度必须小于等于%s!" % (self.key, str(self.rule.lte))
+
+        return "%s字段未通过'LengthFilter'过滤器检查!" % self.key
+
     def __call__(self, *args, **kwargs):
         super(LengthFilter, self).__call__()
 

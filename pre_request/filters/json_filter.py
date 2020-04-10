@@ -16,6 +16,13 @@ class JsonFilter(BaseFilter):
 
     error_code = 570
 
+    def fmt_error_message(self, _):
+        """ 格式化错误信息
+
+        :param _: 错误码
+        """
+        return "%s字段无法通过json进行解析" % self.key
+
     def __call__(self, *args, **kwargs):
         super(JsonFilter, self).__call__()
 

@@ -6,7 +6,7 @@
 # @Time: '2020-03-17 15:34'
 
 
-class BaseFilter(object):
+class BaseFilter:
     """
     过滤器基类
     """
@@ -24,6 +24,11 @@ class BaseFilter(object):
         self.key = key
         self.value = value
         self.rule = rule
+
+    def fmt_error_message(self, code):
+        """ 返回格式化的错误消息
+        """
+        return None
 
     def __call__(self):
         pass

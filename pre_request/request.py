@@ -49,6 +49,35 @@ class PreRequest:
 
         self.formatter = fmt
 
+    def add_filter(self, cus_filter, index=None):
+        """ Add custom filter class to extend pre-request
+
+        :param cus_filter: custom filter class
+        :param index: filter position
+        """
+        if cus_filter and not issubclass(cus_filter, BaseFilter):
+            raise TypeError("custom filter must be subclass of `BaseFilter`")
+
+        if index is not None and not isinstance(index, int):
+            raise TypeError("index params must be type of Int")
+
+        if index is not None:
+            self.filters.insert(index, cus_filter)
+        else:
+            self.filters.append(cus_filter)
+
+    def remove_filter(self, cus_filter=None, index=None):
+        """ 移除指定过滤器
+
+        :param cus_filter: 过滤器名称
+        :param index: 过滤器位置
+        """
+        if cus_filter and (isinstance(cus_filter, str) or issubclass(cus_filter, BaseFilter)):
+            self.filters.remove(cus_filter)
+
+        if index is not None and isinstance(index, int) and 0 <= index < len(self.filters):
+            self.filters.pop(index)
+
     @staticmethod
     def _f_params(key, default=None):
         """ Query request params from flask request object

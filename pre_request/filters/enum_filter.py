@@ -12,6 +12,11 @@ class EnumFilter(BaseFilter):
     """枚举过滤器"""
     error_code = 563
 
+    def fmt_error_message(self, _):
+        """ 格式化错误消息
+        """
+        return "%s字段的取值只能是以下几种%s!" % (self.key, str(self.rule.enum))
+
     def __call__(self, *args, **kwargs):
         super(EnumFilter, self).__call__()
 
