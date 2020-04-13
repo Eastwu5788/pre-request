@@ -33,7 +33,7 @@ app.config["TESTING"] = True
 
 
 filter_params = {
-    "number": Rule(direct_type=int, allow_empty=False)
+    "number": Rule(direct_type=int, required=True)
 }
 
 
@@ -64,7 +64,7 @@ class TestFilter:
     def test_filter_index(self):
         """ 测试在指定位置插入formatter
         """
-        pre.add_filter(CustomFilter, index=3)
+        pre.add_filter(CustomFilter, index=1)
 
         resp = app.test_client().get("/number", data={
             "number": "10086"
@@ -73,4 +73,4 @@ class TestFilter:
         assert resp.status_code == 200
         assert resp.json["respCode"] == 10086
 
-        pre.remove_filter(index=3)
+        pre.remove_filter(index=1)

@@ -98,6 +98,44 @@ class PreRequest:
 
         return default
 
+    def _handler_simple_filter(self, k, value, r):
+        """ 处理普通过滤器
+
+        :param k: key
+        :param value: 读取出的数据值
+        :param r: 限定规则
+        """
+        # filter request params
+        for f in self.filters:
+            filter_obj = None
+            # system filter object
+            if isinstance(f, str):
+                filter_obj = getattr(filters, f)(k, value, r)
+
+            # custom filter object
+            elif issubclass(f, BaseFilter):
+                filter_obj = f(k, value, r)
+
+            # ignore invalid and not required filter
+            if not filter_obj or not filter_obj.filter_required():
+                continue
+
+            value = filter_obj()
+
+        if r.callback is not None and isfunction(r.callback):
+            value = r.callback(value)
+
+        return value
+
+    def _handler_complex_filter(self, k, params, r):
+        """ 处理复合过滤器
+
+        :param k: key
+        :param params: 所有合规参数
+        :param r: 处理规则
+        """
+        pass
+
     def catch(self, rule=None, **options):
         """ Catch request params
         """
@@ -123,25 +161,19 @@ class PreRequest:
                     raise ValueError("request method '%s' with invalid filter rule" % request.method)
 
                 for k, r in rules.items():
-                    try:
-                        value = self._f_params(k)
+                    # invalid rule
+                    if not isinstance(r, Rule):
+                        raise TypeError("invalid rule type for key '%s'" % k)
 
-                        # invalid rule
-                        if not isinstance(r, Rule):
-                            rst[k] = value
-                            continue
-
-                        # filter request params
-                        for f in self.filters:
-                            if isinstance(f, str):
-                                value = getattr(filters, f)(k, value, r)()
-                            elif issubclass(f, BaseFilter):
-                                value = f(k, value, r)()
-
-                        if r.callback is not None and isfunction(r.callback):
-                            value = r.callback(value)
-
+                    value = self._f_params(k)
+                    # skip filter
+                    if r.skip:
                         rst[r.key_map or k] = value
+                        continue
+
+                    try:
+                        # simple filter handler
+                        rst[r.key_map or k] = self._handler_simple_filter(k, value, r)
                     except ParamsValueError as e:
                         return self._f_resp(e)
 

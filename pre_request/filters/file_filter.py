@@ -1,22 +1,23 @@
 # !/usr/local/python/bin/python
 # -*- coding: utf-8 -*-
-# (C) Wu Dong, 2019
+# (C) Wu Dong, 2020
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
-# @Time: '2020-03-17 15:46'
+# @Time: '2020-04-10 17:09'
 from pre_request.exception import ParamsValueError
-from pre_request.regexp import EmailRegexp
+from pre_request.regexp import FileRegexp
 from .base import BaseFilter
 
 
-class EmailFilter(BaseFilter):
-    """邮箱过滤器"""
-    error_code = 564
+class FileFilter(BaseFilter):
+    """文件过滤器"""
+
+    error_code = 586
 
     def fmt_error_message(self, _):
         """ 格式化错误信息
         """
-        return "%s字段不符合邮件格式!" % self.key
+        return "%s字段不符合文件格式!" % self.key
 
     def filter_required(self):
         """ 验证过滤器是否必须执行
@@ -24,15 +25,15 @@ class EmailFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not self.rule.email:
-            return False
+        if self.rule.file and self.rule.direct_type == str:
+            return True
 
-        return True
+        return False
 
     def __call__(self, *args, **kwargs):
-        super(EmailFilter, self).__call__()
+        super(FileFilter, self).__call__()
 
-        if not EmailRegexp()(self.value):
+        if not FileRegexp()(self.value):
             raise ParamsValueError(self.error_code, filter=self)
 
         return self.value

@@ -17,6 +17,7 @@ class LengthFilter(BaseFilter):
     length_code_gte = 575
     length_code_lt = 576
     length_code_lte = 577
+    illegal_code = 580
 
     def fmt_error_message(self, code):
         """ 格式化错误消息
@@ -35,15 +36,31 @@ class LengthFilter(BaseFilter):
 
         return "%s字段未通过'LengthFilter'过滤器检查!" % self.key
 
-    def __call__(self, *args, **kwargs):
-        super(LengthFilter, self).__call__()
-
-        # None值不做处理
-        if self.rule.allow_empty and self.value is None:
-            return self.value
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
 
         if self.rule.direct_type not in [str, list, set, tuple]:
-            return self.value
+            return False
+
+        if self.rule.gt is not None:
+            return True
+
+        if self.rule.gte is not None:
+            return True
+
+        if self.rule.lt is not None:
+            return True
+
+        if self.rule.lte is not None:
+            return True
+
+        return False
+
+    def __call__(self, *args, **kwargs):
+        super(LengthFilter, self).__call__()
 
         # 大于
         if self.rule.gt is not None and not len(self.value) > self.rule.gt:

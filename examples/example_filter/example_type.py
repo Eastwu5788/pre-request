@@ -6,6 +6,7 @@
 # @Time: '2020-03-19 11:05'
 """ 演示 pre-request 框架如何使用邮箱校验
 """
+import json
 from flask import Flask
 from pre_request import pre, Rule
 
@@ -24,7 +25,7 @@ type_params = {
 @app.route("/type", methods=["GET", "POST"])
 @pre.catch(type_params)
 def example_type_handler(params):
-    return str(params)
+    return json.dumps(params)
 
 
 def example_type_filter():
@@ -35,10 +36,10 @@ def example_type_filter():
     })
     print(resp.data)
 
-    resp = client.get("/type", data={
-        "params": "19"
-    })
-    print(resp.data)
+    # resp = client.get("/type", data={
+    #     "params": "19"
+    # })
+    # print(resp.data)
 
 
 if __name__ == "__main__":

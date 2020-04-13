@@ -27,12 +27,22 @@ class EqualFilter(BaseFilter):
 
         return "%s字段未通过`EqualFilter`过滤器检查!" % self.key
 
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if self.rule.eq is not None:
+            return True
+
+        if self.rule.neq is not None:
+            return True
+
+        return False
+
     def __call__(self, *args, **kwargs):
         super(EqualFilter, self).__call__()
-
-        # None值不做处理
-        if self.rule.allow_empty and self.value is None:
-            return self.value
 
         if self.rule.eq is not None and self.value != self.rule.eq:
             raise ParamsValueError(self.eq_code, filter=self)
