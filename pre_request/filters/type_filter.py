@@ -8,7 +8,7 @@ from pre_request.exception import ParamsValueError
 from .base import BaseFilter
 
 
-_false_str_list = ["False", "false", "No", "no", "0", "None", "", "[]", "()", "{}", "0.0"]
+_false_str_list = ["False", "false", "No", "no"]
 
 
 class TypeFilter(BaseFilter):
@@ -22,34 +22,35 @@ class TypeFilter(BaseFilter):
         """
         return "%s字段无法转换成(%s)类型!" % (self.key, self.rule.direct_type.__name__)
 
+    def filter_required(self):
+        """ 检查过滤器是否必须呗执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if isinstance(self.value, self.rule.direct_type):
+            return False
+
+        return True
+
     def __call__(self, *args, **kwargs):
         super(TypeFilter, self).__call__()
 
         direct_type = self.rule.direct_type
 
-        # 初始类型就是字符串，并且默认是安全的，则不需要处理
-        if isinstance(self.value, direct_type):
-            return self.value
-
-        if self.rule.allow_empty and self.value == self.rule.default:
-            return self.value
-
         if direct_type == str:
-            if self.rule.allow_empty and not self.value:
-                return self.value
-
             if isinstance(self.value, bytes):
                 self.value = self.value.decode('utf-8')
             return self.value
 
         # 特殊的字符串转bool类型
-        if direct_type == bool and self.value in _false_str_list:
-            return False
+        if direct_type == bool:
+            return False if self.value in _false_str_list else True
 
         try:
             # FIX: invalid literal for int() with base 10
             # 处理int仅能转换纯数字字符串问题
-            if self.rule.direct_type == int and self.value is not None and "." in self.value:
+            if self.rule.direct_type == int and "." in self.value:
                 self.value = self.value.split(".")[0]
 
             return self.rule.direct_type(self.value)

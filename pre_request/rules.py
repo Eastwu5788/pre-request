@@ -12,9 +12,13 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     def __init__(self, **kwargs):
         # 字段目标数据类型
         self.direct_type = kwargs.get("direct_type", str)
+        # 不进行过滤，仅把参数加到结果集中
+        self.skip = kwargs.get("skip", False)
 
-        # 当前字段是否允许为空
-        self.allow_empty = kwargs.get("allow_empty", False)
+        # 当前字段是否是必填项
+        self.required = kwargs.get("required", True)
+        self.required_with = kwargs.get("required_with", None)
+
         # 当前字段默认值，如果不允许为空，则次字段无意义
         self.default = kwargs.get("default", None)
         # 去除前后的空格
@@ -30,19 +34,48 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         # 手机号判断
         self.mobile = kwargs.get("mobile", False)
 
-        # 等于
+        # 判断字符串中包含某个子串
+        self.contains = kwargs.get("contains", list())
+        # 判断字符串包含任意子串
+        self.contains_any = kwargs.get("contains_any", list())
+        # 判断字符串中禁止包括某个子串
+        self.excludes = kwargs.get("excludes", list())
+        # 判断字符串开头
+        self.startswith = kwargs.get("startswith", None)
+        # 判断字符串结尾
+        self.endswith = kwargs.get("endswith", None)
+        # 字符串小写
+        self.lower = kwargs.get("lower", False)
+        # 字符串大写
+        self.upper = kwargs.get("upper", False)
+        # 是否是文件路径
+        self.file = kwargs.get("file", False)
+
+        # 判断入参是否为ipv4/ipv6
+        self.ipv4 = kwargs.get("ipv4", False)
+        self.ipv6 = kwargs.get("ipv6", False)
+        self.mac = kwargs.get("mac", False)
+
+        # 判断入参是否为地理坐标 经度/维度
+        self.latitude = kwargs.get("latitude", False)
+        self.longitude = kwargs.get("longitude", False)
+
+        # 跨字段验证
+        self.eq_key = kwargs.get("eq_key", None)
+        self.neq_key = kwargs.get("neq_key", None)
+        self.gt_key = kwargs.get("gt_key", None)
+        self.gte_key = kwargs.get("gte_key", None)
+        self.lt_key = kwargs.get("lt_key", None)
+        self.lte_key = kwargs.get("lte_key", None)
+
+        # 等于/不等于
         self.eq = kwargs.get("eq", None)
-        # 不等于
         self.neq = kwargs.get("neq", None)
 
         # 范围限定 direct_type 为数字时限定数字大小，为字符串时限定字符串长度
-        # 大于
         self.gt = kwargs.get("gt", None)
-        # 大于等于
         self.gte = kwargs.get("gte", None)
-        # 小于
         self.lt = kwargs.get("lt", None)
-        # 小于等于
         self.lte = kwargs.get("lte", None)
 
         # key映射

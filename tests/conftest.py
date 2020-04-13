@@ -38,10 +38,10 @@ def test_email_handler(params):
 
 
 empty_params = {
-    "int": Rule(allow_empty=False),
-    "str": Rule(allow_empty=False),
-    "str2": Rule(allow_empty=True),
-    "int2": Rule(allow_empty=True, default=1)
+    "int": Rule(required=True),
+    "str": Rule(required=True),
+    "str2": Rule(required=False),
+    "int2": Rule(required=False, default=1)
 }
 
 

@@ -58,7 +58,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
         "name": Rule(gt=6, lt=12),
         "email": Rule(email=True),
         "mobile": Rule(mobile=True),
-        "empty": Rule(allow_empty=True, default="sssss_empty"),
+        "empty": Rule(required=False, default="sssss_empty"),
         "range": Rule(direct_type=int, gt=10, lt=30),
         "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
         "trim": Rule(trim=True, json=True),
@@ -108,8 +108,9 @@ Rule规则参数介绍
     # 字段目标数据类型
     self.direct_type = kwargs.get("direct_type", str)
 
-    # 当前字段是否允许为空
-    self.allow_empty = kwargs.get("allow_empty", False)
+    # 当前字段是否是必填项
+    self.required = kwargs.get("required", True)
+
     # 当前字段默认值，如果不允许为空，则次字段无意义
     self.default = kwargs.get("default", None)
     # 去除前后的空格

@@ -38,7 +38,7 @@ def example_regexp_filter():
     resp = client.get("/regexp", data={
         "params": "2019-09-021"
     })
-    print(resp.data)
+    print(resp.json)
 
 
 if __name__ == "__main__":

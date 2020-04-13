@@ -36,7 +36,7 @@ app.config["TESTING"] = True
 
 
 filter_params = {
-    "number": Rule(direct_type=int, allow_empty=False)
+    "number": Rule(direct_type=int, required=True)
 }
 
 
