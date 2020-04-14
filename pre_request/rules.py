@@ -49,7 +49,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         # 字符串大写
         self.upper = kwargs.get("upper", False)
         # 是否是文件路径
-        self.file = kwargs.get("file", False)
+        # self.file = kwargs.get("file", False)
 
         # 判断入参是否为ipv4/ipv6
         self.ipv4 = kwargs.get("ipv4", False)

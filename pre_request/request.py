@@ -11,6 +11,7 @@ from inspect import isfunction
 # object
 from .exception import ParamsValueError
 from .filters.base import BaseFilter
+from .filters import simple_filters, complex_filters
 from .response import JSONResponse, HTMLResponse, BaseResponse
 from .rules import Rule
 from . import filters
@@ -21,7 +22,8 @@ class PreRequest:
     """
 
     def __init__(self, content_type=None):
-        self.filters = filters.__all__
+        self.filters = simple_filters
+        self.complex_filters = complex_filters
         self.content_type = content_type or "application/json"
         self.response = None
         self.formatter = None
@@ -98,43 +100,84 @@ class PreRequest:
 
         return default
 
-    def _handler_simple_filter(self, k, value, r):
+    def _handler_simple_filter(self, rules, rst):
         """ 处理普通过滤器
 
-        :param k: key
-        :param value: 读取出的数据值
-        :param r: 限定规则
+        :param rules: 参数规则
+        :param rst: 格式化后的结果值
         """
-        # filter request params
-        for f in self.filters:
-            filter_obj = None
-            # system filter object
-            if isinstance(f, str):
-                filter_obj = getattr(filters, f)(k, value, r)
+        for k, r in rules.items():
+            # invalid rule
+            if not isinstance(r, Rule):
+                raise TypeError("invalid rule type for key '%s'" % k)
 
-            # custom filter object
-            elif issubclass(f, BaseFilter):
-                filter_obj = f(k, value, r)
+            value = self._f_params(k)
 
-            # ignore invalid and not required filter
-            if not filter_obj or not filter_obj.filter_required():
+            # skip filter
+            if r.skip:
+                rst[r.key_map or k] = value
                 continue
 
-            value = filter_obj()
+            try:
+                # filter request params
+                for f in self.filters:
+                    filter_obj = None
+                    # system filter object
+                    if isinstance(f, str):
+                        filter_obj = getattr(filters, f)(k, value, r)
 
-        if r.callback is not None and isfunction(r.callback):
-            value = r.callback(value)
+                    # custom filter object
+                    elif issubclass(f, BaseFilter):
+                        filter_obj = f(k, value, r)
 
-        return value
+                    # ignore invalid and not required filter
+                    if not filter_obj or not filter_obj.filter_required():
+                        continue
 
-    def _handler_complex_filter(self, k, params, r):
+                    value = filter_obj()
+
+                if r.callback is not None and isfunction(r.callback):
+                    value = r.callback(value)
+
+                # simple filter handler
+                rst[r.key_map or k] = value
+            except ParamsValueError as e:
+                return self._f_resp(e)
+
+        return None
+
+    def _handler_complex_filter(self, rules, params):
         """ 处理复合过滤器
 
-        :param k: key
+        :param rules: 参数规则
         :param params: 所有合规参数
-        :param r: 处理规则
         """
-        pass
+        for k, r in rules.items():
+            # skip filter
+            if r.skip:
+                continue
+
+            try:
+                # simple filter handler
+                for f in self.complex_filters:
+                    filter_obj = None
+                    # system filter object
+                    if isinstance(f, str):
+                        filter_obj = getattr(filters, f)(k, None, r)
+
+                    # custom filter object
+                    elif issubclass(f, BaseFilter):
+                        filter_obj = f(k, None, r)
+
+                    # ignore invalid and not required filter
+                    if not filter_obj or not filter_obj.filter_required():
+                        continue
+
+                    filter_obj(params=params)
+            except ParamsValueError as e:
+                return self._f_resp(e)
+
+        return None
 
     def catch(self, rule=None, **options):
         """ Catch request params
@@ -160,22 +203,15 @@ class PreRequest:
                 if not rules:
                     raise ValueError("request method '%s' with invalid filter rule" % request.method)
 
-                for k, r in rules.items():
-                    # invalid rule
-                    if not isinstance(r, Rule):
-                        raise TypeError("invalid rule type for key '%s'" % k)
+                # use simple filter to handler params
+                resp = self._handler_simple_filter(rules, rst)
+                if resp is not None:
+                    return resp
 
-                    value = self._f_params(k)
-                    # skip filter
-                    if r.skip:
-                        rst[r.key_map or k] = value
-                        continue
-
-                    try:
-                        # simple filter handler
-                        rst[r.key_map or k] = self._handler_simple_filter(k, value, r)
-                    except ParamsValueError as e:
-                        return self._f_resp(e)
+                # use complex filter to handler params
+                resp = self._handler_complex_filter(rules, rst)
+                if resp is not None:
+                    return resp
 
                 return func(*args, **kwargs)
             return wrapper

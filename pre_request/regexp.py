@@ -20,9 +20,9 @@ K_MAC_REG = r'^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$'
 
 
 # 地理维度正则表达式
-K_LATITUDE_REG = r'^-?([1-8]?[0-9]\.{1}\d{1,6}$|90\.{1}0{1,6}$)'
+K_LATITUDE_REG = r'^[\-\+]?((0|([1-8]\d?))(\.\d{1,10})?|90(\.0{1,10})?)$'
 # 地址经度正则表达式
-K_LONGITUDE_REG = r'^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\.{1}\d{1,6}$)|[1]?[1-8][0]\.{1}0{1,6}$)'
+K_LONGITUDE_REG = r'^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,10})?|180\.0{1,10})$'
 
 
 class Regexp:
@@ -64,8 +64,8 @@ class FileRegexp(Regexp):
     def __init__(self):
         super(FileRegexp, self).__init__(K_FILE_REG, re.IGNORECASE)
 
-    def __call__(self, file=None):
-        return super(FileRegexp, self).__call__(file)
+    def __call__(self, f=None):
+        return super(FileRegexp, self).__call__(f)
 
 
 class MacRegexp(Regexp):
