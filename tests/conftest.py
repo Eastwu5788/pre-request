@@ -379,6 +379,84 @@ def test_longitude_handler(params):
     return json_resp(params)
 
 
+# 指定eq_key, 邀请
+eq_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, eq_key="p1")
+}
+
+
+@app.route("/eq/key", methods=["GET", "POST"])
+@pre.catch(eq_key_params)
+def test_eq_key_handler(params):
+    return json_resp(params)
+
+
+# 指定neq_key, 禁止两个参数相等
+neq_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, neq_key="p1")
+}
+
+
+@app.route("/neq/key", methods=["GET", "POST"])
+@pre.catch(neq_key_params)
+def test_neq_key_handler(params):
+    return json_resp(params)
+
+
+# 指定gt_key, 禁止两个参数相等
+gt_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, gt_key="p1")
+}
+
+
+@app.route("/gt/key", methods=["GET", "POST"])
+@pre.catch(gt_key_params)
+def test_gt_key_handler(params):
+    return json_resp(params)
+
+
+# 指定gte_key, 禁止两个参数相等
+gte_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, gte_key="p1")
+}
+
+
+@app.route("/gte/key", methods=["GET", "POST"])
+@pre.catch(gte_key_params)
+def test_gte_key_handler(params):
+    return json_resp(params)
+
+
+# 指定lt_key, 限定一个参数必须小于另一个参数
+lt_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, lt_key="p1")
+}
+
+
+@app.route("/lt/key", methods=["GET", "POST"])
+@pre.catch(lt_key_params)
+def test_lt_key_handler(params):
+    return json_resp(params)
+
+
+# 指定lte_key, 限定一个参数必须小于另一个参数
+lte_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, lte_key="p1")
+}
+
+
+@app.route("/lte/key", methods=["GET", "POST"])
+@pre.catch(lte_key_params)
+def test_lte_key_handler(params):
+    return json_resp(params)
+
+
 @pytest.fixture
 def client():
     """ 构建测试用例

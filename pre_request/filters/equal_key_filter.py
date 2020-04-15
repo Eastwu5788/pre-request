@@ -28,19 +28,19 @@ class EqualKeyFilter(BaseFilter):
             return "'%s'与'%s'值必须相同" % (self.key, self.rule.eq_key)
 
         if code == 594:
-            return "'%s'与'%s'值不允许相同" % (self.key, self.rule.eq_key)
+            return "'%s'与'%s'值不允许相同" % (self.key, self.rule.neq_key)
 
         if code == 595:
-            return "'%s'应该大于'%s'" % (self.key, self.rule.eq_key)
+            return "'%s'应该大于'%s'" % (self.key, self.rule.gt_key)
 
         if code == 596:
-            return "'%s'应该大于等于'%s'" % (self.key, self.rule.eq_key)
+            return "'%s'应该大于等于'%s'" % (self.key, self.rule.gte_key)
 
         if code == 597:
-            return "'%s'应该小于'%s'" % (self.key, self.rule.eq_key)
+            return "'%s'应该小于'%s'" % (self.key, self.rule.lt_key)
 
         if code == 598:
-            return "'%s'应该小于等于'%s'" % (self.key, self.rule.eq_key)
+            return "'%s'应该小于等于'%s'" % (self.key, self.rule.lte_key)
 
         return "过滤器'EqualKeyFilter'过滤器检查'%s'参数失败" % self.key
 
