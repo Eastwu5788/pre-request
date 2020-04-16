@@ -19,7 +19,7 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('_themes'))
 
-import pre_request
+# import pre_request
 
 # -- Project information -----------------------------------------------------
 
@@ -29,9 +29,9 @@ copyright = '2019, wudong@eastwu.cn'
 author = 'wudong@eastwu.cn'
 
 # The short X.Y version
-version = pre_request.__version__
+# version = pre_request.__version__
 # The full version, including alpha/beta/rc tags
-release = pre_request.__version__
+# release = pre_request.__version__
 
 
 # -- General configuration ---------------------------------------------------
