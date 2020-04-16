@@ -38,10 +38,10 @@ def test_email_handler(params):
 
 
 empty_params = {
-    "int": Rule(allow_empty=False),
-    "str": Rule(allow_empty=False),
-    "str2": Rule(allow_empty=True),
-    "int2": Rule(allow_empty=True, default=1)
+    "int": Rule(required=True),
+    "str": Rule(required=True),
+    "str2": Rule(required=False),
+    "int2": Rule(required=False, default=1)
 }
 
 
@@ -206,6 +206,254 @@ key_map_params = {
 def test_keymap_handler(params):
     """ 测试key映射校验
     """
+    return json_resp(params)
+
+
+skip_params = {
+    "v1": Rule(skip=True, direct_type=float, required=False, default=30.0),
+    "v2": Rule(skip=False, direct_type=float, required=False, default=30.0),
+}
+
+
+@app.route("/skip", methods=['get', 'post'])
+@pre.catch(skip_params)
+def test_skip_handler(params):
+    """ 测试 skip 功能
+    """
+    return json_resp(params)
+
+
+required_with_params = {
+    "p1": Rule(required=False),
+    "p2": Rule(required=False, required_with="p1", direct_type=float)
+}
+
+
+@app.route("/required/with", methods=["GET", "POST"])
+@pre.catch(required_with_params)
+def test_required_with_handler(params):
+    return json_resp(params)
+
+
+# 指定 contains 数组，则要求入参必须包含指定子串
+contains_params = {
+    "p1": Rule(contains=["a", "b", "c"])
+}
+
+
+@app.route("/contains", methods=["GET", "POST"])
+@pre.catch(contains_params)
+def test_contains_handler(params):
+    return json_resp(params)
+
+
+# 指定 contains_any 数组，则要求入参包含任意指定子串
+contains_any_params = {
+    "p1": Rule(contains_any=["a", "c"])
+}
+
+
+@app.route("/contains/any", methods=["GET", "POST"])
+@pre.catch(contains_any_params)
+def test_contains_any_handler(params):
+    return json_resp(params)
+
+
+# 指定excludes数组，则要求入参必须禁止包含指定子串
+excludes_params = {
+    "p1": Rule(excludes=["a", "b", "c"])
+}
+
+
+@app.route("/excludes", methods=["GET", "POST"])
+@pre.catch(excludes_params)
+def test_excludes_handler(params):
+    return json_resp(params)
+
+
+# 指定contains数组，则要求入参必须包含指定子串
+startswith_params = {
+    "p1": Rule(startswith="abc")
+}
+
+
+@app.route("/startswith", methods=["GET", "POST"])
+@pre.catch(startswith_params)
+def test_startswith_handler(params):
+    return json_resp(params)
+
+
+# 指定endswith，验证字符串是否包含指定后缀
+endswith_params = {
+    "p1": Rule(endswith="abc")
+}
+
+
+@app.route("/endswith", methods=["GET", "POST"])
+@pre.catch(endswith_params)
+def test_endswith_handler(params):
+    return json_resp(params)
+
+
+# 指定lower，字符串将被转换成小写
+lower_params = {
+    "p1": Rule(lower=True)
+}
+
+
+@app.route("/lower", methods=["GET", "POST"])
+@pre.catch(lower_params)
+def test_lower_handler(params):
+    return json_resp(params)
+
+
+# upper，字符串将被转换成大写
+upper_params = {
+    "p1": Rule(upper=True)
+}
+
+
+@app.route("/upper", methods=["GET", "POST"])
+@pre.catch(upper_params)
+def test_upper_handler(params):
+    return json_resp(params)
+
+
+# ipv4，框架将验证入参是否符合ipv4规则
+ipv4_params = {
+    "p1": Rule(ipv4=True)
+}
+
+
+@app.route("/ipv4", methods=["GET", "POST"])
+@pre.catch(ipv4_params)
+def test_ipv4_handler(params):
+    return json_resp(params)
+
+
+# ipv6，框架将验证入参是否符合ipv6规则
+ipv6_params = {
+    "p1": Rule(ipv6=True)
+}
+
+
+@app.route("/ipv6", methods=["GET", "POST"])
+@pre.catch(ipv6_params)
+def test_ipv6_handler(params):
+    return json_resp(params)
+
+
+# mac，框架将验证入参是否符合mac规则
+mac_params = {
+    "p1": Rule(mac=True)
+}
+
+
+@app.route("/mac", methods=["GET", "POST"])
+@pre.catch(mac_params)
+def test_mac_handler(params):
+    return json_resp(params)
+
+
+# latitude，框架将验证入参是否符合地理纬度规则
+latitude_params = {
+    "p1": Rule(latitude=True)
+}
+
+
+@app.route("/latitude", methods=["GET", "POST"])
+@pre.catch(latitude_params)
+def test_latitude_handler(params):
+    return json_resp(params)
+
+
+# longitude，框架将验证入参是否符合地理纬度规则
+longitude_params = {
+    "p1": Rule(longitude=True)
+}
+
+
+@app.route("/longitude", methods=["GET", "POST"])
+@pre.catch(longitude_params)
+def test_longitude_handler(params):
+    return json_resp(params)
+
+
+# 指定eq_key, 邀请
+eq_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, eq_key="p1")
+}
+
+
+@app.route("/eq/key", methods=["GET", "POST"])
+@pre.catch(eq_key_params)
+def test_eq_key_handler(params):
+    return json_resp(params)
+
+
+# 指定neq_key, 禁止两个参数相等
+neq_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, neq_key="p1")
+}
+
+
+@app.route("/neq/key", methods=["GET", "POST"])
+@pre.catch(neq_key_params)
+def test_neq_key_handler(params):
+    return json_resp(params)
+
+
+# 指定gt_key, 禁止两个参数相等
+gt_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, gt_key="p1")
+}
+
+
+@app.route("/gt/key", methods=["GET", "POST"])
+@pre.catch(gt_key_params)
+def test_gt_key_handler(params):
+    return json_resp(params)
+
+
+# 指定gte_key, 禁止两个参数相等
+gte_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, gte_key="p1")
+}
+
+
+@app.route("/gte/key", methods=["GET", "POST"])
+@pre.catch(gte_key_params)
+def test_gte_key_handler(params):
+    return json_resp(params)
+
+
+# 指定lt_key, 限定一个参数必须小于另一个参数
+lt_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, lt_key="p1")
+}
+
+
+@app.route("/lt/key", methods=["GET", "POST"])
+@pre.catch(lt_key_params)
+def test_lt_key_handler(params):
+    return json_resp(params)
+
+
+# 指定lte_key, 限定一个参数必须小于另一个参数
+lte_key_params = {
+    "p1": Rule(direct_type=int),
+    "p2": Rule(direct_type=int, lte_key="p1")
+}
+
+
+@app.route("/lte/key", methods=["GET", "POST"])
+@pre.catch(lte_key_params)
+def test_lte_key_handler(params):
     return json_resp(params)
 
 

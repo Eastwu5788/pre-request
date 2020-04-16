@@ -13,14 +13,26 @@ class EmailFilter(BaseFilter):
     """邮箱过滤器"""
     error_code = 564
 
+    def fmt_error_message(self, _):
+        """ 格式化错误信息
+        """
+        return "%s字段不符合邮件格式!" % self.key
+
+    def filter_required(self):
+        """ 验证过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if not self.rule.email:
+            return False
+
+        return True
+
     def __call__(self, *args, **kwargs):
         super(EmailFilter, self).__call__()
 
-        if self.rule.allow_empty and self.value == self.rule.default:
-            return self.value
-
-        if self.rule.email:
-            if not EmailRegexp()(self.value):
-                raise ParamsValueError(self.error_code, filter=self)
+        if not EmailRegexp()(self.value):
+            raise ParamsValueError(self.error_code, filter=self)
 
         return self.value

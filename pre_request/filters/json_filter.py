@@ -16,27 +16,32 @@ class JsonFilter(BaseFilter):
 
     error_code = 570
 
+    def fmt_error_message(self, _):
+        """ 格式化错误信息
+
+        :param _: 错误码
+        """
+        return "%s字段无法通过json进行解析" % self.key
+
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if not self.rule.json_load:
+            return False
+
+        if self.rule.direct_type != str:
+            return False
+
+        if not isinstance(self.value, str):
+            return False
+
+        return True
+
     def __call__(self, *args, **kwargs):
         super(JsonFilter, self).__call__()
-
-        # 不需要转换成json
-        if not self.rule.json_load:
-            return self.value
-
-        if self.rule.allow_empty and self.value == self.rule.default:
-            return self.value
-
-        # 不是字符串类型，将被忽略
-        if self.rule.direct_type != str:
-            return self.value
-
-        # 允许为空的情况下，不需要处理
-        if self.rule.allow_empty and (self.value is None or not isinstance(self.value, str)):
-            return self.value
-
-        # 本身就是字典或者list，则不需要处理
-        if not isinstance(self.value, str):
-            return self.value
 
         try:
             self.value = json.loads(self.value)

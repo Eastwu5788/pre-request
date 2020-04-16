@@ -2,7 +2,7 @@
 import json
 
 
-class BaseResponse(object):
+class BaseResponse:
     """
     错误响应基类
     """

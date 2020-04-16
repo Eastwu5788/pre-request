@@ -5,7 +5,7 @@
 欢迎使用 pre-request 框架
 =========================
 
-.. image:: static/logo.jpg
+.. image:: ../static/logo.jpg
    :alt: pre-request: 请求预处理框架
    :align: center
    :target: https://github.com/Eastwu5788/pre-request
@@ -17,22 +17,12 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 业务逻辑。
 
 
-用户指引
----------
-
 这部分文档将带您进入并一步步使用pre-request框架。
 
 .. toctree::
     :maxdepth: 2
 
-    intro
     installation
     quickstart
-
-API介绍
----------
-
-.. toctree::
-    :maxdepth: 2
-
-    api
+    intro
+    customize

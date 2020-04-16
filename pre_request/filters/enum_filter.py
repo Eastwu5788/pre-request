@@ -12,13 +12,26 @@ class EnumFilter(BaseFilter):
     """枚举过滤器"""
     error_code = 563
 
+    def fmt_error_message(self, _):
+        """ 格式化错误消息
+        """
+        return "%s字段的取值只能是以下几种%s!" % (self.key, str(self.rule.enum))
+
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if self.rule.enum:
+            return True
+
+        return False
+
     def __call__(self, *args, **kwargs):
         super(EnumFilter, self).__call__()
 
-        if self.rule.allow_empty and self.value == self.rule.default:
-            return self.value
-
-        if self.rule.enum and self.value not in self.rule.enum:
+        if self.value not in self.rule.enum:
             raise ParamsValueError(self.error_code, filter=self)
 
         return self.value

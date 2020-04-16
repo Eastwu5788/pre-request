@@ -17,16 +17,50 @@ class LengthFilter(BaseFilter):
     length_code_gte = 575
     length_code_lt = 576
     length_code_lte = 577
+    illegal_code = 580
+
+    def fmt_error_message(self, code):
+        """ 格式化错误消息
+        """
+        if code == 574:
+            return "%s字段长度必须大于%s!" % (self.key, str(self.rule.gt))
+
+        if code == 575:
+            return "%s字段长度必须大于等于%s!" % (self.key, str(self.rule.gte))
+
+        if code == 576:
+            return "%s字段长度必须小于%s!" % (self.key, str(self.rule.lt))
+
+        if code == 577:
+            return "%s字段长度必须小于等于%s!" % (self.key, str(self.rule.lte))
+
+        return "%s字段未通过'LengthFilter'过滤器检查!" % self.key
+
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if self.rule.direct_type not in [str, list, set, tuple]:
+            return False
+
+        if self.rule.gt is not None:
+            return True
+
+        if self.rule.gte is not None:
+            return True
+
+        if self.rule.lt is not None:
+            return True
+
+        if self.rule.lte is not None:
+            return True
+
+        return False
 
     def __call__(self, *args, **kwargs):
         super(LengthFilter, self).__call__()
-
-        # None值不做处理
-        if self.rule.allow_empty and self.value is None:
-            return self.value
-
-        if self.rule.direct_type not in [str, list, set, tuple]:
-            return self.value
 
         # 大于
         if self.rule.gt is not None and not len(self.value) > self.rule.gt:

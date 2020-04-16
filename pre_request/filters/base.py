@@ -6,7 +6,7 @@
 # @Time: '2020-03-17 15:34'
 
 
-class BaseFilter(object):
+class BaseFilter:
     """
     过滤器基类
     """
@@ -19,11 +19,21 @@ class BaseFilter(object):
         :param key: 参数key
         :param value: 需要过滤的值
         :param rule: 过滤的规则
-        :type rule: Rule
+        :type rule: pre_request.Rule
         """
         self.key = key
         self.value = value
         self.rule = rule
 
-    def __call__(self):
+    def filter_required(self):
+        """ 检查当前过滤式，是否必须要执行
+        """
+        return True
+
+    def fmt_error_message(self, code):
+        """ 返回格式化的错误消息
+        """
+        return None
+
+    def __call__(self, *args, **kwargs):
         pass

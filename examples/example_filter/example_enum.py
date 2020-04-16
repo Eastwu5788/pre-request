@@ -31,9 +31,9 @@ def example_enum_filter():
     """ 演示枚举验证
     """
     resp = client.get("/enum", data={
-        "params": 10
+        "params": 7
     })
-    print(resp.data)
+    print(resp.json)
 
 
 if __name__ == "__main__":

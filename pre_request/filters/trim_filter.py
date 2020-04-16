@@ -8,17 +8,20 @@ from .base import BaseFilter
 
 
 class TrimFilter(BaseFilter):
+    """ 去除字符串前后空格的过滤器
     """
-    去除字符串前后空格的过滤器
-    """
-    error_code = 569
+
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if self.rule.trim and isinstance(self.value, str):
+            return True
+
+        return False
 
     def __call__(self, *args, **kwargs):
         super(TrimFilter, self).__call__()
-
-        if self.rule.allow_empty and self.value == self.rule.default:
-            return self.value
-
-        if self.rule.trim and isinstance(self.value, str):
-            return self.value.strip()
-        return self.value
+        return self.value.strip()

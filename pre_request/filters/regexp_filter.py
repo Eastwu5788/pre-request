@@ -17,15 +17,27 @@ class RegexpFilter(BaseFilter):
     """
     error_code = 566
 
+    def fmt_error_message(self, _):
+        """ 格式化错误消息
+        """
+        return "%s字段不符合格式要求!" % self.key
+
+    def filter_required(self):
+        """ 检查过滤器是否必须执行
+        """
+        if not self.rule.required and self.value is None:
+            return False
+
+        if self.rule.reg is not None:
+            return True
+
+        return False
+
     def __call__(self, *args, **kwargs):
         super(RegexpFilter, self).__call__()
 
-        if self.rule.allow_empty and self.value == self.rule.default:
-            return self.value
+        # 判断是否符合正则
+        if not Regexp(self.rule.reg, re.IGNORECASE)(self.value):
+            raise ParamsValueError(self.error_code, filter=self)
 
-        # 判断是否需要进行正则匹配
-        if self.rule.reg and isinstance(self.rule.reg, str):
-            # 判断是否符合正则
-            if not Regexp(self.rule.reg, re.IGNORECASE)(self.value):
-                raise ParamsValueError(self.error_code, filter=self)
         return self.value
