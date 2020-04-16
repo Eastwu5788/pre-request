@@ -17,6 +17,11 @@ class CustomFilter(BaseFilter):
         if code == 10086:
             return "对不起，这里是中国电信"
 
+    def filter_required(self):
+        """ 检查当前过滤式，是否必须要执行
+        """
+        return True
+
     def __call__(self, *args, **kwargs):
         """ 自定义过滤器时需要实现的主要功能
         """
