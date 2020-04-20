@@ -37,6 +37,20 @@ def test_email_handler(params):
     return json_resp(params)
 
 
+g_params = {
+    "email": Rule(email=True)
+}
+
+
+@app.route("/g", methods=['get', 'post'])
+@pre.catch(g_params)
+def test_g_handler():
+    """ 测试邮件验证
+    """
+    from flask import g
+    return json_resp(g.params)
+
+
 empty_params = {
     "int": Rule(required=True),
     "str": Rule(required=True),

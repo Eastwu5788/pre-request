@@ -1,6 +1,13 @@
 .. py:currentmodule:: pre_request
 
 
+Version 2.0.7
+--------------
+
+- 仅当用户在函数中填写`params`参数时才会进行函数参数赋值
+- 新增`flask.g`传递格式化后的参数
+
+
 Version 2.0.6
 ---------------
 
