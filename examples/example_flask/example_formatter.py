@@ -33,9 +33,11 @@ filter_params = {
 
 @app.route("/email", methods=['get', 'post'])
 @pre.catch(filter_params)
-def email_resp_handler(params):
+def email_resp_handler():
     """ 测试邮件验证
     """
+    from flask import g
+    params = g.params
     return str(params)
 
 
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     pre.add_formatter(custom_formatter)
 
     resp = app.test_client().get("/email", data={
-        "email": "wudong@@eastwu.cn"
+        "email": "wudong@eastwu.cn"
     })
 
     print(resp.get_data(as_text=True))

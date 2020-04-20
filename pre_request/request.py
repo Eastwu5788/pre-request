@@ -7,6 +7,7 @@
 # sys
 from functools import wraps
 from inspect import isfunction
+from inspect import getfullargspec
 
 # object
 from .exception import ParamsValueError
@@ -185,14 +186,15 @@ class PreRequest:
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                kwargs["params"] = rst = dict()
+                from flask import g, request  # pylint: disable=import-outside-toplevel
+
+                g.params = rst = dict()
 
                 # ignore with empty rule
                 if not rule and not options:
                     return func(*args, **kwargs)
 
                 # query rules with special method
-                from flask import request  # pylint: disable=import-outside-toplevel
                 rules = options.get(request.method) or options.get(request.method.lower())
 
                 # common rule
@@ -212,6 +214,10 @@ class PreRequest:
                 resp = self._handler_complex_filter(rules, rst)
                 if resp is not None:
                     return resp
+
+                # assignment params to func args
+                if "params" in getfullargspec(func).args:
+                    kwargs["params"] = rst
 
                 return func(*args, **kwargs)
             return wrapper
