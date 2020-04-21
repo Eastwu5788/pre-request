@@ -17,8 +17,8 @@ client = app.test_client()
 
 # 指定neq_key, 禁止两个参数相等
 neq_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, neq_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, neq_key="p1")
 }
 
 

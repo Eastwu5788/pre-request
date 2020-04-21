@@ -19,7 +19,7 @@ client = app.test_client()
 
 # 指定range范围，则框架会对数字范围作出校验
 range_params = {
-    "params": Rule(direct_type=int, gt=5, lt=10)
+    "params": Rule(type=int, gt=5, lt=10)
 }
 
 

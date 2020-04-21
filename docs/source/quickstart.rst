@@ -18,7 +18,7 @@ pre-request最简单的使用方式
    app = Flask(__name__)
 
    req_params = {
-      "userId": Rule(direct_type=int, required=True)
+      "userId": Rule(type=int, required=True)
    }
 
    @app.route("/")
@@ -72,7 +72,7 @@ Rule 规则介绍
 .. code-block:: python
 
     # 字段目标数据类型
-    self.direct_type = kwargs.get("direct_type", str)
+    self.direct_type = kwargs.get("type", str)
     # 不进行过滤，仅把参数加到结果集中
     self.skip = kwargs.get("skip", False)
 

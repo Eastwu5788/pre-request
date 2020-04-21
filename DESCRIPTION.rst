@@ -21,6 +21,10 @@ Pre-request
     :target: https://pypi.org/project/pre-request/
     :alt: PyPI
 
+.. image:: https://badges.gitter.im/pre-request/community.svg?color=brightgreen
+   :target: https://gitter.im/pre-request/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+   :alt: Im
+
 
 欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
 网络请求参数验证提供了解决方案。
@@ -60,7 +64,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
    app = Flask(__name__)
 
    args = {
-      "userId": Rule(direct_type=int, required=True)
+      "userId": Rule(type=int, required=True)
    }
 
    @app.route("/")
@@ -82,7 +86,7 @@ Rule 规则概览
 ::
 
     # 字段目标数据类型
-    self.direct_type = kwargs.get("direct_type", str)
+    self.direct_type = kwargs.get("type", str)
     # 不进行过滤，仅把参数加到结果集中
     self.skip = kwargs.get("skip", False)
 
@@ -148,7 +152,7 @@ Rule 规则概览
     self.lte = kwargs.get("lte", None)
 
     # key映射
-    self.key_map = kwargs.get("key_map", None)
+    self.key_map = kwargs.get("dest", None)
 
     # 是否需要进行json解析
     self.json_load = kwargs.get("json", False)

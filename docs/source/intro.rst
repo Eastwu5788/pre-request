@@ -10,17 +10,17 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 下面我们将挨个介绍pre-request支持的所有规则
 
 
-direct_type
+type
 -------------
 
-`direct_type` 限制用户入参的数据类型。我们会尝试将用户入参中的参数类型转换成目标类型，如果尝试转换失败，
+`type` 限制用户入参的数据类型。我们会尝试将用户入参中的参数类型转换成目标类型，如果尝试转换失败，
 我们会输出特定错误码. 默认值 `str`
 
 ::
 
  # 限定用户的userId参数必须为int类型
  params = {
-    "userId": Rule(direct_type=int)
+    "userId": Rule(type=int)
  }
 
 

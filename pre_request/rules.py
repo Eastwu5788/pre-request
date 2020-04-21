@@ -11,7 +11,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     """
     def __init__(self, **kwargs):
         # 字段目标数据类型
-        self.direct_type = kwargs.get("direct_type", str)
+        self.direct_type = kwargs.get("type", str)
         # 不进行过滤，仅把参数加到结果集中
         self.skip = kwargs.get("skip", False)
 
@@ -79,7 +79,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.lte = kwargs.get("lte", None)
 
         # key映射
-        self.key_map = kwargs.get("key_map", None)
+        self.key_map = kwargs.get("dest", None)
 
         # 是否需要进行json解析
         self.json_load = kwargs.get("json", False)

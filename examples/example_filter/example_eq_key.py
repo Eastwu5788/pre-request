@@ -17,8 +17,8 @@ client = app.test_client()
 
 # 指定eq_key, 邀请
 eq_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, eq_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, eq_key="p1")
 }
 
 

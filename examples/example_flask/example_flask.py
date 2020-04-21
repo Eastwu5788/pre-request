@@ -13,7 +13,7 @@ client = app.test_client()
 
 
 fields = {
-    "age": Rule(direct_type=int, enum=[1, 2]),
+    "age": Rule(type=int, enum=[1, 2]),
     "name": Rule(gt=6, lt=12),
     "email": Rule(email=True),
     "mobile": Rule(mobile=True),

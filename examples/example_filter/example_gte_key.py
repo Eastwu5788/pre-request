@@ -18,8 +18,8 @@ client = app.test_client()
 
 # 指定gte_key, 禁止两个参数相等
 gte_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, gte_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, gte_key="p1")
 }
 
 
