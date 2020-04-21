@@ -18,7 +18,7 @@ client = app.test_client()
 
 # 指定direct_type，此时框架会尝试将入参转换成目标格式
 type_params = {
-    "params": Rule(direct_type=int)
+    "params": Rule(type=int)
 }
 
 

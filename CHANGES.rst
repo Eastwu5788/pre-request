@@ -6,6 +6,8 @@ Version 2.0.7
 
 - 仅当用户在函数中填写`params`参数时才会进行函数参数赋值
 - 新增`flask.g`传递格式化后的参数
+- 变更 `direct_type` 参数名称为 `type`
+- 变更 `key_map` 参数名称为 `dest`
 
 
 Version 2.0.6

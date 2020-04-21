@@ -11,6 +11,7 @@
         <a href="https://github.com/Eastwu5788/pre-request/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/pre-request?color=brightgreen"></a>
         <a href="https://pre-request.readthedocs.io/en/master/"><img alt="Docs" src="https://readthedocs.org/projects/pre-request/badge/?version=master"></a>
         <a href="https://pypi.org/project/pre-request/"><img alt="PyPI" src="https://img.shields.io/pypi/v/pre-request?color=brightgreen"></a>
+        <a href="https://gitter.im/pre-request/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img alt="IM" src="https://badges.gitter.im/pre-request/community.svg"/></a>
     </p>
 
 
@@ -55,7 +56,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
    app = Flask(__name__)
 
    args = {
-      "userId": Rule(direct_type=int, required=True)
+      "userId": Rule(type=int, required=True)
    }
 
    @app.route("/")
@@ -78,7 +79,7 @@ Rule 规则概览
 ::
 
     # 字段目标数据类型
-    self.direct_type = kwargs.get("direct_type", str)
+    self.direct_type = kwargs.get("type", str)
     # 不进行过滤，仅把参数加到结果集中
     self.skip = kwargs.get("skip", False)
 
@@ -144,7 +145,7 @@ Rule 规则概览
     self.lte = kwargs.get("lte", None)
 
     # key映射
-    self.key_map = kwargs.get("key_map", None)
+    self.key_map = kwargs.get("dest", None)
 
     # 是否需要进行json解析
     self.json_load = kwargs.get("json", False)

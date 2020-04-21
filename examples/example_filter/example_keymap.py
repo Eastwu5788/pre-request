@@ -17,7 +17,7 @@ client = app.test_client()
 
 # 指定key_map，框架会将参数变更为 key_map 指定的key
 map_params = {
-    "params": Rule(key_map="key")
+    "params": Rule(dest="key")
 }
 
 

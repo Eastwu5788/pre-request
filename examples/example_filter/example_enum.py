@@ -17,7 +17,7 @@ client = app.test_client()
 
 # 指定enum=[10, 20]指定目标枚举值，注意：目前仅支持同数据类型枚举验证
 enum_params = {
-    "params": Rule(direct_type=int, enum=[10, 20, 30])
+    "params": Rule(type=int, enum=[10, 20, 30])
 }
 
 

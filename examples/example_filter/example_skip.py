@@ -18,7 +18,7 @@ client = app.test_client()
 
 # 指定skip=True, pre-request将不应用任何规则，仅将数据添加到结果字典中
 skip_params = {
-    "params": Rule(skip=True, direct_type=float, default=1, required=False)
+    "params": Rule(skip=True, type=float, default=1, required=False)
 }
 
 
