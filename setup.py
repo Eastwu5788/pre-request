@@ -17,7 +17,7 @@ with open(os.path.join(here, 'pre_request', '__version__.py'), 'r', 'utf-8') as 
 
 readme = None
 
-if os.path.exists('README.rst'):
+if os.path.exists('DESCRIPTION.rst'):
     with open('DESCRIPTION.rst', 'rb') as f:
         readme = f.read().decode("utf-8")
 
