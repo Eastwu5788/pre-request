@@ -192,6 +192,10 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         """
         df_location = ["args", "form", "values", "headers", "cookies", "json"]
 
+        if value is None:
+            self._location = value
+            return
+
         if not isinstance(value, str) and not isinstance(value, list):
             raise TypeError("location must be type of list or str")
 

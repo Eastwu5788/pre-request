@@ -471,6 +471,33 @@ def test_lte_key_handler(params):
     return json_resp(params)
 
 
+# 读取指定位置的数据
+location_params = {
+    "p1": Rule(type=int, location="args"),
+    "p2": Rule(type=int, location="form"),
+    "p3": Rule(type=int, location="values"),
+    "p4": Rule(type=int, location="headers"),
+    "p5": Rule(type=int, location="cookies"),
+    "p7": Rule(type=int, location=["cookies", "args", "headers"])
+}
+
+location_json_params = {
+    "p6": Rule(type=int, location="json")
+}
+
+
+@app.route("/location", methods=["GET", "POST"])
+@pre.catch(location_params)
+def example_location_handler(params):
+    return json_resp(params)
+
+
+@app.route("/location/json", methods=["GET", "POST"])
+@pre.catch(location_json_params)
+def example_location_json_handler(params):
+    return json_resp(params)
+
+
 @pytest.fixture
 def client():
     """ 构建测试用例
