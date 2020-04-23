@@ -11,6 +11,7 @@
         <a href="https://github.com/Eastwu5788/pre-request/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/pre-request?color=brightgreen"></a>
         <a href="https://pre-request.readthedocs.io/en/master/"><img alt="Docs" src="https://readthedocs.org/projects/pre-request/badge/?version=master"></a>
         <a href="https://pypi.org/project/pre-request/"><img alt="PyPI" src="https://img.shields.io/pypi/v/pre-request?color=brightgreen"></a>
+        <a href="https://gitter.im/pre-request/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img alt="IM" src="https://badges.gitter.im/pre-request/community.svg"/></a>
     </p>
 
 
@@ -39,60 +40,38 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 
     pip install pre-request
 
-快速开始
---------
 
-::
+快速使用
+----------------
 
-    from pre_request import pre
-    from pre_request import Rule
+集成pre-request到您的请求中非常简单
 
-    field = {
-        "age": Rule(direct_type=int, enum=[1, 2]),
-        "name": Rule(gt=6, lt=12),
-        "email": Rule(email=True),
-        "mobile": Rule(mobile=True),
-        "empty": Rule(required=False, default="sssss_empty"),
-        "range": Rule(direct_type=int, gt=10, lt=30),
-        "reg": Rule(reg=r'^h\w{3,5}o$', key_map="reg_exp"),
-        "trim": Rule(trim=True, json=True),
-        "call": Rule(direct_type=int, callback=lambda x: x+100)
-    }
+.. code-block:: python
 
-    # 不指定get和post时，不论get请求或者post请求都会使用同一个过滤参数
-    # 如果指定了get或者post时，直接设置的过滤参数会被覆盖
-    @app.route("/test", methods=['get', 'post'])
-    @pre.catch(field)
-    def test_handler(params=None):
-        return str(params)
+   from flask import Flask
 
+   from pre_request import pre
+   from pre_request import Rule
 
-    # 单独设置get请求的过滤参数
-    @app.route("/get", methods=['get'])
-    @pre.catch(get=get_field)
-    def get_handler(params=None):
-        return str(params)
+   app = Flask(__name__)
 
-    # 单独设置post请求的过滤参数
-    @app.route("/post", methods=['post'])
-    @pre.catch(post=post_field)
-    def post_handler(params=None):
-        return str(params)
+   args = {
+      "userId": Rule(type=int, required=True)
+   }
 
-    # 同时设置get和post的过滤参数
-    @app.route("/all", methods=['get', 'post'])
-    @pre.catch(get=get_field, post=post_field)
-    def all_handler(params=None):
-        return str(params)
+   @app.route("/")
+   @pre.catch(args)
+   def hello_world(params):
+      from flask import g
+      return params == g.params
 
-    # 方法视图
-    @pre.catch(get=get_field)
-    def get(self, params=None):
-    return str(params)
+上面的代码中发生了什么呢？
 
-    @pre.catch(post=post_field)
-    def post(self, params=None):
-    return str(params)
+1. 首先我们从 `pre-request` 库中引入全局 `pre` 对象，使用该对象来过滤用户参数
+2. 我们定义了一个请求参数 `userId` 并规定该参数的目标类型为 `int` ，并且不允许为空
+3. 使用 `@pre.catch(req_params)` 将参数规则赋值给装饰器，并装饰处理函数
+4. 格式化后的参数置于 :class:`~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
+
 
 Rule 规则概览
 ----------------
@@ -100,7 +79,7 @@ Rule 规则概览
 ::
 
     # 字段目标数据类型
-    self.direct_type = kwargs.get("direct_type", str)
+    self.direct_type = kwargs.get("type", str)
     # 不进行过滤，仅把参数加到结果集中
     self.skip = kwargs.get("skip", False)
 
@@ -166,7 +145,7 @@ Rule 规则概览
     self.lte = kwargs.get("lte", None)
 
     # key映射
-    self.key_map = kwargs.get("key_map", None)
+    self.key_map = kwargs.get("dest", None)
 
     # 是否需要进行json解析
     self.json_load = kwargs.get("json", False)

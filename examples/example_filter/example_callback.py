@@ -21,7 +21,7 @@ def call_back_handler(value):
 
 # 指定callback自定义处理函数，注意：此函数的调用在系统处理完之后
 callback_params = {
-    "params": Rule(direct_type=int, callback=call_back_handler)
+    "params": Rule(type=int, callback=call_back_handler)
 }
 
 

@@ -18,8 +18,8 @@ client = app.test_client()
 
 # 指定lte_key, 限定一个参数必须小于另一个参数
 lte_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, lte_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, lte_key="p1")
 }
 
 

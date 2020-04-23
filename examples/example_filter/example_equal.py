@@ -18,8 +18,8 @@ client = app.test_client()
 
 
 equal_params = {
-    "p1": Rule(direct_type=int, eq=8),
-    "p2": Rule(direct_type=int, neq=8)
+    "p1": Rule(type=int, eq=8),
+    "p2": Rule(type=int, neq=8)
 }
 
 

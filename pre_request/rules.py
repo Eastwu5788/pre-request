@@ -9,9 +9,12 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     """
     字段遵守的规则定义类
     """
+
     def __init__(self, **kwargs):
+        # 参数来源位置
+        self.location = kwargs.get("location", None)
         # 字段目标数据类型
-        self.direct_type = kwargs.get("direct_type", str)
+        self.direct_type = kwargs.get("type", str)
         # 不进行过滤，仅把参数加到结果集中
         self.skip = kwargs.get("skip", False)
 
@@ -79,7 +82,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.lte = kwargs.get("lte", None)
 
         # key映射
-        self.key_map = kwargs.get("key_map", None)
+        self.key_map = kwargs.get("dest", None)
 
         # 是否需要进行json解析
         self.json_load = kwargs.get("json", False)
@@ -178,3 +181,32 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             raise TypeError("property `lte` must be type of int or float")
 
         self._lte = value
+
+    @property
+    def location(self):
+        return self._location
+
+    @location.setter
+    def location(self, value):
+        """ Add type check for key location
+        """
+        df_location = ["args", "form", "values", "headers", "cookies", "json"]
+
+        if value is None:
+            self._location = value
+            return
+
+        if not isinstance(value, str) and not isinstance(value, list):
+            raise TypeError("location must be type of list or str")
+
+        if not value:
+            raise ValueError("location value is empty")
+
+        if isinstance(value, str):
+            value = [value]
+
+        for location in value:
+            if location not in df_location:
+                raise ValueError("params `location` must be in %s" % df_location)
+
+        self._location = value

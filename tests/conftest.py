@@ -37,6 +37,20 @@ def test_email_handler(params):
     return json_resp(params)
 
 
+g_params = {
+    "email": Rule(email=True)
+}
+
+
+@app.route("/g", methods=['get', 'post'])
+@pre.catch(g_params)
+def test_g_handler():
+    """ 测试邮件验证
+    """
+    from flask import g
+    return json_resp(g.params)
+
+
 empty_params = {
     "int": Rule(required=True),
     "str": Rule(required=True),
@@ -54,8 +68,8 @@ def test_empty_handler(params):
 
 
 enum_params = {
-    "params": Rule(direct_type=int, enum=[1, 2, 3]),
-    "params2": Rule(direct_type=str, enum=["a", "b", "c"])
+    "params": Rule(type=int, enum=[1, 2, 3]),
+    "params2": Rule(type=str, enum=["a", "b", "c"])
 }
 
 
@@ -108,8 +122,8 @@ def test_mobile_handler(params):
 
 
 range_params = {
-    "params": Rule(direct_type=int, gt=10, lt=20),
-    "params2": Rule(direct_type=int, gte=10, lte=10)
+    "params": Rule(type=int, gt=10, lt=20),
+    "params2": Rule(type=int, gte=10, lte=10)
 }
 
 
@@ -122,9 +136,9 @@ def test_range_handler(params):
 
 
 eq_params = {
-    "p1": Rule(direct_type=int, eq=1),
+    "p1": Rule(type=int, eq=1),
     "p2": Rule(eq="1"),
-    "p3": Rule(direct_type=int, neq=1),
+    "p3": Rule(type=int, neq=1),
     "p4": Rule(neq="1")
 }
 
@@ -164,8 +178,8 @@ def test_trim_handler(params):
 
 
 type_params = {
-    "int": Rule(direct_type=int),
-    "str": Rule(direct_type=str)
+    "int": Rule(type=int),
+    "str": Rule(type=str)
 }
 
 
@@ -184,7 +198,7 @@ def call_back_func(value):
 
 
 callback_params = {
-    "params": Rule(direct_type=str, callback=call_back_func)
+    "params": Rule(type=str, callback=call_back_func)
 }
 
 
@@ -197,7 +211,7 @@ def test_callback_handler(params):
 
 
 key_map_params = {
-    "params": Rule(direct_type=str, key_map="ttt")
+    "params": Rule(type=str, dest="ttt")
 }
 
 
@@ -210,8 +224,8 @@ def test_keymap_handler(params):
 
 
 skip_params = {
-    "v1": Rule(skip=True, direct_type=float, required=False, default=30.0),
-    "v2": Rule(skip=False, direct_type=float, required=False, default=30.0),
+    "v1": Rule(skip=True, type=float, required=False, default=30.0),
+    "v2": Rule(skip=False, type=float, required=False, default=30.0),
 }
 
 
@@ -225,7 +239,7 @@ def test_skip_handler(params):
 
 required_with_params = {
     "p1": Rule(required=False),
-    "p2": Rule(required=False, required_with="p1", direct_type=float)
+    "p2": Rule(required=False, required_with="p1", type=float)
 }
 
 
@@ -381,8 +395,8 @@ def test_longitude_handler(params):
 
 # 指定eq_key, 邀请
 eq_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, eq_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, eq_key="p1")
 }
 
 
@@ -394,8 +408,8 @@ def test_eq_key_handler(params):
 
 # 指定neq_key, 禁止两个参数相等
 neq_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, neq_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, neq_key="p1")
 }
 
 
@@ -407,8 +421,8 @@ def test_neq_key_handler(params):
 
 # 指定gt_key, 禁止两个参数相等
 gt_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, gt_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, gt_key="p1")
 }
 
 
@@ -420,8 +434,8 @@ def test_gt_key_handler(params):
 
 # 指定gte_key, 禁止两个参数相等
 gte_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, gte_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, gte_key="p1")
 }
 
 
@@ -433,8 +447,8 @@ def test_gte_key_handler(params):
 
 # 指定lt_key, 限定一个参数必须小于另一个参数
 lt_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, lt_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, lt_key="p1")
 }
 
 
@@ -446,14 +460,41 @@ def test_lt_key_handler(params):
 
 # 指定lte_key, 限定一个参数必须小于另一个参数
 lte_key_params = {
-    "p1": Rule(direct_type=int),
-    "p2": Rule(direct_type=int, lte_key="p1")
+    "p1": Rule(type=int),
+    "p2": Rule(type=int, lte_key="p1")
 }
 
 
 @app.route("/lte/key", methods=["GET", "POST"])
 @pre.catch(lte_key_params)
 def test_lte_key_handler(params):
+    return json_resp(params)
+
+
+# 读取指定位置的数据
+location_params = {
+    "p1": Rule(type=int, location="args"),
+    "p2": Rule(type=int, location="form"),
+    "p3": Rule(type=int, location="values"),
+    "p4": Rule(type=int, location="headers"),
+    "p5": Rule(type=int, location="cookies"),
+    "p7": Rule(type=int, location=["cookies", "args", "headers"])
+}
+
+location_json_params = {
+    "p6": Rule(type=int, location="json")
+}
+
+
+@app.route("/location", methods=["GET", "POST"])
+@pre.catch(location_params)
+def example_location_handler(params):
+    return json_resp(params)
+
+
+@app.route("/location/json", methods=["GET", "POST"])
+@pre.catch(location_json_params)
+def example_location_json_handler(params):
     return json_resp(params)
 
 

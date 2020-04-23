@@ -7,6 +7,7 @@
 # sys
 from functools import wraps
 from inspect import isfunction
+from inspect import getfullargspec
 
 # object
 from .exception import ParamsValueError
@@ -81,14 +82,42 @@ class PreRequest:
             self.filters.pop(index)
 
     @staticmethod
-    def _f_params(key, default=None):
+    def _location_params(key, location, default=None):
+        """ 读取指定位置的参数
+
+        :param key: 数据的key
+        :param location: 读取数据的位置
+        :param default: 未读取到时的默认值
+        """
+        from flask import request  # pylint: disable=import-outside-toplevel
+
+        location = location.lower()
+
+        if location in ["args", "values", "form", "headers", "cookies"]:
+            return getattr(request, location).get(key, default)
+
+        if location == "json":
+            json_value = getattr(request, location)
+            if isinstance(json_value, dict):
+                return json_value.get(key, default)
+
+        return default
+
+    def _fmt_params(self, key, rule, default=None):
         """ Query request params from flask request object
 
         :param key: params key
         """
-        from flask import request  # pylint: disable=import-outside-toplevel
+        # query params from special location
+        if rule.location is not None:
+            for location in rule.location:
+                rst = self._location_params(key, location, default)
+                if rst != default:
+                    return rst
+            return default
 
         # query params from simple method
+        from flask import request  # pylint: disable=import-outside-toplevel
         value = request.values.get(key, default)
         if value is not None:
             return value
@@ -111,7 +140,7 @@ class PreRequest:
             if not isinstance(r, Rule):
                 raise TypeError("invalid rule type for key '%s'" % k)
 
-            value = self._f_params(k)
+            value = self._fmt_params(k, r)
 
             # skip filter
             if r.skip:
@@ -185,14 +214,15 @@ class PreRequest:
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                kwargs["params"] = rst = dict()
+                from flask import g, request  # pylint: disable=import-outside-toplevel
+
+                g.params = rst = dict()
 
                 # ignore with empty rule
                 if not rule and not options:
                     return func(*args, **kwargs)
 
                 # query rules with special method
-                from flask import request  # pylint: disable=import-outside-toplevel
                 rules = options.get(request.method) or options.get(request.method.lower())
 
                 # common rule
@@ -212,6 +242,10 @@ class PreRequest:
                 resp = self._handler_complex_filter(rules, rst)
                 if resp is not None:
                     return resp
+
+                # assignment params to func args
+                if "params" in getfullargspec(func).args:
+                    kwargs["params"] = rst
 
                 return func(*args, **kwargs)
             return wrapper

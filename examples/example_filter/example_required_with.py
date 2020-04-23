@@ -19,7 +19,7 @@ client = app.test_client()
 # 指定required_with=other, 当指定的其它参数填写后，要求此参数也必须填写
 required_with_params = {
     "p1": Rule(required=False),
-    "p2": Rule(required=False, required_with="p1", direct_type=float)
+    "p2": Rule(required=False, required_with="p1", type=float)
 }
 
 
