@@ -82,14 +82,42 @@ class PreRequest:
             self.filters.pop(index)
 
     @staticmethod
-    def _f_params(key, default=None):
+    def _location_params(key, location, default=None):
+        """ 读取指定位置的参数
+
+        :param key: 数据的key
+        :param location: 读取数据的位置
+        :param default: 未读取到时的默认值
+        """
+        from flask import request  # pylint: disable=import-outside-toplevel
+
+        location = location.lower()
+
+        if location in ["args", "values", "form", "headers", "cookies"]:
+            return getattr(request, location).get(key, default)
+
+        if location == "json":
+            json_value = getattr(request, location)
+            if isinstance(json_value, dict):
+                return json_value.get(key, default)
+
+        return default
+
+    def _fmt_params(self, key, rule, default=None):
         """ Query request params from flask request object
 
         :param key: params key
         """
-        from flask import request  # pylint: disable=import-outside-toplevel
+        # query params from special location
+        if rule.location is not None:
+            for location in rule.location:
+                rst = self._location_params(key, location, default)
+                if rst != default:
+                    return rst
+            return default
 
         # query params from simple method
+        from flask import request  # pylint: disable=import-outside-toplevel
         value = request.values.get(key, default)
         if value is not None:
             return value
@@ -112,7 +140,7 @@ class PreRequest:
             if not isinstance(r, Rule):
                 raise TypeError("invalid rule type for key '%s'" % k)
 
-            value = self._f_params(k)
+            value = self._fmt_params(k, r)
 
             # skip filter
             if r.skip:
