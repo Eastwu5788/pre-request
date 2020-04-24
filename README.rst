@@ -17,21 +17,19 @@
 
 ========
 
-欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
-网络请求参数验证提供了解决方案。
+欢迎使用pre-request框架，pre-request致力于简化参数验证工作，目前pre-request仅支持Flask
+的请求参数验证。
 
-pre-request提供了非常方便的使用的方法，也提供了灵活的扩展接口方便您实现自定义的
-业务逻辑。
+pre-request提供了非常方便的使用方法，也提供了灵活的扩展机制，让您可以自定义各个模块，实现您自身的复杂需求。
 
 特点
 ----
 
-1. 验证邮箱、手机号等特殊字段是否符合要求
-2. 格式限制和转换处理，如果类型不符合或者无法转换成需求的类型，则抛出错误
-3. 取值范围限制，显示参数的取值内容的范围
-4. 请求参数为空和默认值处理，如果允许为空则可以设置默认值
-5. 用户可以自定义callback, 自己处理任何参数（callback的调用在所有filter处理之后）
-6. 可以将字段映射为内部使用的字段
+1. 提供绝大部分常用的参数基础验证能力，也提供callback函数让用户自定义验证
+2. 提供跨字段的参数验证能力，实现两个字段关联验证
+3. 提供响应对象、格式化函数、过滤器等核心组件的自定义能力
+4. 详细完善的测试用例，保证整体测试覆盖率高于90%
+5. 丰富的example，演示了pre-request目前提供的所有能力
 
 安装
 ----
@@ -50,8 +48,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 
    from flask import Flask
 
-   from pre_request import pre
-   from pre_request import Rule
+   from pre_request import pre, Rule
 
    app = Flask(__name__)
 
@@ -70,7 +67,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 1. 首先我们从 `pre-request` 库中引入全局 `pre` 对象，使用该对象来过滤用户参数
 2. 我们定义了一个请求参数 `userId` 并规定该参数的目标类型为 `int` ，并且不允许为空
 3. 使用 `@pre.catch(req_params)` 将参数规则赋值给装饰器，并装饰处理函数
-4. 格式化后的参数置于 :class:`~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
+4. 格式化后的参数置于 `~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
 
 
 Rule 规则概览
@@ -78,6 +75,8 @@ Rule 规则概览
 
 ::
 
+    # 参数来源位置
+    self.location = kwargs.get("location", None)
     # 字段目标数据类型
     self.direct_type = kwargs.get("type", str)
     # 不进行过滤，仅把参数加到结果集中
@@ -116,6 +115,8 @@ Rule 规则概览
     self.lower = kwargs.get("lower", False)
     # 字符串大写
     self.upper = kwargs.get("upper", False)
+    # 是否是文件路径
+    # self.file = kwargs.get("file", False)
 
     # 判断入参是否为ipv4/ipv6
     self.ipv4 = kwargs.get("ipv4", False)
@@ -152,6 +153,14 @@ Rule 规则概览
 
     # 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
     self.callback = kwargs.get("callback", None)
+
+
+贡献代码
+----------
+
+非常欢迎大家能够贡献自己的代码到项目中来，具体的提交流程请参考 `contributing`_.
+
+.. _contributing: https://github.com/Eastwu5788/pre-request/blob/master/CONTRIBUTING.rst
 
 
 Links

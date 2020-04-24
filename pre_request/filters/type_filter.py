@@ -45,7 +45,7 @@ class TypeFilter(BaseFilter):
 
         # 特殊的字符串转bool类型
         if direct_type == bool:
-            return False if self.value in _false_str_list else True
+            return self.value not in _false_str_list
 
         try:
             # FIX: invalid literal for int() with base 10

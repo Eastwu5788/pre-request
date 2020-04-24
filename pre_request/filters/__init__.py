@@ -4,6 +4,7 @@
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:34'
+# flake8: noqa
 
 from .empty_filter import EmptyFilter
 from .trim_filter import TrimFilter
