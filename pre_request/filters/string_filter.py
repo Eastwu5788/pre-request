@@ -35,4 +35,3 @@ class StringFilter(BaseFilter):
             self.value = self.value.upper()
 
         return self.value
-
