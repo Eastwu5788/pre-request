@@ -53,6 +53,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.upper = kwargs.get("upper", False)
         # 是否是文件路径
         # self.file = kwargs.get("file", False)
+        # 字符串分割
+        self.split = kwargs.get("split", None)
 
         # 判断入参是否为ipv4/ipv6
         self.ipv4 = kwargs.get("ipv4", False)

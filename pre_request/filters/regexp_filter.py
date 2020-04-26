@@ -28,6 +28,10 @@ class RegexpFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
+        # 非字符串不处理正则
+        if not isinstance(self.value, str):
+            return False
+
         if self.rule.reg is not None:
             return True
 

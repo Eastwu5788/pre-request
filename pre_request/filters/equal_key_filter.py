@@ -68,7 +68,7 @@ class EqualKeyFilter(BaseFilter):
 
         # 所有请求后的处理函数
         params = kwargs.get("params", dict())
-        value = params.get(self.key, None)
+        value = self.get_deep_key(self.key, params, None)
 
         for r_key, r_code in self.support_rules.items():
             rule = getattr(self.rule, r_key, None)
@@ -77,11 +77,7 @@ class EqualKeyFilter(BaseFilter):
             if rule is None:
                 continue
 
-            other_v = params.get(rule, None)
-
-            # 其它值为None的话，忽略
-            if other_v is None:
-                continue
+            other_v = self.get_deep_key(rule, params, None)
 
             if not isinstance(other_v, self.rule.direct_type):
                 raise TypeError("'eq_key' 规则仅支持相同数据类型参数判断")

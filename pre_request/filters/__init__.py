@@ -23,12 +23,14 @@ from .string_filter import StringFilter
 from .file_filter import FileFilter
 from .network_filter import NetworkFilter
 from .location_filter import LocationFilter
+from .split_filter import SplitFilter
 
 from .equal_key_filter import EqualKeyFilter
 from .required_with_filter import RequiredWithFilter
 
 simple_filters = [
     "EmptyFilter",  # 1.判断字段是否为空的过滤器
+    "SplitFilter",  # 字符串分割过滤器
     "TypeFilter",  # 4.类型转换过滤器
     "TrimFilter",  # 2.去除字符串两侧的空格
     "StringFilter",  # 字符串处理过滤器
