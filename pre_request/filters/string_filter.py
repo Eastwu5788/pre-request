@@ -28,10 +28,10 @@ class StringFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(StringFilter, self).__call__()
 
-        if self.rule.lower:
-            self.value = self.value.lower()
+        if isinstance(self.value, str):
+            return self.value.lower() if self.rule.lower else self.value.upper()
 
-        if self.rule.upper:
-            self.value = self.value.upper()
+        if isinstance(self.value, list):
+            return [value.lower() if self.rule.lower else value.upper() for value in self.value]
 
         return self.value

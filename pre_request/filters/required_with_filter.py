@@ -38,9 +38,9 @@ class RequiredWithFilter(BaseFilter):
         # 所有请求后的处理函数
         params = kwargs.get("params", dict())
 
-        other_v = params.get(self.rule.required_with, None)
+        other_v = self.get_deep_key(self.rule.required_with, params, None)
 
-        if other_v is not None and params.get(self.key) is None:
+        if other_v is not None and self.get_deep_key(self.key, params, None) is None:
             raise ParamsValueError(self.required_with_error, filter=self)
 
         return self.value

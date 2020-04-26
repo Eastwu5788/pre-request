@@ -6,8 +6,6 @@
 # @Time: '2020-03-19 10:49'
 """ 演示 pre-request 框架如何使用长度校验，仅针对字符串有效
 """
-import json
-
 from flask import Flask
 from pre_request import pre, Rule
 
@@ -40,12 +38,12 @@ def example_length_filter():
     resp = client.get("/length", data={
         "params": "a"
     })
-    print(json.loads(resp.data))
+    print(resp.data)
 
     resp = client.get("/length", data={
         "params": "abcde"
     })
-    print(json.loads(resp.data))
+    print(resp.data)
 
 
 if __name__ == "__main__":

@@ -32,9 +32,6 @@ class JsonFilter(BaseFilter):
         if not self.rule.json_load:
             return False
 
-        if self.rule.direct_type != str:
-            return False
-
         if not isinstance(self.value, str):
             return False
 
