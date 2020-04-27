@@ -15,6 +15,7 @@ from .filters.base import BaseFilter
 from .filters import simple_filters, complex_filters
 from .response import JSONResponse, HTMLResponse, BaseResponse
 from .rules import Rule
+from .utils import get_deep_value
 from . import filters
 
 
@@ -82,24 +83,33 @@ class PreRequest:
             self.filters.pop(index)
 
     @staticmethod
-    def _location_params(key, location, default=None):
+    def _location_params(key, location, default=None, deep=True):
         """ 读取指定位置的参数
 
         :param key: 数据的key
         :param location: 读取数据的位置
         :param default: 未读取到时的默认值
+        :param deep: 执行深度递归查询
         """
         from flask import request  # pylint: disable=import-outside-toplevel
 
         location = location.lower()
 
         if location in ["args", "values", "form", "headers", "cookies"]:
-            return getattr(request, location).get(key, default)
+            # query deep value with special key like `userInfo.userId`
+            if len(key.split(".")) > 1 and deep:
+                return getattr(request, location).get(key, default)
+            # load simple params
+            return get_deep_value(key, getattr(request, location), default, deep=False)
 
         if location == "json":
             json_value = getattr(request, location)
             if isinstance(json_value, dict):
-                return json_value.get(key, default)
+                # query deep value with special key like `userInfo.userId`
+                if len(key.split(".")) > 1 and deep:
+                    return json_value.get(key, default)
+                # query simple value from json
+                return get_deep_value(key, json_value, default, deep=deep)
 
         return default
 
@@ -108,24 +118,23 @@ class PreRequest:
 
         :param key: params key
         """
-        # query params from special location
-        if rule.location is not None:
-            for location in rule.location:
-                rst = self._location_params(key, location, default)
-                if rst != default:
-                    return rst
-            return default
-
-        # query params from simple method
+        df_location = ["values", "args", "form", "json", "headers", "cookies"]
         from flask import request  # pylint: disable=import-outside-toplevel
-        value = request.values.get(key, default)
-        if value is not None:
-            return value
 
-        # query params from json request
-        json_value = getattr(request, "json")
-        if json_value and isinstance(json_value, dict):
-            return json_value.get(key, default)
+        if len(key.split(".")) > 1 and rule.deep:
+            rst = get_deep_value(key, getattr(request, "json"), default, deep=True)
+            # load value from depth json structure failed
+            if rst != default:
+                return rst
+
+        rule.location = rule.location or df_location
+
+        # query object from special location
+        for location in rule.location:
+            rst = self._location_params(key, location, default, rule.deep)
+            # can't read params from this location
+            if rst != default:
+                return rst
 
         return default
 
@@ -138,7 +147,7 @@ class PreRequest:
         if isinstance(r, dict):
             fmt_result = dict()
             for key, rule in r.items():
-                fmt_value = self._handler_simple_filter(key, rule)
+                fmt_value = self._handler_simple_filter(k + "." + key, rule)
                 fmt_result[rule.key_map if isinstance(rule, Rule) and rule.key_map else key] = fmt_value
 
             return fmt_result
@@ -181,7 +190,7 @@ class PreRequest:
         """
         if isinstance(r, dict):
             for key, value in r.items():
-                self._handler_complex_filter(key, value, rst)
+                self._handler_complex_filter(k + "." + key, value, rst)
             return
 
         if not isinstance(r, Rule):

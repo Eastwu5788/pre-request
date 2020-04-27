@@ -5,6 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-13 10:39'
 from pre_request.exception import ParamsValueError
+from pre_request.utils import get_deep_value
 from .base import BaseFilter
 
 
@@ -38,9 +39,9 @@ class RequiredWithFilter(BaseFilter):
         # 所有请求后的处理函数
         params = kwargs.get("params", dict())
 
-        other_v = self.get_deep_key(self.rule.required_with, params, None)
+        other_v = get_deep_value(self.rule.required_with, params, None, deep=True)
 
-        if other_v is not None and self.get_deep_key(self.key, params, None) is None:
+        if other_v is not None and get_deep_value(self.key, params, None, deep=True) is None:
             raise ParamsValueError(self.required_with_error, filter=self)
 
         return self.value

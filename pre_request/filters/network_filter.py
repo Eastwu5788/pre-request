@@ -40,7 +40,7 @@ class NetworkFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if self.rule.direct_type != str or not isinstance(self.value, str):
+        if not isinstance(self.value, str):
             return False
 
         if self.rule.ipv4 or self.rule.ipv6 or self.rule.mac:

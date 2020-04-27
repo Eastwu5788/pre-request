@@ -18,11 +18,11 @@ args = {
         "userName": Rule(type=str, required=False, default=""),
         "socialInfo": {
             "gender": Rule(type=int, enum=[1, 2], default=1),
-            "age": Rule(type=int, gte=18, lt=80),
+            "age": Rule(type=int, gte=18, lt=80, deep=False),
             "school": Rule(type=str, required=False, default=""),
         }
     },
-    "otherUserId": Rule(type=int, required=False, required_with="userInfo.userId")
+    "otherUserId": Rule(type=int, required=False, required_with="userInfo.userId"),
 }
 
 
@@ -33,13 +33,17 @@ def structure_handler(params):
 
 
 if __name__ == "__main__":
-    resp = app.test_client().post("/structure", data={
-        "userId": "13",
-        "userName": "张三",
-        "gender": 1,
+    resp = app.test_client().post("/structure", json={
+        "userInfo": {
+            "userId": "13",
+            "userName": "张三",
+            "socialInfo": {
+                "gender": 1,
+            }
+        },
         "age": 18,
-        "school": "Dog",
         "otherUserId": 12,
+        "userInfo.socialInfo.school": "MT",
     })
 
     print(resp.get_data(as_text=True))
