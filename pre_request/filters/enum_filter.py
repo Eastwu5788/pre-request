@@ -23,7 +23,7 @@ class EnumFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if self.rule.enum:
+        if self.rule.enum and not isinstance(self.value, (list, dict)):
             return True
 
         return False

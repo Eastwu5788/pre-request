@@ -70,6 +70,67 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
 4. 格式化后的参数置于 `~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
 
 
+能力展示
+--------------
+
+我们使用一个复杂的示例来演示pre-request的魅力
+
+.. code-block:: python
+
+    from flask import Flask
+    from pre_request import pre, Rule
+
+    args = {
+        "userFirst": {
+            "userId": Rule(type=int, required=False),
+            "socialInfo": {
+                "gender": Rule(type=int, enum=[1, 2], default=1),
+                "age": Rule(type=int, gte=18, lt=80),
+                "country": Rule(required=True, deep=False)
+            }
+        },
+        "userSecond": {
+            "userId": Rule(type=int, required=False, neq_key="userFirst.userId"),
+            "socialInfo": {
+                "gender": Rule(type=int, enum=[1, 2], default=1, neq_key="userFirst.socialInfo.gender"),
+                "age": Rule(type=int, gte=18, lt=80, required_with="userFirst.socialInfo.age"),
+                "country": Rule(required=True, deep=False)
+            }
+        }
+    }
+
+
+    app = Flask(__name__)
+    app.config["TESTING"] = True
+    client = app.test_client()
+
+    @app.route("/structure", methods=["GET", "POST"])
+    @pre.catch(args)
+    def structure_handler(params):
+        return str(params)
+
+
+    if __name__ == "__main__":
+        resp = app.test_client().post("/structure", json={
+            "userFirst": {
+                "userId": "13",
+                "socialInfo": {
+                    "age": 20,
+                }
+            },
+            "userSecond": {
+                "userId": 14,
+                "socialInfo": {
+                    "age": 21
+                }
+            },
+            "country": "CN",
+            "userFirst.socialInfo.gender": 1,
+            "userSecond.socialInfo.gender": 2,
+        })
+
+        print(resp.get_data(as_text=True))
+
 贡献代码
 ----------
 

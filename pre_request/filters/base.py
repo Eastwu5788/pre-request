@@ -35,23 +35,5 @@ class BaseFilter:
         """
         return None
 
-    @staticmethod
-    def get_deep_key(key, params, default=None):
-        """ 获取多层嵌套的参数值
-
-        :param key: 多层次的key
-        :param params: 读取的数据源
-        :param default: 默认值
-        """
-        if key is None:
-            return None
-
-        for k in key.split("."):
-            params = params.get(k, default)
-            if not isinstance(params, dict) and not key.endswith(k):
-                raise ValueError("Can't read deep value from path: '%s'" % key)
-
-        return params
-
     def __call__(self, *args, **kwargs):
         pass
