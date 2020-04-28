@@ -23,10 +23,11 @@ class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
-    def __init__(self, content_type=None):
+    def __init__(self, store_key=None, content_type=None):
         self.filters = simple_filters
         self.complex_filters = complex_filters
         self.content_type = content_type or "application/json"
+        self.store_key = store_key or "params"
         self.response = None
         self.formatter = None
 
@@ -223,8 +224,7 @@ class PreRequest:
             @wraps(func)
             def wrapper(*args, **kwargs):
                 from flask import g, request  # pylint: disable=import-outside-toplevel
-
-                g.params = rst = dict()
+                fmt_rst = dict()
 
                 # ignore with empty rule
                 if not rule and not options:
@@ -246,20 +246,21 @@ class PreRequest:
                     try:
                         value = self._handler_simple_filter(k, r)
                         # simple filter handler
-                        rst[r.key_map if isinstance(r, Rule) and r.key_map else k] = value
+                        fmt_rst[r.key_map if isinstance(r, Rule) and r.key_map else k] = value
                     except ParamsValueError as e:
                         return self._f_resp(e)
 
                 # use complex filter to handler params
                 for k, r in rules.items():
                     try:
-                        self._handler_complex_filter(k, r, rst)
+                        self._handler_complex_filter(k, r, fmt_rst)
                     except ParamsValueError as e:
                         return self._f_resp(e)
 
                 # assignment params to func args
-                if "params" in getfullargspec(func).args:
-                    kwargs["params"] = rst
+                setattr(g, self.store_key, fmt_rst)
+                if self.store_key in getfullargspec(func).args:
+                    kwargs[self.store_key] = fmt_rst
 
                 return func(*args, **kwargs)
             return wrapper
