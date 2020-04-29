@@ -15,7 +15,7 @@ from pre_request import pre, Rule
 
 class CustomResponse(BaseResponse):
 
-    def __call__(self, formatter=None, error=None):
+    def __call__(self, fuzzy=False, formatter=None, error=None):
         """
         :type error: 错误
         :return:

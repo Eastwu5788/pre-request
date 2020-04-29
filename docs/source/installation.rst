@@ -32,8 +32,9 @@ pre-request 目前支持PyPi安装方式，您仅需使用pip命令即可安装�
 本地whl包
 ----------
 
-当然您也可以在本地构建 whl 进行分发，我们提供了脚本供您一键构建，构建完成后 `dist` 文件夹下可以找到打包后的 whl 文件
+当然您也可以在本地构建 whl 进行分发
 
 .. code-block:: text
 
-    sh build.sh
+    python setup.py sdist
+    pip wheel --wheel-dir=./dist ./

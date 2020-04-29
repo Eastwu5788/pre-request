@@ -23,9 +23,10 @@ class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
-    def __init__(self, store_key=None, content_type=None):
+    def __init__(self, fuzzy=False, store_key=None, content_type=None):
         self.filters = simple_filters
         self.complex_filters = complex_filters
+        self.fuzzy = fuzzy
         self.content_type = content_type or "application/json"
         self.store_key = store_key or "params"
         self.response = None
@@ -272,9 +273,9 @@ class PreRequest:
         :param error: ParamsValueError
         """
         if self.response is not None:
-            return self.response()(self.formatter, error)
+            return self.response()(self.fuzzy, self.formatter, error)
 
         if self.content_type == "text/html":
-            return HTMLResponse()(self.formatter, error)
+            return HTMLResponse()(self.fuzzy, self.formatter, error)
 
-        return JSONResponse()(self.formatter, error)
+        return JSONResponse()(self.fuzzy, self.formatter, error)
