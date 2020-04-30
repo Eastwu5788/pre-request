@@ -115,6 +115,19 @@ default
   }
 
 
+split
+--------
+
+`split` 实现将入参字符串按照指定字符串进行分割。默认值 `None`
+
+::
+
+  # 按','分割字符串
+  params = {
+    "userId": Rule(int, split=",")
+  }
+
+
 trim
 ------
 

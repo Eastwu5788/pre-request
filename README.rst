@@ -60,7 +60,7 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
    @pre.catch(args)
    def hello_world(params):
       from flask import g
-      return params == g.params
+      return str(params == g.params)
 
 上面的代码中发生了什么呢？
 
