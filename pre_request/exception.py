@@ -19,10 +19,14 @@ class ParamsValueError(ValueError):
         self.code = code
         self.context = context
 
-    def form_message(self):  # noqa: disable
+    def form_message(self, fuzzy=False):  # noqa: disable
         """ 格式化JSON格式的错误消息
         """
-        message = "参数检测失败，请检查您的输入!"
+        message = "参数验证失败，请检查您的输入!"
+
+        # 模糊错误信息
+        if fuzzy:
+            return message
 
         # read filter object
         filter_obj = self.context["filter"]

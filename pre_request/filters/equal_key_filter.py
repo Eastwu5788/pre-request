@@ -5,6 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-13 09:16'
 from pre_request.exception import ParamsValueError
+from pre_request.utils import get_deep_value
 from .base import BaseFilter
 
 
@@ -68,7 +69,7 @@ class EqualKeyFilter(BaseFilter):
 
         # 所有请求后的处理函数
         params = kwargs.get("params", dict())
-        value = params.get(self.key, None)
+        value = get_deep_value(self.key, params, None, deep=True)
 
         for r_key, r_code in self.support_rules.items():
             rule = getattr(self.rule, r_key, None)
@@ -77,11 +78,7 @@ class EqualKeyFilter(BaseFilter):
             if rule is None:
                 continue
 
-            other_v = params.get(rule, None)
-
-            # 其它值为None的话，忽略
-            if other_v is None:
-                continue
+            other_v = get_deep_value(rule, params, None, deep=True)
 
             if not isinstance(other_v, self.rule.direct_type):
                 raise TypeError("'eq_key' 规则仅支持相同数据类型参数判断")

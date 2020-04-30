@@ -20,8 +20,18 @@ class TrimFilter(BaseFilter):
         if self.rule.trim and isinstance(self.value, str):
             return True
 
+        if self.rule.trim and isinstance(self.value, list) and self.rule.direct_type == str:
+            return True
+
         return False
 
     def __call__(self, *args, **kwargs):
         super(TrimFilter, self).__call__()
-        return self.value.strip()
+
+        if isinstance(self.value, str):
+            return self.value.strip()
+
+        if isinstance(self.value, list):
+            return [value.strip() for value in self.value]
+
+        return self.value

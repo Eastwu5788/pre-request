@@ -33,26 +33,36 @@ class TypeFilter(BaseFilter):
 
         return True
 
-    def __call__(self, *args, **kwargs):
-        super(TypeFilter, self).__call__()
-
-        direct_type = self.rule.direct_type
-
-        if direct_type == str:
-            if isinstance(self.value, bytes):
-                self.value = self.value.decode('utf-8')
-            return self.value
+    def _type_transform(self, d_type, value):
+        """
+        :param d_type:
+        :param value:
+        :return:
+        """
+        if d_type == str and isinstance(value, bytes):
+            return value.decode('utf-8')
 
         # 特殊的字符串转bool类型
-        if direct_type == bool:
-            return False if self.value in _false_str_list else True
+        if d_type == bool and isinstance(value, str):
+            return value not in _false_str_list
 
         try:
             # FIX: invalid literal for int() with base 10
             # 处理int仅能转换纯数字字符串问题
-            if self.rule.direct_type == int and "." in self.value:
-                self.value = self.value.split(".")[0]
+            if d_type == int and "." in value:
+                value = value.split(".")[0]
 
-            return self.rule.direct_type(self.value)
+            return d_type(value)
         except ValueError:
             raise ParamsValueError(self.error_code, filter=self)
+
+    def __call__(self, *args, **kwargs):
+        super(TypeFilter, self).__call__()
+
+        if isinstance(self.value, str):
+            return self._type_transform(self.rule.direct_type, self.value)
+
+        if isinstance(self.value, list):
+            return [self._type_transform(self.rule.direct_type, value) for value in self.value]
+
+        return self.value

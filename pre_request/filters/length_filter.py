@@ -42,7 +42,7 @@ class LengthFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if self.rule.direct_type not in [str, list, set, tuple]:
+        if not isinstance(self.value, (str, list)):
             return False
 
         if self.rule.gt is not None:

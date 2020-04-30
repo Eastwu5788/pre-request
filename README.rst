@@ -17,21 +17,19 @@
 
 ========
 
-欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
-网络请求参数验证提供了解决方案。
+欢迎使用pre-request框架，pre-request致力于简化参数验证工作，目前pre-request仅支持Flask
+的请求参数验证。
 
-pre-request提供了非常方便的使用的方法，也提供了灵活的扩展接口方便您实现自定义的
-业务逻辑。
+pre-request提供了非常方便的使用方法，也提供了灵活的扩展机制，让您可以自定义各个模块，实现您自身的复杂需求。
 
 特点
 ----
 
-1. 验证邮箱、手机号等特殊字段是否符合要求
-2. 格式限制和转换处理，如果类型不符合或者无法转换成需求的类型，则抛出错误
-3. 取值范围限制，显示参数的取值内容的范围
-4. 请求参数为空和默认值处理，如果允许为空则可以设置默认值
-5. 用户可以自定义callback, 自己处理任何参数（callback的调用在所有filter处理之后）
-6. 可以将字段映射为内部使用的字段
+1. 提供绝大部分常用的参数基础验证能力，也提供callback函数让用户自定义验证
+2. 提供跨字段的、跨数据结构的参数验证能力，实现参数之间关联验证
+3. 提供响应对象、格式化函数、过滤器等核心组件的自定义能力
+4. 详细完善的测试用例，保证整体测试覆盖率高于90%
+5. 丰富的example，演示了pre-request目前提供的所有能力
 
 安装
 ----
@@ -50,8 +48,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 
    from flask import Flask
 
-   from pre_request import pre
-   from pre_request import Rule
+   from pre_request import pre, Rule
 
    app = Flask(__name__)
 
@@ -63,7 +60,7 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
    @pre.catch(args)
    def hello_world(params):
       from flask import g
-      return params == g.params
+      return str(params == g.params)
 
 上面的代码中发生了什么呢？
 
@@ -73,88 +70,76 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
 4. 格式化后的参数置于 `~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
 
 
-Rule 规则概览
-----------------
+复杂示例
+--------------
 
-::
+我们使用一个复杂的示例来演示pre-request的魅力
 
-    # 字段目标数据类型
-    self.direct_type = kwargs.get("type", str)
-    # 不进行过滤，仅把参数加到结果集中
-    self.skip = kwargs.get("skip", False)
+.. code-block:: python
 
-    # 当前字段是否是必填项
-    self.required = kwargs.get("required", True)
-    self.required_with = kwargs.get("required_with", None)
+    from flask import Flask
+    from pre_request import pre, Rule
 
-    # 当前字段默认值，如果不允许为空，则次字段无意义
-    self.default = kwargs.get("default", None)
-    # 去除前后的空格
-    self.trim = kwargs.get("trim", False)
-
-    # 字段枚举值设置
-    self.enum = kwargs.get("enum", list())
-
-    # 正则表达式
-    self.reg = kwargs.get("reg", None)
-    # Email判断
-    self.email = kwargs.get("email", False)
-    # 手机号判断
-    self.mobile = kwargs.get("mobile", False)
-
-    # 判断字符串中包含某个子串
-    self.contains = kwargs.get("contains", list())
-    # 判断字符串包含任意子串
-    self.contains_any = kwargs.get("contains_any", list())
-    # 判断字符串中禁止包括某个子串
-    self.excludes = kwargs.get("excludes", list())
-    # 判断字符串开头
-    self.startswith = kwargs.get("startswith", None)
-    # 判断字符串结尾
-    self.endswith = kwargs.get("endswith", None)
-    # 字符串小写
-    self.lower = kwargs.get("lower", False)
-    # 字符串大写
-    self.upper = kwargs.get("upper", False)
-
-    # 判断入参是否为ipv4/ipv6
-    self.ipv4 = kwargs.get("ipv4", False)
-    self.ipv6 = kwargs.get("ipv6", False)
-    self.mac = kwargs.get("mac", False)
-
-    # 判断入参是否为地理坐标 经度/维度
-    self.latitude = kwargs.get("latitude", False)
-    self.longitude = kwargs.get("longitude", False)
-
-    # 跨字段验证
-    self.eq_key = kwargs.get("eq_key", None)
-    self.neq_key = kwargs.get("neq_key", None)
-    self.gt_key = kwargs.get("gt_key", None)
-    self.gte_key = kwargs.get("gte_key", None)
-    self.lt_key = kwargs.get("lt_key", None)
-    self.lte_key = kwargs.get("lte_key", None)
-
-    # 等于/不等于
-    self.eq = kwargs.get("eq", None)
-    self.neq = kwargs.get("neq", None)
-
-    # 范围限定 direct_type 为数字时限定数字大小，为字符串时限定字符串长度
-    self.gt = kwargs.get("gt", None)
-    self.gte = kwargs.get("gte", None)
-    self.lt = kwargs.get("lt", None)
-    self.lte = kwargs.get("lte", None)
-
-    # key映射
-    self.key_map = kwargs.get("dest", None)
-
-    # 是否需要进行json解析
-    self.json_load = kwargs.get("json", False)
-
-    # 自定义处理callback, 在所有的filter处理完成后，通过callback回调给用户进行自定义处理
-    self.callback = kwargs.get("callback", None)
+    args = {
+        "userFirst": {
+            "userId": Rule(type=int, required=False),
+            "socialInfo": {
+                "gender": Rule(type=int, enum=[1, 2], default=1),
+                "age": Rule(type=int, gte=18, lt=80),
+                "country": Rule(required=True, deep=False)
+            }
+        },
+        "userSecond": {
+            "userId": Rule(type=int, required=False, neq_key="userFirst.userId"),
+            "socialInfo": {
+                "gender": Rule(type=int, enum=[1, 2], default=1, neq_key="userFirst.socialInfo.gender"),
+                "age": Rule(type=int, gte=18, lt=80, required_with="userFirst.socialInfo.age"),
+                "country": Rule(required=True, deep=False)
+            }
+        }
+    }
 
 
-Links
+    app = Flask(__name__)
+    app.config["TESTING"] = True
+    client = app.test_client()
+
+    @app.route("/structure", methods=["GET", "POST"])
+    @pre.catch(args)
+    def structure_handler(params):
+        return str(params)
+
+
+    if __name__ == "__main__":
+        resp = app.test_client().post("/structure", json={
+            "userFirst": {
+                "userId": "13",
+                "socialInfo": {
+                    "age": 20,
+                }
+            },
+            "userSecond": {
+                "userId": 14,
+                "socialInfo": {
+                    "age": 21
+                }
+            },
+            "country": "CN",
+            "userFirst.socialInfo.gender": 1,
+            "userSecond.socialInfo.gender": 2,
+        })
+
+        print(resp.get_data(as_text=True))
+
+贡献代码
+----------
+
+非常欢迎大家能够贡献自己的代码到项目中来，具体的提交流程请参考 `contributing`_.
+
+.. _contributing: https://github.com/Eastwu5788/pre-request/blob/master/CONTRIBUTING.rst
+
+
+相关链接
 ------------
 * Documentaion: https://pre-request.readthedocs.io/en/master/index.html
 * Release: https://pypi.org/project/pre-request/

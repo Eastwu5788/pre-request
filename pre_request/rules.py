@@ -17,6 +17,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.direct_type = kwargs.get("type", str)
         # 不进行过滤，仅把参数加到结果集中
         self.skip = kwargs.get("skip", False)
+        # 请求参数深度跟随
+        self.deep = kwargs.get("deep", True)
 
         # 当前字段是否是必填项
         self.required = kwargs.get("required", True)
@@ -53,6 +55,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.upper = kwargs.get("upper", False)
         # 是否是文件路径
         # self.file = kwargs.get("file", False)
+        # 字符串分割
+        self.split = kwargs.get("split", None)
 
         # 判断入参是否为ipv4/ipv6
         self.ipv4 = kwargs.get("ipv4", False)

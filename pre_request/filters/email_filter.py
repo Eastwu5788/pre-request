@@ -24,7 +24,7 @@ class EmailFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not self.rule.email:
+        if not self.rule.email or not isinstance(self.value, str):
             return False
 
         return True

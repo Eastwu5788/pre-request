@@ -59,20 +59,30 @@ class RangeFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(RangeFilter, self).__call__()
 
+        value = self.value if isinstance(self.value, list) else [self.value]
+
         # 大于
-        if self.rule.gt is not None and not self.value > self.rule.gt:
-            raise ParamsValueError(self.range_code_gt, filter=self)
+        if self.rule.gt is not None:
+            rst = [not v > self.rule.gt for v in value]
+            if True in rst:
+                raise ParamsValueError(self.range_code_gt, filter=self)
 
         # 大于等于
-        if self.rule.gte is not None and not self.value >= self.rule.gte:
-            raise ParamsValueError(self.range_code_gte, filter=self)
+        if self.rule.gte is not None:
+            rst = [not v >= self.rule.gte for v in value]
+            if True in rst:
+                raise ParamsValueError(self.range_code_gte, filter=self)
 
         # 小于
-        if self.rule.lt is not None and not self.value < self.rule.lt:
-            raise ParamsValueError(self.range_code_lt, filter=self)
+        if self.rule.lt is not None:
+            rst = [not v < self.rule.lt for v in value]
+            if True in rst:
+                raise ParamsValueError(self.range_code_lt, filter=self)
 
         # 小于等于
-        if self.rule.lte is not None and not self.value <= self.rule.lte:
-            raise ParamsValueError(self.range_code_lte, filter=self)
+        if self.rule.lte is not None:
+            rst = [not v <= self.rule.lte for v in value]
+            if True in rst:
+                raise ParamsValueError(self.range_code_lte, filter=self)
 
         return self.value

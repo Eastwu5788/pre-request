@@ -24,7 +24,7 @@ class MobileFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not self.rule.mobile:
+        if not self.rule.mobile or not isinstance(self.value, str):
             return False
 
         return True
