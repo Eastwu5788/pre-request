@@ -5,7 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-10 16:41'
 from pre_request.exception import ParamsValueError
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 class ContentFilter(BaseFilter):

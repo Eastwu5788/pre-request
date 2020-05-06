@@ -25,6 +25,8 @@ Unreleased
 
 -  TODO: 强化处理数组类型参数能力
 -  TODO: 过滤器剥离为普通过滤器和复杂跨字段过滤器
+-  TODO: 完善sphinx函数中的文档
+-  TODO: 新增Date日期相关处理能力
 
 Version 2.0.8
 --------------

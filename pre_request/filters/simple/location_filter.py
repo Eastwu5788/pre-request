@@ -6,7 +6,7 @@
 # @Time: '2020-04-10 17:09'
 from pre_request.exception import ParamsValueError
 from pre_request.regexp import LongitudeRegexp, LatitudeRegexp
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 class LocationFilter(BaseFilter):
