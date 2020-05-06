@@ -4,7 +4,7 @@
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-26 10:50'
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 class SplitFilter(BaseFilter):

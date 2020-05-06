@@ -5,7 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:43'
 from pre_request.exception import ParamsValueError
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 _false_str_list = ["False", "false", "No", "no"]

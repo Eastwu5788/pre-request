@@ -6,7 +6,7 @@
 # @Time: '2020-04-13 09:16'
 from pre_request.exception import ParamsValueError
 from pre_request.utils import get_deep_value
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 class EqualKeyFilter(BaseFilter):

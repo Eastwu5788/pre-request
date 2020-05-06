@@ -8,7 +8,7 @@ import re
 
 from pre_request.exception import ParamsValueError
 from pre_request.regexp import Regexp
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 class RegexpFilter(BaseFilter):

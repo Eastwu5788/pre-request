@@ -10,7 +10,7 @@ import socket
 # project
 from pre_request.regexp import MacRegexp
 from pre_request.exception import ParamsValueError
-from .base import BaseFilter
+from pre_request.filters.base import BaseFilter
 
 
 class NetworkFilter(BaseFilter):
