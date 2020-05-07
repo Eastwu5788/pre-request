@@ -311,6 +311,18 @@ mac
   }
 
 
+fmt
+--------
+
+将字符串转换成`datetime`类型时的格式化样例. 注意`fmt`参数仅在`type=datetime.datetime`时有效
+
+::
+
+  params = {
+    "birthday": Rule(type=datetime.datetime, fmt="%Y-%m-%d")
+  }
+
+
 latitude / longitude
 --------------------
 

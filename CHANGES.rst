@@ -24,9 +24,9 @@ Version 2.0.9 (20200509)
 Unreleased
 
 -  TODO: 强化处理数组类型参数能力
--  TODO: 过滤器剥离为普通过滤器和复杂跨字段过滤器
--  TODO: 完善sphinx函数中的文档
--  TODO: 新增Date日期相关处理能力
+-  过滤器剥离为普通过滤器和复杂跨字段过滤器
+-  TODO: 完善sphinx文档
+-  新增Datetime日期处理能力
 
 Version 2.0.8
 --------------
@@ -43,8 +43,8 @@ Version 2.0.7
 
 Released 2020-04-23
 
--  仅当用户在函数中填写`params`参数时才会进行函数参数赋值
--  新增`flask.g`传递格式化后的参数
+-  仅当用户在函数中填写 `params` 参数时才会进行函数参数赋值
+-  新增 `flask.g` 传递格式化后的参数
 -  变更 `direct_type` 参数名称为 `type`
 -  变更 `key_map` 参数名称为 `dest`
 
