@@ -4,6 +4,10 @@
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:43'
+# sys
+from datetime import datetime
+
+# project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
 
@@ -16,10 +20,14 @@ class TypeFilter(BaseFilter):
     数据类型过滤器
     """
     error_code = 562
+    datetime_error_code = 530
 
-    def fmt_error_message(self, _):
+    def fmt_error_message(self, code):
         """ 格式化错误消息
         """
+        if code == self.datetime_error_code:
+            return "%s字段转换成日期格式'%s'失败!" % (self.key, self.rule.fmt)
+
         return "%s字段无法转换成(%s)类型!" % (self.key, self.rule.direct_type.__name__)
 
     def filter_required(self):
@@ -45,6 +53,13 @@ class TypeFilter(BaseFilter):
         # 特殊的字符串转bool类型
         if d_type == bool and isinstance(value, str):
             return value not in _false_str_list
+
+        # 日期转换
+        if d_type == datetime:
+            try:
+                return datetime.strptime(value, self.rule.fmt)
+            except ValueError:
+                raise ParamsValueError(self.datetime_error_code, filter=self)
 
         try:
             # FIX: invalid literal for int() with base 10
