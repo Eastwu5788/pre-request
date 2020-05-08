@@ -24,7 +24,7 @@ class MobileFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not self.rule.mobile or not isinstance(self.value, str):
+        if not self.rule.mobile or self.rule.direct_type != str:
             return False
 
         return True
@@ -32,7 +32,10 @@ class MobileFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(MobileFilter, self).__call__()
 
-        if not MobileRegexp()(self.value):
-            raise ParamsValueError(self.error_code, filter=self)
+        value = self.value if isinstance(self.value, list) else [self.value]
+
+        for v in value:
+            if not MobileRegexp()(v):
+                raise ParamsValueError(self.error_code, filter=self)
 
         return self.value

@@ -40,7 +40,7 @@ class NetworkFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not isinstance(self.value, str):
+        if self.rule.direct_type != str:
             return False
 
         if self.rule.ipv4 or self.rule.ipv6 or self.rule.mac:
@@ -78,13 +78,16 @@ class NetworkFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(NetworkFilter, self).__call__()
 
-        if self.rule.ipv4 and not self._is_ipv4(self.value):
-            raise ParamsValueError(self.ipv4_error_code, filter=self)
+        value = self.value if isinstance(self.value, list) else [self.value]
 
-        if self.rule.ipv6 and not self._is_ipv6(self.value):
-            raise ParamsValueError(self.ipv6_error_code, filter=self)
+        for v in value:
+            if self.rule.ipv4 and not self._is_ipv4(v):
+                raise ParamsValueError(self.ipv4_error_code, filter=self)
 
-        if self.rule.mac and not MacRegexp()(self.value):
-            raise ParamsValueError(self.mac_error_code, filter=self)
+            if self.rule.ipv6 and not self._is_ipv6(v):
+                raise ParamsValueError(self.ipv6_error_code, filter=self)
+
+            if self.rule.mac and not MacRegexp()(v):
+                raise ParamsValueError(self.mac_error_code, filter=self)
 
         return self.value

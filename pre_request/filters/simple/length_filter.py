@@ -42,7 +42,7 @@ class LengthFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not isinstance(self.value, (str, list)):
+        if self.rule.direct_type not in [str, list]:
             return False
 
         if self.rule.gt is not None:
@@ -62,20 +62,23 @@ class LengthFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(LengthFilter, self).__call__()
 
-        # 大于
-        if self.rule.gt is not None and not len(self.value) > self.rule.gt:
-            raise ParamsValueError(self.length_code_gt, filter=self)
+        fmt_value = self.value if isinstance(self.value, list) else [self.value]
 
-        # 大于等于
-        if self.rule.gte is not None and not len(self.value) >= self.rule.gte:
-            raise ParamsValueError(self.length_code_gte, filter=self)
+        for value in fmt_value:
+            # 大于
+            if self.rule.gt is not None and not len(value) > self.rule.gt:
+                raise ParamsValueError(self.length_code_gt, filter=self)
 
-        # 小于
-        if self.rule.lt is not None and not len(self.value) < self.rule.lt:
-            raise ParamsValueError(self.length_code_lt, filter=self)
+            # 大于等于
+            if self.rule.gte is not None and not len(value) >= self.rule.gte:
+                raise ParamsValueError(self.length_code_gte, filter=self)
 
-        # 小于等于
-        if self.rule.lte is not None and not len(self.value) <= self.rule.lte:
-            raise ParamsValueError(self.length_code_lte, filter=self)
+            # 小于
+            if self.rule.lt is not None and not len(value) < self.rule.lt:
+                raise ParamsValueError(self.length_code_lt, filter=self)
+
+            # 小于等于
+            if self.rule.lte is not None and not len(value) <= self.rule.lte:
+                raise ParamsValueError(self.length_code_lte, filter=self)
 
         return self.value
