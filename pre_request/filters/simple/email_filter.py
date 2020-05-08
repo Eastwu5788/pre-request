@@ -24,7 +24,7 @@ class EmailFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not self.rule.email or not isinstance(self.value, str):
+        if not self.rule.email or self.rule.direct_type != str:
             return False
 
         return True
@@ -32,7 +32,10 @@ class EmailFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(EmailFilter, self).__call__()
 
-        if not EmailRegexp()(self.value):
-            raise ParamsValueError(self.error_code, filter=self)
+        fmt_value = self.value if isinstance(self.value, list) else [self.value]
+
+        for value in fmt_value:
+            if not EmailRegexp()(value):
+                raise ParamsValueError(self.error_code, filter=self)
 
         return self.value
