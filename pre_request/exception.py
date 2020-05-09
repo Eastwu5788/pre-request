@@ -7,12 +7,13 @@
 
 
 class PreRequestException(Exception):
-    """ Pre-request 异常基类
+    """ PreRequest base exception
     """
 
 
 class ParamsValueError(ValueError):
-    """自定义异常"""
+    """ Invalid input params value exception
+    """
 
     def __init__(self, code, **context):
         super().__init__()
@@ -20,7 +21,7 @@ class ParamsValueError(ValueError):
         self.context = context
 
     def form_message(self, fuzzy=False):  # noqa: disable
-        """ 格式化JSON格式的错误消息
+        """ format error message
         """
         message = "参数验证失败，请检查您的输入!"
 

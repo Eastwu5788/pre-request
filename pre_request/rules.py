@@ -6,8 +6,7 @@ from datetime import datetime
 
 
 class Rule:  # pylint: disable=too-many-instance-attributes
-    """
-    字段遵守的规则定义类
+    """ This class is designed to describe special rule that params must follow
     """
 
     def __init__(self, **kwargs):
@@ -99,8 +98,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
     @property
     def gt(self):
-        """ 将`gt`属性变更为动态属性
-        """
         return self._gt
 
     @gt.setter
@@ -122,8 +119,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
     @property
     def gte(self):
-        """ 将`gte`属性变更为动态属性
-        """
         return self._gte
 
     @gte.setter
@@ -145,8 +140,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
     @property
     def lt(self):
-        """ 将`lt`属性变更为动态属性
-        """
         return self._lt
 
     @lt.setter
@@ -168,8 +161,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
     @property
     def lte(self):
-        """ 将`lte`属性变更为动态属性
-        """
         return self._lte
 
     @lte.setter
