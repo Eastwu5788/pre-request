@@ -24,6 +24,12 @@ class PreRequest:
     """
 
     def __init__(self, fuzzy=False, store_key=None, content_type=None):
+        """ PreRequest init function
+
+        :param fuzzy: formatter error message with fuzzy style
+        :param store_key: which key will store formatter result
+        :param content_type: response content type json/html
+        """
         self.filters = simple_filters
         self.complex_filters = complex_filters
         self.fuzzy = fuzzy
@@ -73,10 +79,10 @@ class PreRequest:
             self.filters.append(cus_filter)
 
     def remove_filter(self, cus_filter=None, index=None):
-        """ 移除指定过滤器
+        """ Remove filters from object with index or filter name
 
-        :param cus_filter: 过滤器名称
-        :param index: 过滤器位置
+        :param cus_filter: user filter name
+        :param index: filter index
         """
         if cus_filter and (isinstance(cus_filter, str) or issubclass(cus_filter, BaseFilter)):
             self.filters.remove(cus_filter)
@@ -86,12 +92,12 @@ class PreRequest:
 
     @staticmethod
     def _location_params(key, location, default=None, deep=True):
-        """ 读取指定位置的参数
+        """ Read params form special location ex: args/forms/header/cookies
 
-        :param key: 数据的key
-        :param location: 读取数据的位置
-        :param default: 未读取到时的默认值
-        :param deep: 执行深度递归查询
+        :param key: params key
+        :param location: special location
+        :param default: default value if special value is not exists
+        :param deep: read params with deep search
         """
         from flask import request  # pylint: disable=import-outside-toplevel
 
@@ -141,10 +147,10 @@ class PreRequest:
         return default
 
     def _handler_simple_filter(self, k, r):
-        """ 处理具体规则
+        """ Handler filter rules with simple ways
 
-        :param k: 参数key
-        :param r: 参数规则
+        :param k: params key
+        :param r: params rule
         """
         if isinstance(r, dict):
             fmt_result = dict()
@@ -185,10 +191,11 @@ class PreRequest:
         return value
 
     def _handler_complex_filter(self, k, r, rst):
-        """ 处理复合过滤器
+        """ Handler complex rule filters
 
-        :param r: 参数规则
-        :param rst: 所有合规参数
+        :param k: params key
+        :param r: params rule
+        :param rst: handler result
         """
         if isinstance(r, dict):
             for key, value in r.items():
