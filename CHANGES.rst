@@ -18,7 +18,7 @@ Unreleased
 - TODO: 支持Flask扩展集成形式
 - TODO: 所有文档、注释去中文
 
-Version 2.0.9
+Version 2.0.10
 -------------------------
 
 Released 2020-05-11
