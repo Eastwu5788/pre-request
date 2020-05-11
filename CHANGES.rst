@@ -18,14 +18,13 @@ Unreleased
 - TODO: 支持Flask扩展集成形式
 - TODO: 所有文档、注释去中文
 
-Version 2.0.9 (20200509)
+Version 2.0.9
 -------------------------
 
-Unreleased
+Released 2020-05-11
 
 -  强化处理数组类型参数能力
 -  过滤器剥离为普通过滤器和复杂跨字段过滤器
--  TODO: 完善sphinx文档
 -  新增Datetime日期处理能力
 
 Version 2.0.8
