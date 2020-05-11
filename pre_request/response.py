@@ -3,13 +3,13 @@ import json
 
 
 class BaseResponse:
-    """
-    错误响应基类
+    """ PreRequest basic response class
     """
 
     def __call__(self, fuzzy=False, error=None):
-        """
-        :param error: 错误
+        """ Use __call__ function to generate response
+
+        :param error: error
         :type error: ParamsValueError
         """
         if error:
@@ -19,13 +19,13 @@ class BaseResponse:
 
 
 class JSONResponse(BaseResponse):
-    """ 以JSON格式响应出错的情况
+    """ Handler response with json format
     """
 
     def __call__(self, fuzzy=False, formatter=None, error=None):
-        """
-        :type error: 错误
-        :return:
+        """ Use __call__ function to generate response
+
+        :type error: special error
         """
         result = super(JSONResponse, self).__call__(fuzzy, error)
 
@@ -40,13 +40,13 @@ class JSONResponse(BaseResponse):
 
 
 class HTMLResponse(BaseResponse):
-    """ 以HTML格式响应出错的情况
+    """ Handler response with html format
     """
 
     def __call__(self, fuzzy=False, formatter=None, error=None):
-        """
-        :type error: 错误
-        :return:
+        """ Use __call__ function to generate response
+
+        :type error: special error
         """
         result = super(HTMLResponse, self).__call__(fuzzy, error)
 

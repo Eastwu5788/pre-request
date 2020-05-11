@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-
 """
 该文件主要定义所有的规则处理类
 """
+from datetime import datetime
 
 
 class Rule:  # pylint: disable=too-many-instance-attributes
-    """
-    字段遵守的规则定义类
+    """ This class is designed to describe special rule that params must follow
     """
 
     def __init__(self, **kwargs):
@@ -67,6 +66,9 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.latitude = kwargs.get("latitude", False)
         self.longitude = kwargs.get("longitude", False)
 
+        # 日期格式化字符串
+        self.fmt = kwargs.get("fmt", "%Y-%m-%d %H:%M:%S")
+
         # 跨字段验证
         self.eq_key = kwargs.get("eq_key", None)
         self.neq_key = kwargs.get("neq_key", None)
@@ -96,8 +98,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
     @property
     def gt(self):
-        """ 将`gt`属性变更为动态属性
-        """
         return self._gt
 
     @gt.setter
@@ -112,15 +112,13 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, int) and not isinstance(value, float):
-            raise TypeError("property `gt` must be type of int or float")
+        if not isinstance(value, (int, float, datetime)):
+            raise TypeError("property `gt` must be type of int datetime or float")
 
         self._gt = value
 
     @property
     def gte(self):
-        """ 将`gte`属性变更为动态属性
-        """
         return self._gte
 
     @gte.setter
@@ -135,15 +133,13 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, int) and not isinstance(value, float):
-            raise TypeError("property `gte` must be type of int or float")
+        if not isinstance(value, (int, float, datetime)):
+            raise TypeError("property `gte` must be type of int datetime or float")
 
         self._gte = value
 
     @property
     def lt(self):
-        """ 将`lt`属性变更为动态属性
-        """
         return self._lt
 
     @lt.setter
@@ -158,15 +154,13 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, int) and not isinstance(value, float):
-            raise TypeError("property `lt` must be type of int or float")
+        if not isinstance(value, (int, float, datetime)):
+            raise TypeError("property `lt` must be type of int datetime or float")
 
         self._lt = value
 
     @property
     def lte(self):
-        """ 将`lte`属性变更为动态属性
-        """
         return self._lte
 
     @lte.setter
@@ -181,7 +175,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, int) and not isinstance(value, float):
+        if not isinstance(value, (int, float, datetime)):
             raise TypeError("property `lte` must be type of int or float")
 
         self._lte = value

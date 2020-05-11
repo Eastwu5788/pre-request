@@ -28,11 +28,7 @@ class RegexpFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        # 非字符串不处理正则
-        if not isinstance(self.value, str):
-            return False
-
-        if self.rule.reg is not None:
+        if self.rule.reg and self.rule.direct_type == str:
             return True
 
         return False
@@ -40,8 +36,12 @@ class RegexpFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(RegexpFilter, self).__call__()
 
-        # 判断是否符合正则
-        if not Regexp(self.rule.reg, re.IGNORECASE)(self.value):
-            raise ParamsValueError(self.error_code, filter=self)
+        # 将参数转换成数组处理
+        fmt_value = self.value if isinstance(self.value, list) else [self.value]
+
+        for value in fmt_value:
+            # 判断是否符合正则
+            if not Regexp(self.rule.reg, re.IGNORECASE)(value):
+                raise ParamsValueError(self.error_code, filter=self)
 
         return self.value

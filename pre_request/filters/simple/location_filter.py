@@ -32,7 +32,7 @@ class LocationFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if not isinstance(self.value, str):
+        if self.rule.direct_type != str:
             return False
 
         if self.rule.latitude or self.rule.longitude:
@@ -43,10 +43,13 @@ class LocationFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(LocationFilter, self).__call__()
 
-        if self.rule.longitude and not LongitudeRegexp()(self.value):
-            raise ParamsValueError(self.longitude_error_code, filter=self)
+        fmt_value = self.value if isinstance(self.value, list) else [self.value]
 
-        if self.rule.latitude and not LatitudeRegexp()(self.value):
-            raise ParamsValueError(self.latitude_error_code, filter=self)
+        for value in fmt_value:
+            if self.rule.longitude and not LongitudeRegexp()(value):
+                raise ParamsValueError(self.longitude_error_code, filter=self)
+
+            if self.rule.latitude and not LatitudeRegexp()(value):
+                raise ParamsValueError(self.latitude_error_code, filter=self)
 
         return self.value

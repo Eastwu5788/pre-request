@@ -7,21 +7,21 @@
 
 
 def get_deep_value(key, params, default=None, deep=True):
-    """ 获取多层嵌套的参数值
+    """ Extract value from complex structure with deep search
 
-    :param key: 多层次的key
-    :param params: 读取的数据源
-    :param default: 默认值
-    :param deep: 是否进行深度递归查询
+    :param key: special key, use '.' to separate different depth
+    :param params: origin data
+    :param default: default value if special key is not exists
+    :param deep: extract deep value
     """
     if key is None:
         return default
 
-    # 不进行深度递归查询，直接返回最后一层结果
+    # extract value from first depth
     if not deep:
         return params.get(key.split(".")[-1], default)
 
-    # 无效的入参
+    # invalid input params type
     if not params or not isinstance(params, dict):
         raise ValueError("Can't read deep value from path: '%s'" % key)
 

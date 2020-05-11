@@ -17,10 +17,7 @@ class TrimFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if self.rule.trim and isinstance(self.value, str):
-            return True
-
-        if self.rule.trim and isinstance(self.value, list) and self.rule.direct_type == str:
+        if self.rule.trim and self.rule.direct_type == str:
             return True
 
         return False
