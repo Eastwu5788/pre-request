@@ -22,9 +22,9 @@ def json_resp(result):
 
 
 args = {
-    "p1": Rule(type=int, split=",", required=True),
-    "p2": Rule(split=",", trim=True, lower=True),
-    "p3": Rule(type=int, split=",", lte=5)
+    "p1": Rule(type=int, split=",", multi=True, required=True),
+    "p2": Rule(split=",", trim=True, multi=True, lower=True),
+    "p3": Rule(type=int, split=",", multi=True, lte=5)
 }
 
 

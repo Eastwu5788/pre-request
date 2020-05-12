@@ -146,6 +146,25 @@ class PreRequest:
 
         return default
 
+    @staticmethod
+    def _fmt_file_params(key, rule):
+        """ Query file params from request.files
+
+        :param key: params key
+        :param rule: params rule
+        """
+        from flask import request  # pylint: disable=import-outside-toplevel
+
+        # load single params
+        if not rule.multi:
+            return request.files.get(key)
+
+        # load multi files
+        fmt_params = list()
+        for f in request.files.getlist(key):
+            fmt_params.append(f)
+        return fmt_params
+
     def _handler_simple_filter(self, k, r):
         """ Handler filter rules with simple ways
 
@@ -163,7 +182,14 @@ class PreRequest:
         if not isinstance(r, Rule):
             raise TypeError("invalid rule type for key '%s'" % k)
 
-        value = self._fmt_params(k, r)
+        # load file type of params from request
+        from werkzeug.datastructures import FileStorage
+        if r.direct_type == FileStorage:
+            value = self._fmt_file_params(k, r)
+
+        # load simple params
+        else:
+            value = self._fmt_params(k, r)
 
         if r.skip:
             return value

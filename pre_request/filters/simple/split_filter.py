@@ -16,7 +16,7 @@ class SplitFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if self.rule.split is not None:
+        if self.rule.split is not None and isinstance(self.value, str):
             return True
 
         return False
