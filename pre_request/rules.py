@@ -18,6 +18,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.skip = kwargs.get("skip", False)
         # 请求参数深度跟随
         self.deep = kwargs.get("deep", True)
+        # 指定参数是否有多个，如果传入的是list时，multi=False会读取最后一个
+        self.multi = kwargs.get("multi", False)
 
         # 当前字段是否是必填项
         self.required = kwargs.get("required", True)
