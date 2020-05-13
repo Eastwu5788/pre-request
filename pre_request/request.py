@@ -19,11 +19,16 @@ from .utils import get_deep_value
 from . import filters
 
 
+k_content_type = "PRE_CONTENT_TYPE"
+k_fuzzy = "PRE_FUZZY"
+k_store_key = "PRE_STORE_KEY"
+
+
 class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
-    def __init__(self, fuzzy=False, store_key=None, content_type=None):
+    def __init__(self, app=None, fuzzy=False, store_key=None, content_type=None):
         """ PreRequest init function
 
         :param fuzzy: formatter error message with fuzzy style
@@ -37,6 +42,32 @@ class PreRequest:
         self.store_key = store_key or "params"
         self.response = None
         self.formatter = None
+
+        if app is not None:
+            self.app = app
+            self.init_app(app, None)
+
+    def init_app(self, app, config=None):
+        """ Flask extension initialize
+
+        :param app: flask application
+        :param config: flask config
+        """
+        if not (config is None or isinstance(config, dict)):
+            raise TypeError("'config' params must be type of dict or None")
+
+        # update config from different origin
+        basic_config = app.config.copy()
+        if config:
+            basic_config.update(config)
+        config = basic_config
+
+        self.fuzzy = config.get(k_fuzzy, False)
+        self.content_type = config.get(k_content_type, "application/json")
+        self.store_key = config.get(k_store_key, "params")
+
+        self.app = app
+        app.extensions["pre_request"] = self
 
     def add_response(self, resp):
         """ Add custom response class
