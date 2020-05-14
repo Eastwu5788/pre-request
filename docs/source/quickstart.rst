@@ -45,6 +45,23 @@ pre-request 提供了一个全局单例 `pre` 对象，我们可以通过操作 
 -  `pre.content_type` 设置pre-request的错误响应格式，目前支持 `application/json` 和 `text/html`
 
 
+`Flask` 扩展支持
+------------------
+
+pre-request 提供了基于Flask扩展方式配置参数的能力。
+
+
+.. code-block:: python
+
+   app = Flask(__name__)
+
+   app.config["PRE_FUZZY"] = True
+   app.config["PRE_STORE_KEY"] = "pp"
+   app.config["PRE_CONTENT_TYPE"] = "application/json"
+
+   pre.init_app(app=app)
+
+
 `@pre.catch` 装饰器介绍
 -------------------------
 

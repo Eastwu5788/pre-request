@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-该文件主要定义所有的规则处理类
-"""
 from datetime import datetime
 
 
