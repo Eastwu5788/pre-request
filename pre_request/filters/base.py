@@ -7,11 +7,8 @@
 
 
 class BaseFilter:
+    """ Base class for filter object
     """
-    过滤器基类
-    """
-    # 错误码
-    error_code = 500
 
     def __init__(self, key, value, rule):
         """
