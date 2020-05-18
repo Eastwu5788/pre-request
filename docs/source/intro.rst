@@ -51,7 +51,7 @@ type
 -------------
 
 `type` 限制用户入参的数据类型。我们会尝试将用户入参中的参数类型转换成目标类型，如果尝试转换失败，
-我们会输出特定错误码. 默认值 `str`
+我们会输出特定错误码. 上传文件时，需要设置 `type=werkzeug.datastructures.FileStorage`. 默认值 `str`
 
 ::
 
@@ -72,6 +72,21 @@ skip
  params = {
     "userName": Rule(skip=True)
  }
+
+
+multi
+--------
+
+`multi` 用于标识参数是否有多个值，multi=True时，我们会将单个入参包装成list，multi=False时，如果入参是list，则会取最后一个值。您可以
+使用 `split` 分割字符串或者 `json` 类型入参传递数组。默认值 `False`
+
+::
+
+ # 指定参数是否有多个值
+ params = {
+    "userIds": Rule(type=int, multi=True)
+ }
+
 
 
 required

@@ -19,11 +19,16 @@ from .utils import get_deep_value
 from . import filters
 
 
+k_content_type = "PRE_CONTENT_TYPE"
+k_fuzzy = "PRE_FUZZY"
+k_store_key = "PRE_STORE_KEY"
+
+
 class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
-    def __init__(self, fuzzy=False, store_key=None, content_type=None):
+    def __init__(self, app=None, fuzzy=False, store_key=None, content_type=None):
         """ PreRequest init function
 
         :param fuzzy: formatter error message with fuzzy style
@@ -37,6 +42,32 @@ class PreRequest:
         self.store_key = store_key or "params"
         self.response = None
         self.formatter = None
+
+        if app is not None:
+            self.app = app
+            self.init_app(app, None)
+
+    def init_app(self, app, config=None):
+        """ Flask extension initialize
+
+        :param app: flask application
+        :param config: flask config
+        """
+        if not (config is None or isinstance(config, dict)):
+            raise TypeError("'config' params must be type of dict or None")
+
+        # update config from different origin
+        basic_config = app.config.copy()
+        if config:
+            basic_config.update(config)
+        config = basic_config
+
+        self.fuzzy = config.get(k_fuzzy, False)
+        self.content_type = config.get(k_content_type, "application/json")
+        self.store_key = config.get(k_store_key, "params")
+
+        self.app = app
+        app.extensions["pre_request"] = self
 
     def add_response(self, resp):
         """ Add custom response class
@@ -146,6 +177,25 @@ class PreRequest:
 
         return default
 
+    @staticmethod
+    def _fmt_file_params(key, rule):
+        """ Query file params from request.files
+
+        :param key: params key
+        :param rule: params rule
+        """
+        from flask import request  # pylint: disable=import-outside-toplevel
+
+        # load single params
+        if not rule.multi:
+            return request.files.get(key)
+
+        # load multi files
+        fmt_params = list()
+        for f in request.files.getlist(key):
+            fmt_params.append(f)
+        return fmt_params
+
     def _handler_simple_filter(self, k, r):
         """ Handler filter rules with simple ways
 
@@ -163,7 +213,14 @@ class PreRequest:
         if not isinstance(r, Rule):
             raise TypeError("invalid rule type for key '%s'" % k)
 
-        value = self._fmt_params(k, r)
+        # load file type of params from request
+        from werkzeug.datastructures import FileStorage
+        if r.direct_type == FileStorage:
+            value = self._fmt_file_params(k, r)
+
+        # load simple params
+        else:
+            value = self._fmt_params(k, r)
 
         if r.skip:
             return value

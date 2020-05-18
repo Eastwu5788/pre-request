@@ -24,6 +24,7 @@ from pre_request.filters.simple.file_filter import FileFilter
 from pre_request.filters.simple.network_filter import NetworkFilter
 from pre_request.filters.simple.location_filter import LocationFilter
 from pre_request.filters.simple.split_filter import SplitFilter
+from pre_request.filters.simple.multi_filter import MultiFilter
 
 from pre_request.filters.cross.equal_key_filter import EqualKeyFilter
 from pre_request.filters.cross.required_with_filter import RequiredWithFilter
@@ -31,6 +32,7 @@ from pre_request.filters.cross.required_with_filter import RequiredWithFilter
 simple_filters = [
     "EmptyFilter",  # 1.判断字段是否为空的过滤器
     "SplitFilter",  # 字符串分割过滤器
+    "MultiFilter",  # 多值过滤器
     "TypeFilter",  # 4.类型转换过滤器
     "TrimFilter",  # 2.去除字符串两侧的空格
     "StringFilter",  # 字符串处理过滤器

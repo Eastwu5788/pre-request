@@ -61,6 +61,11 @@ class TypeFilter(BaseFilter):
             except ValueError:
                 raise ParamsValueError(self.datetime_error_code, filter=self)
 
+        # 文件处理
+        from werkzeug.datastructures import FileStorage
+        if d_type == FileStorage:
+            return value
+
         try:
             # FIX: invalid literal for int() with base 10
             # 处理int仅能转换纯数字字符串问题
