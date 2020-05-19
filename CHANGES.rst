@@ -1,12 +1,11 @@
 .. py:currentmodule:: pre_request
 
 
-Version 2.2.0 (20200630)
+Version 2.1.1 (20200630)
 -------------------------
 
 Unreleased
 
-- TODO: 优化项目结构，脱离Flask限制，将不同web框架作为扩展实现
 - TODO: 核心能力抽象，支持普通函数入参校验能力
 
 Version 2.1.0

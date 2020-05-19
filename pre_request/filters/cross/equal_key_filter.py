@@ -69,7 +69,7 @@ class EqualKeyFilter(BaseFilter):
 
         # 所有请求后的处理函数
         params = kwargs.get("params", dict())
-        value = get_deep_value(self.key, params, None, deep=True)
+        value = get_deep_value(self.rule.key_map or self.key, params, None, deep=True)
 
         for r_key, r_code in self.support_rules.items():
             rule = getattr(self.rule, r_key, None)
