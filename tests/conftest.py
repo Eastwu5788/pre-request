@@ -177,20 +177,6 @@ def test_trim_handler(params):
     return json_resp(params)
 
 
-type_params = {
-    "int": Rule(type=int),
-    "str": Rule(type=str)
-}
-
-
-@app.route("/type", methods=['get', 'post'])
-@pre.catch(type_params)
-def test_type_handler(params):
-    """ 测试字段目标数据类型校验
-    """
-    return json_resp(params)
-
-
 key_map_params = {
     "params": Rule(type=str, dest="ttt")
 }

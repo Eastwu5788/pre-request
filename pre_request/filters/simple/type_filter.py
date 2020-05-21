@@ -79,10 +79,7 @@ class TypeFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super(TypeFilter, self).__call__()
 
-        if isinstance(self.value, str):
-            return self._type_transform(self.rule.direct_type, self.value)
-
         if isinstance(self.value, list):
             return [self._type_transform(self.rule.direct_type, value) for value in self.value]
 
-        return self.value
+        return self._type_transform(self.rule.direct_type, self.value)
