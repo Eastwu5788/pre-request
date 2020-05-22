@@ -177,39 +177,6 @@ def test_trim_handler(params):
     return json_resp(params)
 
 
-type_params = {
-    "int": Rule(type=int),
-    "str": Rule(type=str)
-}
-
-
-@app.route("/type", methods=['get', 'post'])
-@pre.catch(type_params)
-def test_type_handler(params):
-    """ 测试字段目标数据类型校验
-    """
-    return json_resp(params)
-
-
-def call_back_func(value):
-    if value == "3":
-        return 999
-    return value
-
-
-callback_params = {
-    "params": Rule(type=str, callback=call_back_func)
-}
-
-
-@app.route("/callback", methods=['get', 'post'])
-@pre.catch(callback_params)
-def test_callback_handler(params):
-    """ 测试自定义处理callback校验
-    """
-    return json_resp(params)
-
-
 key_map_params = {
     "params": Rule(type=str, dest="ttt")
 }
@@ -234,18 +201,6 @@ skip_params = {
 def test_skip_handler(params):
     """ 测试 skip 功能
     """
-    return json_resp(params)
-
-
-required_with_params = {
-    "p1": Rule(required=False),
-    "p2": Rule(required=False, required_with="p1", type=float)
-}
-
-
-@app.route("/required/with", methods=["GET", "POST"])
-@pre.catch(required_with_params)
-def test_required_with_handler(params):
     return json_resp(params)
 
 
@@ -390,84 +345,6 @@ longitude_params = {
 @app.route("/longitude", methods=["GET", "POST"])
 @pre.catch(longitude_params)
 def test_longitude_handler(params):
-    return json_resp(params)
-
-
-# 指定eq_key, 邀请
-eq_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, eq_key="p1")
-}
-
-
-@app.route("/eq/key", methods=["GET", "POST"])
-@pre.catch(eq_key_params)
-def test_eq_key_handler(params):
-    return json_resp(params)
-
-
-# 指定neq_key, 禁止两个参数相等
-neq_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, neq_key="p1")
-}
-
-
-@app.route("/neq/key", methods=["GET", "POST"])
-@pre.catch(neq_key_params)
-def test_neq_key_handler(params):
-    return json_resp(params)
-
-
-# 指定gt_key, 禁止两个参数相等
-gt_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, gt_key="p1")
-}
-
-
-@app.route("/gt/key", methods=["GET", "POST"])
-@pre.catch(gt_key_params)
-def test_gt_key_handler(params):
-    return json_resp(params)
-
-
-# 指定gte_key, 禁止两个参数相等
-gte_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, gte_key="p1")
-}
-
-
-@app.route("/gte/key", methods=["GET", "POST"])
-@pre.catch(gte_key_params)
-def test_gte_key_handler(params):
-    return json_resp(params)
-
-
-# 指定lt_key, 限定一个参数必须小于另一个参数
-lt_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, lt_key="p1")
-}
-
-
-@app.route("/lt/key", methods=["GET", "POST"])
-@pre.catch(lt_key_params)
-def test_lt_key_handler(params):
-    return json_resp(params)
-
-
-# 指定lte_key, 限定一个参数必须小于另一个参数
-lte_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, lte_key="p1")
-}
-
-
-@app.route("/lte/key", methods=["GET", "POST"])
-@pre.catch(lte_key_params)
-def test_lte_key_handler(params):
     return json_resp(params)
 
 

@@ -405,15 +405,15 @@ lte / lte_key
 使用方法同 gt / gt_key 表示小于等于的判断
 
 
-key_map
+dest
 ------------
 
-`kay_map` 用于将用户传入的参数名称映射为特定的字符串。默认值为 `None`
+`dest` 用于将用户传入的参数名称映射为特定的字符串。默认值为 `None`
 
 ::
 
   params = {
-    "userId": Rule(direct_type=int, key_map="user_id")
+    "userId": Rule(direct_type=int, dest="user_id")
   }
 
 

@@ -41,7 +41,7 @@ class RequiredWithFilter(BaseFilter):
 
         other_v = get_deep_value(self.rule.required_with, params, None, deep=True)
 
-        if other_v is not None and get_deep_value(self.key, params, None, deep=True) is None:
+        if other_v is not None and get_deep_value(self.rule.key_map or self.key, params, None, deep=True) is None:
             raise ParamsValueError(self.required_with_error, filter=self)
 
         return self.value
