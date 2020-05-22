@@ -1,12 +1,12 @@
 .. py:currentmodule:: pre_request
 
 
-Version 2.1.1 (20200630)
+Version 2.1.1
 -------------------------
 
-Unreleased
+Released 2020-05-22
 
-- TODO: 核心能力抽象，支持普通函数入参校验能力
+- 修复发现的类型转换问题
 
 Version 2.1.0
 --------------------------
