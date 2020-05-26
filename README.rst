@@ -131,6 +131,30 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
 
         print(resp.get_data(as_text=True))
 
+
+不使用装饰器
+-------------
+
+我们也支持不使用装饰器解析入参, 通过 `pre.parse()` 函数解析入参
+
+.. code-block:: python
+
+    args = {
+        "params": Rule(email=True)
+    }
+
+    # 全局处理 pre-request 抛出的异常，进行格式化返回
+    @app.errorhandler(ParamsValueError)
+    def params_value_error(e):
+        return pre.fmt_resp(e)
+
+
+    @app.route("/index")
+    def example_handler():
+        rst = pre.parse(args)
+        return str(rst)
+
+
 贡献代码
 ----------
 
