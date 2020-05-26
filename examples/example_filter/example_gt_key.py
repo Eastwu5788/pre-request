@@ -19,8 +19,8 @@ client = app.test_client()
 
 # 指定gt_key, 禁止两个参数相等
 gt_key_params = {
-    "p1": Rule(type=datetime, dest="P1"),
-    "p2": Rule(type=datetime, gt_key="P1", dest="P2")
+    "p1": Rule(type=datetime, fmt="%Y-%m-%d %H:%M:%S", dest="P1"),
+    "p2": Rule(type=datetime, fmt="%Y-%m-%d %H:%M:%S", gt_key="P1", dest="P2", required=False)
 }
 
 

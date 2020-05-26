@@ -282,47 +282,57 @@ class PreRequest:
 
             filter_obj(params=rst)
 
+    def parse(self, rule=None, **options):
+        """ Parse input params
+        """
+        fmt_rst = dict()
+
+        # invalid input
+        if not rule and not options:
+            return fmt_rst
+
+        # query rules with special method
+        from flask import request  # pylint: disable=import-outside-toplevel
+        rules = options.get(request.method) or options.get(request.method.lower())
+
+        # common rule
+        if rules is None and rule is not None:
+            rules = rule
+
+        # ignore catch with empty rules
+        if not rules:
+            raise ValueError("request method '%s' with invalid filter rule" % request.method)
+
+        # use simple filter to handler params
+        for k, r in rules.items():
+            value = self._handler_simple_filter(k, r)
+            # simple filter handler
+            fmt_rst[r.key_map if isinstance(r, Rule) and r.key_map else k] = value
+
+        # use complex filter to handler params
+        for k, r in rules.items():
+            self._handler_complex_filter(k, r, fmt_rst)
+
+        return fmt_rst
+
     def catch(self, rule=None, **options):
         """ Catch request params
         """
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                from flask import g, request  # pylint: disable=import-outside-toplevel
-                fmt_rst = dict()
-
                 # ignore with empty rule
                 if not rule and not options:
                     return func(*args, **kwargs)
 
-                # query rules with special method
-                rules = options.get(request.method) or options.get(request.method.lower())
-
-                # common rule
-                if rules is None and rule is not None:
-                    rules = rule
-
-                # ignore catch with empty rules
-                if not rules:
-                    raise ValueError("request method '%s' with invalid filter rule" % request.method)
-
-                # use simple filter to handler params
-                for k, r in rules.items():
-                    try:
-                        value = self._handler_simple_filter(k, r)
-                        # simple filter handler
-                        fmt_rst[r.key_map if isinstance(r, Rule) and r.key_map else k] = value
-                    except ParamsValueError as e:
-                        return self._f_resp(e)
-
-                # use complex filter to handler params
-                for k, r in rules.items():
-                    try:
-                        self._handler_complex_filter(k, r, fmt_rst)
-                    except ParamsValueError as e:
-                        return self._f_resp(e)
+                # parse input params
+                try:
+                    fmt_rst = self.parse(rule, **options)
+                except ParamsValueError as e:
+                    return self.fmt_resp(e)
 
                 # assignment params to func args
+                from flask import g
                 setattr(g, self.store_key, fmt_rst)
                 if self.store_key in getfullargspec(func).args:
                     kwargs[self.store_key] = fmt_rst
@@ -331,7 +341,7 @@ class PreRequest:
             return wrapper
         return decorator
 
-    def _f_resp(self, error):
+    def fmt_resp(self, error):
         """ Handler not formatted request error
 
         :param error: ParamsValueError

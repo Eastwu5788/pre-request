@@ -48,9 +48,6 @@ class EqualKeyFilter(BaseFilter):
     def filter_required(self):
         """ 验证是否需要进行过滤
         """
-        if not self.rule.required and self.value is None:
-            return False
-
         if self.rule.eq_key is not None or self.rule.neq_key is not None:
             return True
 
@@ -70,6 +67,10 @@ class EqualKeyFilter(BaseFilter):
         # 所有请求后的处理函数
         params = kwargs.get("params", dict())
         value = get_deep_value(self.rule.key_map or self.key, params, None, deep=True)
+
+        # BUG: complex filter value will be None
+        if not self.rule.required and value is None:
+            return value
 
         for r_key, r_code in self.support_rules.items():
             rule = getattr(self.rule, r_key, None)
