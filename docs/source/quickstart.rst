@@ -90,3 +90,23 @@ pre-request的过滤能力主要是通过`@pre.catch`装饰器来实现的
     @pre.catch(get=get_field, post=post_field)
     def all_handler(params):
         return str(params)
+
+
+`pre.parse` 解析函数介绍
+---------------------------
+
+如果您觉得使用 `@pre.cache` 装饰器模式对您的代码侵入性太高，我们也提供了 `pre.parse()` 函数来解析用户入参
+
+.. code-block:: python
+
+    def get_handler():
+        params = pre.parse(get=req_params)
+        return str(params)
+
+如果用户入参不符合规则要求，我们会抛出 `ParamsValueError` 异常，您可以在Flask框架中对所有此类型异常进行捕获并格式化返回
+
+.. code-block:: python
+
+    @app.errorhandler(ParamsValueError)
+    def params_value_error(e):
+        return pre.fmt_resp(e)
