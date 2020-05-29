@@ -1,10 +1,10 @@
 .. py:currentmodule:: pre_request
 
 
-Version 2.1.2 (2020-06-01)
--------------------------------
+Version 2.1.2
+--------------------------
 
-Unreleased
+Released 2020-05-29
 
 - 开放 `pre.parse` 函数提供直接解析入参能力
 - 详细说明文档进一步完善

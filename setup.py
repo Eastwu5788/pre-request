@@ -34,7 +34,7 @@ setup(
     package_data={"": ["LICENSE"], "pre-request": ["*.pem"]},
     package_dir={'pre-request': 'pre-request'},
     include_package_data=True,
-    python_requires=">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
+    python_requires=">=3.4",
     install_requires=requires,
     license=about['__license__'],
     zip_safe=False,
@@ -44,8 +44,6 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
@@ -55,4 +53,3 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
 )
-
