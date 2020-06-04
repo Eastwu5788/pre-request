@@ -37,8 +37,8 @@ Document
 Pre-request manual could be found at: https://pre-request.readthedocs.io/en/master/index.html
 
 
-Tutorial
-----------------
+A Simple Example
+------------------
 
 This is very easy to use `pre-request` in your project
 
@@ -130,8 +130,8 @@ We use a very complex example to show the powerful of this framework
         print(resp.get_data(as_text=True))
 
 
-Use `pre.parse`
-------------------
+Use parse
+-------------
 
 We can use function `pre.parse` instead of decorator `@pre.catch()`
 
@@ -166,6 +166,7 @@ Coffee
 Please give me a cup of coffee, thank you!
 
 BTC: 1657DRJUyfMyz41pdJfpeoNpz23ghMLVM3
+
 ETH: 0xb098600a9a4572a4894dce31471c46f1f290b087
 
 
