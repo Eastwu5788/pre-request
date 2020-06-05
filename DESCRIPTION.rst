@@ -26,39 +26,36 @@ Pre-request
    :alt: Im
 
 
-欢迎您使用pre-request框架，pre-request致力于简化请求参数验证工作。为Flask的
-网络请求参数验证提供了解决方案。
+This framework is designed to validate params for Restful api request.
 
-pre-request提供了非常方便的使用的方法，也提供了灵活的扩展接口方便您实现自定义的
-业务逻辑。
+We can validate complex struct and field, including Cross Field, Cross Struct
 
-特点
-----
 
-1. 提供绝大部分常用的参数基础验证能力，也提供callback函数让用户自定义验证
-2. 提供跨字段的、跨数据结构的参数验证能力，实现参数之间关联验证
-3. 提供响应对象、格式化函数、过滤器等核心组件的自定义能力
-4. 详细完善的测试用例，保证整体测试覆盖率高于90%
-5. 丰富的example，演示了pre-request目前提供的所有能力
+Install
+-----------
 
-安装
-----
+you can simply install it by:
 
 ::
 
     pip install pre-request
 
-快速使用
-----------------
+Document
+----------
 
-集成pre-request到您的请求中非常简单
+Pre-request manual could be found at: https://pre-request.readthedocs.io/en/master/index.html
+
+
+A Simple Example
+------------------
+
+This is very easy to use `pre-request` in your project
 
 .. code-block:: python
 
    from flask import Flask
 
-   from pre_request import pre
-   from pre_request import Rule
+   from pre_request import pre, Rule
 
    app = Flask(__name__)
 
@@ -70,14 +67,116 @@ pre-request提供了非常方便的使用的方法，也提供了灵活的扩展
    @pre.catch(args)
    def hello_world(params):
       from flask import g
-      return params == g.params
+      return str(params == g.params)
 
-上面的代码中发生了什么呢？
+what happened in this code ?
 
-1. 首先我们从 `pre-request` 库中引入全局 `pre` 对象，使用该对象来过滤用户参数
-2. 我们定义了一个请求参数 `userId` 并规定该参数的目标类型为 `int` ，并且不允许为空
-3. 使用 `@pre.catch(req_params)` 将参数规则赋值给装饰器，并装饰处理函数
-4. 格式化后的参数置于 `~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
+1. Use `pre-request` library to import a global object `pre`
+2. Define request params rule, `userId` must be type of `int` and required
+3. Use `@pre.catch(req_params)` to filter input value
+4. Use `~flask.g` or `def hello_world(params)` to get formatted input value。
+
+
+Complex Example
+-----------------
+
+We use a very complex example to show the powerful of this framework
+
+.. code-block:: python
+
+    from flask import Flask
+    from pre_request import pre, Rule
+
+    args = {
+        "userFirst": {
+            "userId": Rule(type=int, required=False),
+            "socialInfo": {
+                "gender": Rule(type=int, enum=[1, 2], default=1),
+                "age": Rule(type=int, gte=18, lt=80),
+                "country": Rule(required=True, deep=False)
+            }
+        },
+        "userSecond": {
+            "userId": Rule(type=int, required=False, neq_key="userFirst.userId"),
+            "socialInfo": {
+                "gender": Rule(type=int, enum=[1, 2], default=1, neq_key="userFirst.socialInfo.gender"),
+                "age": Rule(type=int, gte=18, lt=80, required_with="userFirst.socialInfo.age"),
+                "country": Rule(required=True, deep=False)
+            }
+        }
+    }
+
+
+    app = Flask(__name__)
+    app.config["TESTING"] = True
+    client = app.test_client()
+
+    @app.route("/structure", methods=["GET", "POST"])
+    @pre.catch(args)
+    def structure_handler(params):
+        return str(params)
+
+
+    if __name__ == "__main__":
+        resp = app.test_client().post("/structure", json={
+            "userFirst": {
+                "userId": "13",
+                "socialInfo": {
+                    "age": 20,
+                }
+            },
+            "userSecond": {
+                "userId": 14,
+                "socialInfo": {
+                    "age": 21
+                }
+            },
+            "country": "CN",
+            "userFirst.socialInfo.gender": 1,
+            "userSecond.socialInfo.gender": 2,
+        })
+
+        print(resp.get_data(as_text=True))
+
+
+Use parse
+-------------
+
+We can use function `pre.parse` instead of decorator `@pre.catch()`
+
+.. code-block:: python
+
+    args = {
+        "params": Rule(email=True)
+    }
+
+    @app.errorhandler(ParamsValueError)
+    def params_value_error(e):
+        return pre.fmt_resp(e)
+
+
+    @app.route("/index")
+    def example_handler():
+        rst = pre.parse(args)
+        return str(rst)
+
+
+Contributing
+--------------
+
+How to make a contribution to Pre-request, see the `contributing`_.
+
+.. _contributing: https://github.com/Eastwu5788/pre-request/blob/master/CONTRIBUTING.rst
+
+
+Coffee
+---------
+
+Please give me a cup of coffee, thank you!
+
+BTC: 1657DRJUyfMyz41pdJfpeoNpz23ghMLVM3
+
+ETH: 0xb098600a9a4572a4894dce31471c46f1f290b087
 
 
 Links
