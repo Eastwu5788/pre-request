@@ -1,12 +1,13 @@
-快速开始
+Quickstart
 ===============
 
-本篇文档将向您介绍pre-request的详细使用方式，帮助您尽快将pre-request应用于您的项目。
+Eager to get started? This page gives a good example to use pre-request. It assumes you already have pre-request installed
+If you do not, head over to the Installation section.
 
-Minimal Usage
+Minimal Example
 ----------------
 
-pre-request最简单的使用方式
+A minimal example looks something like this:
 
 .. code-block:: python
 
@@ -27,28 +28,28 @@ pre-request最简单的使用方式
       return str(params)
 
 
-上面的代码中发生了什么呢？
+what happened in this code ?
 
-1. 首先我们从 `pre-request` 库中引入全局 `pre` 对象，使用该对象来过滤用户参数
-2. 我们定义了一个请求参数 `userId` 并规定该参数的目标类型为 `int` ，并且不允许为空
-3. 使用 `@pre.catch(req_params)` 将参数规则赋值给装饰器，并装饰处理函数
-4. 格式化后的参数置于 :class:`~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
-
-
-`pre` 单例介绍
----------------
-
-pre-request 提供了一个全局单例 `pre` 对象，我们可以通过操作 `pre` 来修改pre-request的运行参数。
-
--  `pre.fuzzy` 指示pre-request是否对参数验证错误原因进行模糊化处理。防止暴露过多信息
--  `pre.sore_key` 自定义pre-request解析完成的参数的存储key
--  `pre.content_type` 设置pre-request的错误响应格式，目前支持 `application/json` 和 `text/html`
+1. Use `pre-request` library to import a global object `pre`
+2. Define request params rule, `userId` must be type of `int` and required
+3. Use `@pre.catch(req_params)` to filter input value
+4. Use `~flask.g` or `def hello_world(params)` to get formatted input value。
 
 
-`Flask` 扩展支持
+`pre` singleton
+----------------
+
+pre-request support global singleton object, we can use this object to update runtime params
+
+-  `pre.fuzzy` pre-request will fuzzy error message to avoid expose sensitive information
+-  `pre.sore_key` use another params to store formatted request info
+-  `pre.content_type` pre-request will response html or json error message, use `application/json` or `text/html`
+
+
+`Flask` Extension
 ------------------
 
-pre-request 提供了基于Flask扩展方式配置参数的能力。
+pre-request support flask extension configuration to load params.
 
 
 .. code-block:: python
@@ -62,12 +63,11 @@ pre-request 提供了基于Flask扩展方式配置参数的能力。
    pre.init_app(app=app)
 
 
-`@pre.catch` 装饰器介绍
--------------------------
+use decorator
+--------------
 
-pre-request的过滤能力主要是通过`@pre.catch`装饰器来实现的
+pre-request use decorator `pre.catch` to validate request params with special kind of method
 
-我们可以使用 `@pre.catch` 过滤指定method的请求参数, 也可以指定针对特定请求 `method` 进行过滤
 
 .. code-block:: python
 
@@ -81,32 +81,33 @@ pre-request的过滤能力主要是通过`@pre.catch`装饰器来实现的
     def get_handler(params):
         return str(params)
 
-当然我们也为使用不同请求方式解析不同参数的情况提供了支持
+we can also support validate different rule for different request params
 
 .. code-block:: python
 
-    # 同时设置get和post的过滤参数
     @app.route("/all", methods=['get', 'post'])
     @pre.catch(get=get_field, post=post_field)
     def all_handler(params):
         return str(params)
 
 
-`pre.parse` 解析函数介绍
----------------------------
+Use parse
+-------------
 
-如果您觉得使用 `@pre.cache` 装饰器模式对您的代码侵入性太高，我们也提供了 `pre.parse()` 函数来解析用户入参
-
-.. code-block:: python
-
-    def get_handler():
-        params = pre.parse(get=req_params)
-        return str(params)
-
-如果用户入参不符合规则要求，我们会抛出 `ParamsValueError` 异常，您可以在Flask框架中对所有此类型异常进行捕获并格式化返回
+We can use function `pre.parse` instead of decorator `@pre.catch()`
 
 .. code-block:: python
+
+    args = {
+        "params": Rule(email=True)
+    }
 
     @app.errorhandler(ParamsValueError)
     def params_value_error(e):
         return pre.fmt_resp(e)
+
+
+    @app.route("/index")
+    def example_handler():
+        rst = pre.parse(args)
+        return str(rst)
