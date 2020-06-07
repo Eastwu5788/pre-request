@@ -9,7 +9,7 @@ location
 
 ::
 
-  # 限定参数从指定位置读取
+  # read arguments from special location
   params = {
     "Access-Token": Rule(location="headers"),
     "userId": Rule(location=["cookies", "headers", "args"])
