@@ -1,7 +1,7 @@
 Customize
 ===========
 
-自定义响应
+Response
 --------------
 
 通常情况下，pre-request 检查用户参数发现问题时，会直接中断处理并将发现的问题返回给请求方。pre-request提供的
@@ -46,7 +46,7 @@ Customize
 
 
 
-自定义格式化内容
+Formatter
 ------------------
 
 如果您觉得自定义一个响应类过于复杂，我们也提供了更轻便的自定义格式化函数功能，pre-request 在尝试拼接响应内容的时候，会优先尝试调用您的
@@ -74,7 +74,7 @@ Customize
   pre.add_formatter(custom_formatter)
 
 
-自定义过滤器
+Filter
 ---------------
 
 pre-request 提供了丰富的过滤器插件。但是面对各式各样的业务需求，您可能也觉得pre-request无法满足您。因此pre-request
@@ -120,7 +120,7 @@ pre-request 提供了丰富的过滤器插件。但是面对各式各样的业�
     pre.add_filter(CustomFilter)
 
 
-自定义参数存储
+Store Key
 ----------------
 
 pre-request 在默认情况下会将格式化后的参数存储在 `~flask.g.params` 中和当前函数的 `params` 参数中。如果在您的项目中 `params` 字段有特殊
