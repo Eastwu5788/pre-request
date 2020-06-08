@@ -4,12 +4,11 @@ Validate Rules
 location
 -------------
 
-`location` 当请求体，请求头或者其它位置有相同的参数时，您可以使用 `location` 限制位置进行读取。
-目前支持的位置包括 ["args", "form", "values", "headers", "cookies", "json"]
+By default, pre-request try to parse values form `flask.Request.values` and `flask.Request.json`. Use `location`
+to specify location to pull the values from. current support ["args", "form", "values", "headers", "cookies", "json"]
 
 ::
 
-  # read arguments from special location
   params = {
     "Access-Token": Rule(location="headers"),
     "userId": Rule(location=["cookies", "headers", "args"])
@@ -19,14 +18,11 @@ location
 deep
 ---------
 
-`deep` 默认情况下，当前您的rule规则有层级关系时，pre-request会遵从您的层级关系从json中提取相同位置的参数进行填充。如果您指定了 `deep=False`
-那么pre-request会放弃层级关系，直接从顶层参数中进行读取。
-
-如果您不在json中传参数时，您可以使用 `.` 来标识层级关系。例如: `userInfo.socialInfo.age=13`
+By default, pre-request can parse value from complex structure. we can use `deep=False` to turn off this feature, pre-request
+will parse values from top level.
 
 ::
 
-  # 限定参数的层级关系
   params = {
     "userInfo": {
         "userId": Rule(type=int, required=False),
