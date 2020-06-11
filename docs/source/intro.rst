@@ -37,12 +37,10 @@ will parse values from top level.
 type
 -------------
 
-`type` 限制用户入参的数据类型。我们会尝试将用户入参中的参数类型转换成目标类型，如果尝试转换失败，
-我们会输出特定错误码. 上传文件时，需要设置 `type=werkzeug.datastructures.FileStorage`. 默认值 `str`
+Pre-request try to convert value type to special type.
 
 ::
 
- # 限定用户的userId参数必须为int类型
  params = {
     "userId": Rule(type=int)
  }
@@ -51,11 +49,10 @@ type
 skip
 -------
 
-`skip` 将标记参数为需要跳过，我们只是简单的将参数放置到结果集中，不会对其进行任何处理。默认值 `False`
+Tells the pre-request to skip validate this field. we will put origin value in the result structure.
 
 ::
 
- # 设定参数跳过所有检查
  params = {
     "userName": Rule(skip=True)
  }
@@ -79,11 +76,11 @@ multi
 required
 ----------
 
-`required` 标记参数是否为用户必填项，如果是必填但是用户未传入或者传入空值，将会输出特定错误码。默认值 `True`
+Pre-request validate the value is not None or user do not input this value.
+
 
 ::
 
- # 设置某个参数为非必填
  params = {
     "profile": Rule(required=False)
  }
@@ -92,11 +89,10 @@ required
 required_with
 ---------------
 
-`required_with` 实现了参数联动必填确认，可以指定其他参数名称，当前其它参数填写时，当前参数也必须填写。默认值 `None`
+The field under validation must be present and not empty only if any of the other specified fields are present.
 
 ::
 
- # 设置当用户昵称填写时，简介也必须填写
  params = {
      "nickName": Rule(required=False),
      "profile": Rule(required=False, required_with="nickName")
@@ -106,12 +102,10 @@ required_with
 default
 ---------
 
-`default` 实现默认值填充，当参数不要求为必填时，如果用户未传参，可以使用 `default` 指定一个默认值。
-注意: `default` 仅在 `required=False` 时有效。
+Pre-request will fill the default value into the field only if the field is not required and current value is None
 
 ::
 
-  # 设置默认值
   params = {
     "nickName": Rule(required=False, default="张三")
   }
@@ -120,11 +114,10 @@ default
 split
 --------
 
-`split` 实现将入参字符串按照指定字符串进行分割。默认值 `None`
+Pre-request will split origin string value with special char and the check rule will filter to every value in the result array。
 
 ::
 
-  # 按','分割字符串
   params = {
     "userId": Rule(int, split=",")
   }
@@ -133,11 +126,10 @@ split
 trim
 ------
 
-`trim` 实现了字符串去除首尾空字符功能。默认值 `False`。
+Pre-request will try to remove the space characters at the beginning and end of the string.
 
 ::
 
- # 设置自动去除字符串首尾空格
  params = {
     "nickName": Rule(trim=True)
  }
@@ -146,11 +138,10 @@ trim
 enum
 --------
 
-`enum` 验证参数枚举功能，确保用户入参仅能在可选范围内。默认值 `[]`
+Ensure that the parameters entered by the user are within the specified specific value range.
 
 ::
 
- # 设定用户性别为1或者2
  params = {
     "gender": Rule(direct_type=int, enum=[1, 2])
  }
@@ -159,11 +150,10 @@ enum
 reg
 -------
 
-`reg` 限定用户输入参数需要符合特定正则表达式。默认值 `None`
+Use regular expressions to verity that the user input string meets the requirements.
 
 ::
 
- # 设置日期必须符合日期正则
  params = {
     "tradeDate": Rule(reg=r"^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
  }
@@ -172,12 +162,10 @@ reg
 email
 -------
 
-`email` 限制用户输入的参数必须符合邮箱格式，我们默认使用的邮箱正则表达式为 `^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$`
-如果您我们提供的正则表达式不符合您的要求，您可以使用 `reg` 参数进行自定义。默认值 `False`
+Ensure that the field entered by the user conform to the email address format.
 
 ::
 
-  # 要求用户输入合法的email地址
   params = {
     "email": Rule(email=True)
   }
@@ -186,7 +174,7 @@ email
 mobile
 ---------
 
-`mobile` 限制用户输入的参数必须是合法的手机号，默认值 `False`
+Ensure that the field entered by the user conform to the mobile phone number format.
 
 ::
 
