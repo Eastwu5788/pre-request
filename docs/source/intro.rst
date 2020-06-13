@@ -61,12 +61,11 @@ Tells the pre-request to skip validate this field. we will put origin value in t
 multi
 --------
 
-`multi` 用于标识参数是否有多个值，multi=True时，我们会将单个入参包装成list，multi=False时，如果入参是list，则会取最后一个值。您可以
-使用 `split` 分割字符串或者 `json` 类型入参传递数组。默认值 `False`
+Pre-request try to convert input value to list type. if you set multi value to false and input value is the type of list,
+pre-request will use last value as input value. You can use `split` or `json` to get list type of input.
 
 ::
 
- # 指定参数是否有多个值
  params = {
     "userIds": Rule(type=int, multi=True)
  }
@@ -187,11 +186,10 @@ Ensure that the field entered by the user conform to the mobile phone number for
 contains
 ----------
 
-`contains` 限定用户输入的字符串必须包含所有指定的子字符串，默认值 `[]`
+Ensure that the field entered by the user contain all of the special value.
 
 ::
 
-  # 要求用户输入的内容必须包含 "你好" 和 "再见" 两个字符串
   params = {
     "content": Rule(contains=["你好", "再见"])
   }
@@ -200,11 +198,10 @@ contains
 contains_any
 --------------
 
-`contains_any` 要求用户输入的字符串包含任意一个子字符串，默认值 `[]`
+Ensure that the field entered by the user contain any of the special value.
 
 ::
 
-  # 要求用户输入的内容必须包含 "你好" 或者 "再见" 两个子字符串中的一个
   params = {
     "content": Rule(contains_any=["你好", "再见"])
   }
@@ -212,7 +209,7 @@ contains_any
 excludes
 -----------
 
-`excludes` 用于限制用户输入的内容禁止包含特定的子字符串。默认值 `[]`
+Ensure that the field entered by the user can not contain any of special value.
 
 ::
 
@@ -225,7 +222,7 @@ excludes
 startswith
 ------------
 
-`startswith` 要求用户输入的字符串必须以特定子字符串开头。默认值 `None`
+Ensure that the input string value must be start with special substring
 
 ::
 
@@ -238,11 +235,10 @@ startswith
 endswith
 ----------
 
-`endswith` 要求用户输入的字符串必须以特定子字符串结尾。默认值 `None`
+Ensure that the input string value must be end with special substring
 
 ::
 
- # 要求用户邮箱必须以 "@eastwu.cn" 结尾
  params = {
     "email": Rule(endswith="@eastwu.cn")
  }
@@ -251,11 +247,10 @@ endswith
 lower
 --------
 
-`lower` 会尝试将用户输入的字符串转换成小写。默认值 `False`
+Pre-request will convert all characters in the string to lowercase style.
 
 ::
 
-  # 尝试将用户输入转换成小写
   params = {
     "nickName": Rule(lower=True)
   }
@@ -264,11 +259,10 @@ lower
 upper
 ------
 
-`upper` 会尝试将用户输入的字符串转换成大写。默认值 `False`
+Pre-request will convert all characters in the string to uppercase style.
 
 ::
 
-  # 尝试将用户输入转换成大写
   params = {
     "country": Rule(upper=True)
   }
