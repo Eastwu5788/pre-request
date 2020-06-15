@@ -177,7 +177,6 @@ Ensure that the field entered by the user conform to the mobile phone number for
 
 ::
 
-  # 要求用户输入合法的mobile号码
   params = {
     "mobile": Rule(mobile=True)
   }
@@ -213,7 +212,6 @@ Ensure that the field entered by the user can not contain any of special value.
 
 ::
 
- # 要求用户输入的内容禁止包含"张三","李四"两个子字符串
  params = {
     "content": Rule(excludes=["张三", "李四"])
  }
@@ -271,9 +269,7 @@ Pre-request will convert all characters in the string to uppercase style.
 ipv4/ipv6
 ------------
 
-`ipv4` 检查用户输入的内容是否是合法的IPV4地址。默认值 `False`。
-
-`ipv6` 检查用户输入的内容是否是合法的ipv6地址。默认值 `False`。
+Ensure that the field entered by the user conform to the ipv4/6 format.
 
 ::
 
@@ -286,7 +282,7 @@ ipv4/ipv6
 mac
 -------
 
-`mac` 检查用户输入内容是否是合法的网卡 MAC 地址。默认值 `False`
+Ensure that the field entered by the user conform to the MAC address format.
 
 ::
 
@@ -298,7 +294,8 @@ mac
 fmt
 --------
 
-将字符串转换成`datetime`类型时的格式化样例. 注意`fmt`参数仅在`type=datetime.datetime`时有效
+Provides the style when the string is converted to `datetime` type. This is valid only on `type=datetime.datetime`
+
 
 ::
 
@@ -310,7 +307,7 @@ fmt
 latitude / longitude
 --------------------
 
-检查用户输入的参数是否是合法的经纬度数据。默认值 `False`
+Ensure that the field entered by the user conform to the latitude/longitude format.
 
 ::
 
@@ -323,9 +320,7 @@ latitude / longitude
 eq / eq_key
 -----------
 
-`eq` 用于检查用户输入的内容必须与特定值相等。默认值 `None`。
-
-`eq_key` 用于限定用户输入内容必须与另外一个参数值相等。默认值 `None`。
+Used to check whether the user input parameter is equal  to another value or another parameter.
 
 ::
 
@@ -338,9 +333,7 @@ eq / eq_key
 neq / neq_key
 ----------------
 
-`neq` 用于检查用户输入的内容不能与特定值相等。默认值 `None`。
-
-`neq_key` 用于限定用户输入内容不能与另一个参数值相等。默认值 `None`。
+Used to check whether the user input parameter is not equal  to another value or another parameter.
 
 ::
 
