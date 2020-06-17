@@ -224,7 +224,6 @@ Ensure that the input string value must be start with special substring
 
 ::
 
- # 要求用户昵称必须以 "CN" 开头
  params = {
     "nickName": Rule(startswith="CN")
  }
@@ -346,25 +345,24 @@ Used to check whether the user input parameter is not equal  to another value or
 gt / gt_key
 ---------------
 
-`gt` 用于检查用户输入内容必须大于特定值，如果字段类型为int，则判断大小，如果为 str 则判断字符串长度大小。默认值为 `None`。
-
-`gt_key` 用于判断参数的值必须大于另一个参数。默认值 `None`。
+Used to check whether the user input parameter is great than another value or another parameter.
 
 
 gte / gte_key
 -----------------
 
-使用方法同 gt / gt_key，表示大于等于的判断
+Used to check whether the user input parameter is great than or equal to another value or another parameter.
+
 
 lt / lt_key
 -----------------
 
-使用方法同 gt / gt_key, 表示小于的判断
+Used to check whether the user input parameter is less than another value or another parameter.
 
 lte / lte_key
 -----------------
 
-使用方法同 gt / gt_key 表示小于等于的判断
+Used to check whether the user input parameter is less than or equal to another value or another parameter.
 
 
 dest
