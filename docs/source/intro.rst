@@ -368,7 +368,7 @@ Used to check whether the user input parameter is less than or equal to another 
 dest
 ------------
 
-`dest` 用于将用户传入的参数名称映射为特定的字符串。默认值为 `None`
+We will convert the key of the parameter to another value specified.
 
 ::
 
@@ -380,13 +380,15 @@ dest
 json
 ----------
 
-`json` 如果用户的参数内容是json字符串，可以使用此参数尝试将其解析成对象。默认值 `False`
+We will try to use the `json.loads` method to parse the value of the parameter to convert it into
+a `list` or `dict` type.
 
 
 call_back
 ---------------
 
-`call_back` 用户自定义处理参数内容，当我们提供的处理器无法满足您的需求时，可以尝试自己实现处理器
+If the function we provide cannot meet your needs, you can pass in the parse function you defied
+through the `call_back` method.
 
 ::
 
