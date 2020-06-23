@@ -4,8 +4,9 @@ Customize
 Response
 --------------
 
-通常情况下，pre-request 检查用户参数发现问题时，会直接中断处理并将发现的问题返回给请求方。pre-request提供的
-默认JSON响应格式如下：
+Normally, when pre-request finds that the user input parameter does not meet the requirements, it will directly interrupt
+the processing and return the discovered problem to the requester.
+The default JSON type of response format provided by pre-request is as follows:
 
 ::
 
@@ -16,8 +17,9 @@ Response
     }
 
 
-但是在显示场景中，每个人都需要特定的响应格式。所以pre-request提供了自定义响应的功能。您仅需要实现一个类继承自 :class:`~pre_request.BaseResponse`
-即可实现您自己的数据响应。
+In some scenarios, we need different response formats. Pre-request provides the ability to customize the response.
+You need to implement a class that inherits from :class:`~pre_request.BaseResponse` to implement your own data response
+processing.
 
 
 ::
@@ -33,9 +35,6 @@ Response
             "rst": {}
         }
         return make_response(json.dumps(result))
-
-
-当然，我们需要您在初始化您的项目的时候，设置一下 pre-request 使用您的自定义响应
 
 
 ::
