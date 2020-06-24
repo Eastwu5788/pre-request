@@ -12,7 +12,7 @@ The default JSON type of response format provided by pre-request is as follows:
 
     {
         "respCode": 560,
-        "respMsg": "错误消息",
+        "respMsg": "Error Message",
         "result": {}
     }
 
@@ -48,24 +48,17 @@ processing.
 Formatter
 ------------------
 
-如果您觉得自定义一个响应类过于复杂，我们也提供了更轻便的自定义格式化函数功能，pre-request 在尝试拼接响应内容的时候，会优先尝试调用您的
-格式化函数生成响应字符串。
+If you feel that the custom response class is too complicated, we also provide the function of a custom formatting function.
+The pre-request will give priority to calling your custom function to generate a response string.
 
 ::
 
   def custom_formatter(code, msg):
-    """ 自定义结果格式化函数
-    """
     return {
         "code": code,
         "msg": "hello",
         "sss": "tt",
     }
-
-
-我们会尝试将错误码和格式化后的错误消息传递到函数中，根据我们提供的参数，您就可以返回一个特点的内容，返回给请求方
-
-当然，我们也同样需要您设置pre-request使用您提供的格式化函数
 
 ::
 
@@ -122,12 +115,11 @@ pre-request 提供了丰富的过滤器插件。但是面对各式各样的业�
 Store Key
 ----------------
 
-pre-request 在默认情况下会将格式化后的参数存储在 `~flask.g.params` 中和当前函数的 `params` 参数中。如果在您的项目中 `params` 字段有特殊
-含义的话，您也可以自定义存储的参数名称。
+
+By default, pre-request stores formatted input parameters in `~flask.g.params` and the `params` parameter of the current
+function。 You can set the `store_key` parameter of the pre-request to change the storage key of the parameter.
 
 ::
 
   from pre_request import pre
-
-  # 指定存储参数的key
   pre.store_key = "pre_params"
