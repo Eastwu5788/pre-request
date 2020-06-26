@@ -3,7 +3,7 @@
 # (C) Wu Dong, 2020
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
-# @Time: '2020-04-13 11:05'
+# @Time: '2020-06-24 13:39'
 # sys
 import json
 # 3p
@@ -24,8 +24,8 @@ def json_resp(result):
 
 
 skip_params = {
-    "v1": Rule(skip=True, type=float, required=False, default=30.0),
-    "v2": Rule(skip=False, type=float, required=False, default=30.0),
+    "v1": Rule(type=float, required=False, default=30.0, dest="OV1"),
+    "v2": Rule(type=float, required=True, default=30.0),
 }
 
 
@@ -42,19 +42,9 @@ class TestSkip:
     def test_skip_filter_smoke(self):
         """ 测试 skip_filter 冒烟测试
         """
+        pre.skip_filter = True
         resp = app.test_client().get("/skip", data={
             "v1": "Hello",
-            "v2": 18,
         })
-
-        assert resp.json == {"v1": "Hello", "v2": 18.0}
-
-    def test_trim_filter_v1(self):
-        """ 测试 skip 过滤器异常
-        """
-        resp = app.test_client().get("/skip", data={
-            "v1": None,
-            "v2": None,
-        })
-
-        assert resp.json == {"v1": None, "v2": 30.0}
+        pre.skip_filter = False
+        assert resp.json == {"OV1": "Hello", "v2": None}

@@ -44,7 +44,7 @@ pre-request support global singleton object, we can use this object to update ru
 -  `pre.fuzzy` pre-request will fuzzy error message to avoid expose sensitive information
 -  `pre.sore_key` use another params to store formatted request info
 -  `pre.content_type` pre-request will response html or json error message, use `application/json` or `text/html`
-
+-  `pre.skip_filter` pre-request will ignore all of the check filter, but `dest` is still valid.
 
 `Flask` Extension
 ------------------
@@ -59,6 +59,7 @@ pre-request support flask extension configuration to load params.
    app.config["PRE_FUZZY"] = True
    app.config["PRE_STORE_KEY"] = "pp"
    app.config["PRE_CONTENT_TYPE"] = "application/json"
+   app.config["PRE_SKIP_FILTER"] = False
 
    pre.init_app(app=app)
 

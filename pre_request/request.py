@@ -22,18 +22,20 @@ from . import filters
 k_content_type = "PRE_CONTENT_TYPE"
 k_fuzzy = "PRE_FUZZY"
 k_store_key = "PRE_STORE_KEY"
+k_skip_filter = "PRE_SKIP_FILTER"
 
 
 class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
-    def __init__(self, app=None, fuzzy=False, store_key=None, content_type=None):
+    def __init__(self, app=None, fuzzy=False, store_key=None, content_type=None, skip_filter=False):
         """ PreRequest init function
 
         :param fuzzy: formatter error message with fuzzy style
         :param store_key: which key will store formatter result
         :param content_type: response content type json/html
+        :param skip_filter: skip all of the filter check
         """
         self.filters = simple_filters
         self.complex_filters = complex_filters
@@ -42,6 +44,7 @@ class PreRequest:
         self.store_key = store_key or "params"
         self.response = None
         self.formatter = None
+        self.skip_filter = skip_filter
 
         if app is not None:
             self.app = app
@@ -65,6 +68,7 @@ class PreRequest:
         self.fuzzy = config.get(k_fuzzy, False)
         self.content_type = config.get(k_content_type, "application/json")
         self.store_key = config.get(k_store_key, "params")
+        self.skip_filter = config.get(k_skip_filter, False)
 
         self.app = app
         app.extensions["pre_request"] = self
@@ -222,7 +226,7 @@ class PreRequest:
         else:
             value = self._fmt_params(k, r)
 
-        if r.skip:
+        if r.skip or self.skip_filter:
             return value
 
         # filter request params
@@ -262,7 +266,7 @@ class PreRequest:
         if not isinstance(r, Rule):
             raise TypeError("invalid rule type for key '%s'" % k)
 
-        if r.skip:
+        if r.skip or self.skip_filter:
             return
 
         # simple filter handler
