@@ -1,6 +1,16 @@
 .. py:currentmodule:: pre_request
 
 
+Version 2.1.3
+------------------------
+
+Released 2020-06-29
+
+- 提供 `pre.skip_filter` 关闭pre-request过滤能力
+- 变更主要文档为英文
+- 修复使用过程中发现的问题
+
+
 Version 2.1.2
 --------------------------
 
