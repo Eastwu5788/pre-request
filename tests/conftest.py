@@ -190,20 +190,6 @@ def test_keymap_handler(params):
     return json_resp(params)
 
 
-skip_params = {
-    "v1": Rule(skip=True, type=float, required=False, default=30.0),
-    "v2": Rule(skip=False, type=float, required=False, default=30.0),
-}
-
-
-@app.route("/skip", methods=['get', 'post'])
-@pre.catch(skip_params)
-def test_skip_handler(params):
-    """ 测试 skip 功能
-    """
-    return json_resp(params)
-
-
 # 指定 contains 数组，则要求入参必须包含指定子串
 contains_params = {
     "p1": Rule(contains=["a", "b", "c"])

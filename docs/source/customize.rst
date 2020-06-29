@@ -1,23 +1,25 @@
-自定义
+Customize
 ===========
 
-自定义响应
+Response
 --------------
 
-通常情况下，pre-request 检查用户参数发现问题时，会直接中断处理并将发现的问题返回给请求方。pre-request提供的
-默认JSON响应格式如下：
+Normally, when pre-request finds that the user input parameter does not meet the requirements, it will directly interrupt
+the processing and return the discovered problem to the requester.
+The default JSON type of response format provided by pre-request is as follows:
 
 ::
 
     {
         "respCode": 560,
-        "respMsg": "错误消息",
+        "respMsg": "Error Message",
         "result": {}
     }
 
 
-但是在显示场景中，每个人都需要特定的响应格式。所以pre-request提供了自定义响应的功能。您仅需要实现一个类继承自 :class:`~pre_request.BaseResponse`
-即可实现您自己的数据响应。
+In some scenarios, we need different response formats. Pre-request provides the ability to customize the response.
+You need to implement a class that inherits from :class:`~pre_request.BaseResponse` to implement your own data response
+processing.
 
 
 ::
@@ -35,9 +37,6 @@
         return make_response(json.dumps(result))
 
 
-当然，我们需要您在初始化您的项目的时候，设置一下 pre-request 使用您的自定义响应
-
-
 ::
 
   from pre_request import pre
@@ -46,27 +45,20 @@
 
 
 
-自定义格式化内容
+Formatter
 ------------------
 
-如果您觉得自定义一个响应类过于复杂，我们也提供了更轻便的自定义格式化函数功能，pre-request 在尝试拼接响应内容的时候，会优先尝试调用您的
-格式化函数生成响应字符串。
+If you feel that the custom response class is too complicated, we also provide the function of a custom formatting function.
+The pre-request will give priority to calling your custom function to generate a response string.
 
 ::
 
   def custom_formatter(code, msg):
-    """ 自定义结果格式化函数
-    """
     return {
         "code": code,
         "msg": "hello",
         "sss": "tt",
     }
-
-
-我们会尝试将错误码和格式化后的错误消息传递到函数中，根据我们提供的参数，您就可以返回一个特点的内容，返回给请求方
-
-当然，我们也同样需要您设置pre-request使用您提供的格式化函数
 
 ::
 
@@ -74,7 +66,7 @@
   pre.add_formatter(custom_formatter)
 
 
-自定义过滤器
+Filter
 ---------------
 
 pre-request 提供了丰富的过滤器插件。但是面对各式各样的业务需求，您可能也觉得pre-request无法满足您。因此pre-request
@@ -120,15 +112,14 @@ pre-request 提供了丰富的过滤器插件。但是面对各式各样的业�
     pre.add_filter(CustomFilter)
 
 
-自定义参数存储
+Store Key
 ----------------
 
-pre-request 在默认情况下会将格式化后的参数存储在 `~flask.g.params` 中和当前函数的 `params` 参数中。如果在您的项目中 `params` 字段有特殊
-含义的话，您也可以自定义存储的参数名称。
+
+By default, pre-request stores formatted input parameters in `~flask.g.params` and the `params` parameter of the current
+function。 You can set the `store_key` parameter of the pre-request to change the storage key of the parameter.
 
 ::
 
   from pre_request import pre
-
-  # 指定存储参数的key
   pre.store_key = "pre_params"

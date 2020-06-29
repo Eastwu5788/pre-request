@@ -17,32 +17,30 @@
 
 ========
 
-欢迎使用pre-request框架，pre-request致力于简化参数验证工作，目前pre-request仅支持Flask
-的请求参数验证。
+This framework is designed to validate params for Restful api request.
 
-pre-request提供了非常方便的使用方法，也提供了灵活的扩展机制，让您可以自定义各个模块，实现您自身的复杂需求。
+We can validate complex struct and field, including Cross Field, Cross Struct
 
-特点
-----
+Install
+-----------
 
-1. 提供绝大部分常用的参数基础验证能力，也提供callback函数让用户自定义验证
-2. 提供跨字段的、跨数据结构的参数验证能力，实现参数之间关联验证
-3. 提供响应对象、格式化函数、过滤器等核心组件的自定义能力
-4. 详细完善的测试用例，保证整体测试覆盖率高于90%
-5. 丰富的example，演示了pre-request目前提供的所有能力
-
-安装
-----
+you can simply install it by:
 
 ::
 
     pip install pre-request
 
 
-快速使用
-----------------
+Document
+----------
 
-集成pre-request到您的请求中非常简单
+Pre-request manual could be found at: https://pre-request.readthedocs.io/en/master/index.html
+
+
+A Simple Example
+------------------
+
+This is very easy to use `pre-request` in your project
 
 .. code-block:: python
 
@@ -62,18 +60,18 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
       from flask import g
       return str(params == g.params)
 
-上面的代码中发生了什么呢？
+what happened in this code ?
 
-1. 首先我们从 `pre-request` 库中引入全局 `pre` 对象，使用该对象来过滤用户参数
-2. 我们定义了一个请求参数 `userId` 并规定该参数的目标类型为 `int` ，并且不允许为空
-3. 使用 `@pre.catch(req_params)` 将参数规则赋值给装饰器，并装饰处理函数
-4. 格式化后的参数置于 `~flask.g` 中，同时尝试将格式化后的参数置于原函数的 `params` 参数中。
+1. Use `pre-request` library to import a global object `pre`
+2. Define request params rule, `userId` must be type of `int` and required
+3. Use `@pre.catch(req_params)` to filter input value
+4. Use `~flask.g` or `def hello_world(params)` to get formatted input value。
 
 
-复杂示例
---------------
+Complex Example
+-----------------
 
-我们使用一个复杂的示例来演示pre-request的魅力
+We use a very complex example to show the powerful of this framework
 
 .. code-block:: python
 
@@ -132,10 +130,10 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
         print(resp.get_data(as_text=True))
 
 
-不使用装饰器
+Use parse
 -------------
 
-我们也支持不使用装饰器解析入参, 通过 `pre.parse()` 函数解析入参
+We can use function `pre.parse` instead of decorator `@pre.catch()`
 
 .. code-block:: python
 
@@ -143,7 +141,6 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
         "params": Rule(email=True)
     }
 
-    # 全局处理 pre-request 抛出的异常，进行格式化返回
     @app.errorhandler(ParamsValueError)
     def params_value_error(e):
         return pre.fmt_resp(e)
@@ -155,15 +152,25 @@ pre-request提供了非常方便的使用方法，也提供了灵活的扩展机
         return str(rst)
 
 
-贡献代码
-----------
+Contributing
+--------------
 
-非常欢迎大家能够贡献自己的代码到项目中来，具体的提交流程请参考 `contributing`_.
+How to make a contribution to Pre-request, see the `contributing`_.
 
 .. _contributing: https://github.com/Eastwu5788/pre-request/blob/master/CONTRIBUTING.rst
 
 
-相关链接
+Coffee
+---------
+
+Please give me a cup of coffee, thank you!
+
+BTC: 1657DRJUyfMyz41pdJfpeoNpz23ghMLVM3
+
+ETH: 0xb098600a9a4572a4894dce31471c46f1f290b087
+
+
+Links
 ------------
 * Documentaion: https://pre-request.readthedocs.io/en/master/index.html
 * Release: https://pypi.org/project/pre-request/
