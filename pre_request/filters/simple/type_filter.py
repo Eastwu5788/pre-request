@@ -33,6 +33,10 @@ class TypeFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须呗执行
         """
+        # Feature: Support type=None to get value directly
+        if self.rule.direct_type is None:
+            return False
+
         if not self.rule.required and self.value is None:
             return False
 

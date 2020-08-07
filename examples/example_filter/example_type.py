@@ -18,7 +18,8 @@ client = app.test_client()
 
 # 指定direct_type，此时框架会尝试将入参转换成目标格式
 type_params = {
-    "params": Rule(type=str, gte=1, lte=11)
+    "params": Rule(type=str, gte=1, lte=11),
+    "pNone": Rule(type=None, skip=True)
 }
 
 
@@ -32,7 +33,11 @@ def example_type_filter():
     """ 演示邮箱验证
     """
     resp = client.post("/type", json={
-        "params": 19
+        "params": 19,
+        "pNone": [
+            "K1",
+            12,
+        ]
     })
     print(resp.data)
 
