@@ -12,17 +12,24 @@ from inspect import getfullargspec
 # object
 from .exception import ParamsValueError
 from .filters.base import BaseFilter
-from .filters import simple_filters, complex_filters
-from .response import JSONResponse, HTMLResponse, BaseResponse
+from .filters import (
+    complex_filters,
+    simple_filters,
+)
+from .macro import (
+    K_CONTENT_TYPE,
+    K_FUZZY,
+    K_SKIP_FILTER,
+    K_STORE_KEY
+)
+from .response import (
+    BaseResponse,
+    HTMLResponse,
+    JSONResponse,
+)
 from .rules import Rule
 from .utils import get_deep_value
 from . import filters
-
-
-k_content_type = "PRE_CONTENT_TYPE"
-k_fuzzy = "PRE_FUZZY"
-k_store_key = "PRE_STORE_KEY"
-k_skip_filter = "PRE_SKIP_FILTER"
 
 
 class PreRequest:
@@ -65,10 +72,10 @@ class PreRequest:
             basic_config.update(config)
         config = basic_config
 
-        self.fuzzy = config.get(k_fuzzy, False)
-        self.content_type = config.get(k_content_type, "application/json")
-        self.store_key = config.get(k_store_key, "params")
-        self.skip_filter = config.get(k_skip_filter, False)
+        self.fuzzy = config.get(K_FUZZY, False)
+        self.content_type = config.get(K_CONTENT_TYPE, "application/json")
+        self.store_key = config.get(K_STORE_KEY, "params")
+        self.skip_filter = config.get(K_SKIP_FILTER, False)
 
         self.app = app
         app.extensions["pre_request"] = self
