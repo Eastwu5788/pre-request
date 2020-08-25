@@ -1,6 +1,13 @@
 .. py:currentmodule:: pre_request
 
 
+Version 2.1.4  (Unreleased)
+------------------------------
+
+- 修复使用过程中发现的问题
+- 规整代码规范
+
+
 Version 2.1.3
 ------------------------
 
