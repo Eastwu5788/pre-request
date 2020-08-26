@@ -20,12 +20,12 @@ class EqualFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == 578:
-            return "%s字段必须等于%s!" % (self.key, str(self.rule.eq))
+            return "%s field must be equal to %s" % (self.key, str(self.rule.eq))
 
         if code == 579:
-            return "%s字段不能等于%s!" % (self.key, str(self.rule.neq))
+            return "%s field cannot be equal to %s" % (self.key, str(self.rule.neq))
 
-        return "%s字段未通过`EqualFilter`过滤器检查!" % self.key
+        return "%s field fails the 'EqualFilter' filter check" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行

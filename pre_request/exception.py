@@ -23,7 +23,7 @@ class ParamsValueError(ValueError):
     def form_message(self, fuzzy=False):  # noqa: disable
         """ format error message
         """
-        message = "参数验证失败，请检查您的输入!"
+        message = "Parameter verification failed, please check your input"
 
         # 模糊错误信息
         if fuzzy:

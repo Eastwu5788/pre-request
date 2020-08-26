@@ -16,7 +16,7 @@ class EmailFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误信息
         """
-        return "%s字段不符合邮件格式!" % self.key
+        return "%s field does not match the message format" % self.key
 
     def filter_required(self):
         """ 验证过滤器是否必须执行

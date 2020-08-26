@@ -24,18 +24,18 @@ class RangeFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == 568:
-            return "%s字段必须大于%s!" % (self.key, str(self.rule.gt))
+            return "%s field value must be greater than %s" % (self.key, str(self.rule.gt))
 
         if code == 571:
-            return "%s字段必须大于等于%s!" % (self.key, str(self.rule.gte))
+            return "%s field value must be greater than or equal to %s" % (self.key, str(self.rule.gte))
 
         if code == 572:
-            return "%s字段必须小于%s!" % (self.key, str(self.rule.lt))
+            return "%s field value must be less than %s" % (self.key, str(self.rule.lt))
 
         if code == 573:
-            return "%s字段必须小于等于%s!" % (self.key, str(self.rule.lte))
+            return "%s field value must be less than or equal to %s" % (self.key, str(self.rule.lte))
 
-        return "%s字段未通过'RangeFilter'过滤器检查" % self.key
+        return "%s field fails the 'RangeFilter' filter check" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
