@@ -20,7 +20,7 @@ class RegexpFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s字段不符合格式要求!" % self.key
+        return "%s field does not confirm to regular expression" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行

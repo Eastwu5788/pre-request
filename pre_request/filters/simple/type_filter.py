@@ -26,9 +26,9 @@ class TypeFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == self.datetime_error_code:
-            return "%s字段转换成日期格式'%s'失败!" % (self.key, self.rule.fmt)
+            return "%s field conversion date format failed '%s'" % (self.key, self.rule.fmt)
 
-        return "%s字段无法转换成(%s)类型!" % (self.key, self.rule.direct_type.__name__)
+        return "%s field cannot be converted to %s type" % (self.key, self.rule.direct_type.__name__)
 
     def filter_required(self):
         """ 检查过滤器是否必须呗执行

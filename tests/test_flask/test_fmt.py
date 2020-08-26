@@ -80,4 +80,4 @@ class TestFormatter:
         })
 
         assert resp.status_code == 200
-        assert resp.json == {"respCode": 564, "respMsg": "email字段不符合邮件格式!", "result": {}}
+        assert resp.json == {"respCode": 564, "respMsg": "email field does not match the message format", "result": {}}

@@ -21,7 +21,7 @@ class JsonFilter(BaseFilter):
 
         :param _: 错误码
         """
-        return "%s字段无法通过json进行解析" % self.key
+        return "%s field cannot be parsed by json" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行

@@ -19,12 +19,12 @@ class LocationFilter(BaseFilter):
         """ 格式化错误信息
         """
         if code == self.latitude_error_code:
-            return "%s字段不是合法的纬度!" % self.key
+            return "%s field does not confirm to longitude format" % self.key
 
         if code == self.longitude_error_code:
-            return "%s字段不是合法的经度!" % self.key
+            return "%s field does not confirm to latitude format" % self.key
 
-        return "%s字段未通过LocationFilter过滤器!" % self.key
+        return "%s field fails the 'LocationFilter' filter check" % self.key
 
     def filter_required(self):
         """ 验证过滤器是否必须执行
