@@ -26,24 +26,24 @@ class EqualKeyFilter(BaseFilter):
         :param code: 错误码
         """
         if code == 593:
-            return "'%s'与'%s'值必须相同" % (self.key, self.rule.eq_key)
+            return "the value of '%s' must be the same as the value of '%s'" % (self.key, self.rule.eq_key)
 
         if code == 594:
-            return "'%s'与'%s'值不允许相同" % (self.key, self.rule.neq_key)
+            return "the value of '%s' must be different from the value of '%s'" % (self.key, self.rule.neq_key)
 
         if code == 595:
-            return "'%s'应该大于'%s'" % (self.key, self.rule.gt_key)
+            return "the value of '%s' must be greater than the value of'%s'" % (self.key, self.rule.gt_key)
 
         if code == 596:
-            return "'%s'应该大于等于'%s'" % (self.key, self.rule.gte_key)
+            return "the value of '%s' must be greater than or equal to the value of'%s'" % (self.key, self.rule.gte_key)
 
         if code == 597:
-            return "'%s'应该小于'%s'" % (self.key, self.rule.lt_key)
+            return "the value of '%s' must be less than the value of'%s'" % (self.key, self.rule.lt_key)
 
         if code == 598:
-            return "'%s'应该小于等于'%s'" % (self.key, self.rule.lte_key)
+            return "the value of '%s' must be less than or equal to the value of'%s'" % (self.key, self.rule.lte_key)
 
-        return "过滤器'EqualKeyFilter'过滤器检查'%s'参数失败" % self.key
+        return "%s field fails the 'EqualKeyFilter' filter check" % self.key
 
     def filter_required(self):
         """ 验证是否需要进行过滤
