@@ -19,7 +19,8 @@ class RequiredWithFilter(BaseFilter):
         :param code: 错误码
         """
         if code == self.required_with_error:
-            return "'%s'参数填写时，当前参数`%s`也必须填写" % (self.rule.required_with, self.key)
+            return "when filling in the value of '%s', the value of `%s` must also be filled in" % \
+                   (self.rule.required_with, self.key)
 
         return "过滤器'RequiredWithFilter'过滤器检查'%s'参数失败" % self.key
 
