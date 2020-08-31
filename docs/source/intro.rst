@@ -347,6 +347,13 @@ gt / gt_key
 
 Used to check whether the user input parameter is great than another value or another parameter.
 
+::
+
+  params = {
+      "kidAge": Rule(type=int, gt=0),
+      "fatherAge": Rule(type=int, gt_key="kidAge")
+  }
+
 
 gte / gte_key
 -----------------
@@ -354,15 +361,40 @@ gte / gte_key
 Used to check whether the user input parameter is great than or equal to another value or another parameter.
 
 
+::
+
+  params = {
+      "kidAge": Rule(type=int, gte=0),
+      "brotherAge": Rule(type=int, gte_key="kidAge")
+  }
+
+
+
 lt / lt_key
 -----------------
 
 Used to check whether the user input parameter is less than another value or another parameter.
 
+::
+
+  params = {
+      "fatherAge": Rule(type=int, lt=100),
+      "kidAge": Rule(type=int, lt_key="fatherAge")
+  }
+
+
 lte / lte_key
 -----------------
 
 Used to check whether the user input parameter is less than or equal to another value or another parameter.
+
+::
+
+  params = {
+      "fatherAge": Rule(type=int, lte=100),
+      "kidAge": Rule(type=int, lte_key="fatherAge")
+  }
+
 
 
 dest
