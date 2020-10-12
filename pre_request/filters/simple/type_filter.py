@@ -73,7 +73,7 @@ class TypeFilter(BaseFilter):
         try:
             # FIX: invalid literal for int() with base 10
             # 处理int仅能转换纯数字字符串问题
-            if d_type == int and "." in value:
+            if d_type == int and isinstance(value, str) and "." in value:
                 value = value.split(".")[0]
 
             return d_type(value)

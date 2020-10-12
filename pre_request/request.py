@@ -264,6 +264,7 @@ class PreRequest:
         :param k: params key
         :param r: params rule
         :param rst: handler result
+        :param rules: request rules
         """
         if isinstance(r, dict):
             for key, value in r.items():
