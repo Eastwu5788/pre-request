@@ -69,17 +69,20 @@ class EqualKeyFilter(BaseFilter):
         value = get_deep_value(self.rule.key_map or self.key, params, None, deep=True)
 
         # BUG: complex filter value will be None
-        if not self.rule.required and value is None:
+        if not self.rule.required and (value == self.rule.default or value is None):
             return value
 
         for r_key, r_code in self.support_rules.items():
-            rule = getattr(self.rule, r_key, None)
+            other_key = getattr(self.rule, r_key, None)
 
             # 当前规则不需要处理
-            if rule is None:
+            if other_key is None:
                 continue
 
-            other_v = get_deep_value(rule, params, None, deep=True)
+            other_v = get_deep_value(other_key, params, None, deep=True)
+            # 如果other_v是None，则说明other_key允许为空，并且用户未填写
+            if other_v is None:
+                continue
 
             if not isinstance(other_v, self.rule.direct_type):
                 raise TypeError("'eq_key' 规则仅支持相同数据类型参数判断")
