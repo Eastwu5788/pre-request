@@ -6,7 +6,7 @@
 # @Time: '2020-03-17 15:45'
 # sys
 import datetime
-
+from decimal import Decimal
 # project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
@@ -43,7 +43,7 @@ class RangeFilter(BaseFilter):
         if not self.rule.required and self.value is None:
             return False
 
-        if self.rule.direct_type not in [int, float, datetime.datetime]:
+        if self.rule.direct_type not in [int, float, Decimal, datetime.datetime]:
             return False
 
         if self.rule.gt is not None:
