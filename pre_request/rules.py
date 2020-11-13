@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from decimal import Decimal
 
 
 class Rule:  # pylint: disable=too-many-instance-attributes
@@ -82,8 +83,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, (int, float, datetime)):
-            raise TypeError("property `gt` must be type of int datetime or float")
+        if not isinstance(value, (int, float, Decimal, datetime)):
+            raise TypeError("property `gt` must be type of int, or datetime, or float, or Decimal")
 
         self._gt = value
 
@@ -103,8 +104,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, (int, float, datetime)):
-            raise TypeError("property `gte` must be type of int datetime or float")
+        if not isinstance(value, (int, float, Decimal, datetime)):
+            raise TypeError("property `gte` must be type of int, or datetime, or float, or Decimal")
 
         self._gte = value
 
@@ -124,8 +125,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, (int, float, datetime)):
-            raise TypeError("property `lt` must be type of int datetime or float")
+        if not isinstance(value, (int, float, Decimal, datetime)):
+            raise TypeError("property `lt` must be type of int, or datetime, or float, or Decimal")
 
         self._lt = value
 
@@ -145,8 +146,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
             return
 
         # check input value type
-        if not isinstance(value, (int, float, datetime)):
-            raise TypeError("property `lte` must be type of int or float")
+        if not isinstance(value, (int, float, Decimal, datetime)):
+            raise TypeError("property `lte` must be type of int, or float, or Decimal, or datetime")
 
         self._lte = value
 
