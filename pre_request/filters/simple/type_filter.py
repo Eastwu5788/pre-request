@@ -77,7 +77,7 @@ class TypeFilter(BaseFilter):
                 value = value.split(".")[0]
 
             return d_type(value)
-        except ValueError:
+        except (ValueError, TypeError):
             raise ParamsValueError(self.error_code, filter=self)
 
     def __call__(self, *args, **kwargs):
