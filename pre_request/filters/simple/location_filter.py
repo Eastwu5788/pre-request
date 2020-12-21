@@ -12,6 +12,7 @@ from pre_request.filters.base import BaseFilter
 class LocationFilter(BaseFilter):
     """ 地址位置过滤器
     """
+
     latitude_error_code = 590
     longitude_error_code = 591
 

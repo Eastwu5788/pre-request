@@ -29,8 +29,13 @@ class ParamsValueError(ValueError):
         if fuzzy:
             return message
 
+        # read formatted message from  context
+        message = self.context.get("message") or message
+
         # read filter object
-        filter_obj = self.context["filter"]
+        filter_obj = self.context.get("filter")
+        if not filter_obj:
+            return message
 
         # Read formatter message from custom filter
         filter_fmt_msg = filter_obj.fmt_error_message(self.code)

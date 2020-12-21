@@ -6,7 +6,8 @@
 # @Time: '2020-03-17 15:43'
 # sys
 from datetime import datetime
-
+# 3p
+from werkzeug.datastructures import FileStorage
 # project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
@@ -19,6 +20,7 @@ class TypeFilter(BaseFilter):
     """
     数据类型过滤器
     """
+
     error_code = 562
     datetime_error_code = 530
 
@@ -66,7 +68,6 @@ class TypeFilter(BaseFilter):
                 raise ParamsValueError(self.datetime_error_code, filter=self)
 
         # 文件处理
-        from werkzeug.datastructures import FileStorage
         if d_type == FileStorage:
             return value
 

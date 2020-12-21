@@ -11,6 +11,7 @@ from pre_request.filters.base import BaseFilter
 class ContentFilter(BaseFilter):
     """ 字符串内容检查过滤器
     """
+
     not_contain_all_error = 581
     not_contain_any_error = 582
 
