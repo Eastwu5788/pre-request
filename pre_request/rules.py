@@ -13,6 +13,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.skip = kwargs.get("skip", False)
         self.deep = kwargs.get("deep", True)
         self.multi = kwargs.get("multi", False)
+        self.structure = kwargs.get("structure", None)
 
         self.required = kwargs.get("required", True)
         self.required_with = kwargs.get("required_with", None)
@@ -179,3 +180,23 @@ class Rule:  # pylint: disable=too-many-instance-attributes
                 raise ValueError("params `location` must be in %s" % df_location)
 
         self._location = value
+
+    @property
+    def structure(self):
+        return self._structure
+
+    @structure.setter
+    def structure(self, value):
+        """ Params structure must be type of dict
+        """
+        if value is None:
+            self._structure = value
+            return
+
+        if not isinstance(value, dict):
+            raise TypeError("structure must be type of dict")
+
+        if not value:
+            raise TypeError("structure can not empty")
+
+        self._structure = value

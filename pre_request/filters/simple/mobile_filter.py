@@ -11,6 +11,7 @@ from pre_request.filters.base import BaseFilter
 
 class MobileFilter(BaseFilter):
     """手机号过滤器"""
+
     error_code = 565
 
     def fmt_error_message(self, _):

@@ -16,6 +16,7 @@ from pre_request.filters.base import BaseFilter
 class NetworkFilter(BaseFilter):
     """网络过滤器
     """
+
     ipv4_error_code = 587
     ipv6_error_code = 588
     mac_error_code = 589

@@ -11,6 +11,7 @@ from pre_request.filters.base import BaseFilter
 
 class EmailFilter(BaseFilter):
     """邮箱过滤器"""
+
     error_code = 564
 
     def fmt_error_message(self, _):

@@ -15,6 +15,7 @@ class RegexpFilter(BaseFilter):
     """
     正则表达式过滤器
     """
+
     error_code = 566
 
     def fmt_error_message(self, _):

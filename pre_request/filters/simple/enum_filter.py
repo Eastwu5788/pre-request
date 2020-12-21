@@ -10,6 +10,7 @@ from pre_request.filters.base import BaseFilter
 
 class EnumFilter(BaseFilter):
     """枚举过滤器"""
+
     error_code = 563
 
     def fmt_error_message(self, _):
