@@ -243,6 +243,10 @@ class PreRequest:
             if not r.multi:
                 raise TypeError("invalid usage of `structure` params")
 
+            # structure params must be type of list
+            if not isinstance(v, list):
+                raise ParamsValueError(601, message="Input " + k + " invalid type")
+
             if not v:
                 return list()
 
