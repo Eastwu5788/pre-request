@@ -71,6 +71,19 @@ pre-request will use last value as input value. You can use `split` or `json` to
  }
 
 
+structure
+-------------
+You can use `structure` field to define sub structure in array. This field will be only valid in `multi=True`.
+
+::
+
+params = {
+    "friends": Rule(multi=True, structure={
+        "userId": Rule(type=int, required=True),
+        "userName": Rule(type=str, required=True)
+    })
+}
+
 
 required
 ----------
