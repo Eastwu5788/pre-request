@@ -16,6 +16,7 @@ from pre_request.filters.base import BaseFilter
 class NetworkFilter(BaseFilter):
     """网络过滤器
     """
+
     ipv4_error_code = 587
     ipv6_error_code = 588
     mac_error_code = 589
@@ -24,15 +25,15 @@ class NetworkFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == self.ipv4_error_code:
-            return "%s字段不符合ipv4标准!" % self.key
+            return "%s field does not conform to ipv4 format" % self.key
 
         if code == self.ipv6_error_code:
-            return "%s字段不符合ipv6标准!" % self.key
+            return "%s field does not conform to ipv6 format" % self.key
 
         if code == self.mac_error_code:
-            return "%s字段不是合法的Mac地址!" % self.key
+            return "%s field is not a valid MAC address" % self.key
 
-        return "%s字段未通过NetworkFilter过滤器!" % self.key
+        return "%s field fails the 'NetworkFilter' filter check" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行

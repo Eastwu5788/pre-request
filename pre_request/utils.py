@@ -22,12 +22,16 @@ def get_deep_value(key, params, default=None, deep=True):
         return params.get(key.split(".")[-1], default)
 
     # invalid input params type
-    if not params or not isinstance(params, dict):
+    if not isinstance(params, dict):
         raise ValueError("Can't read deep value from path: '%s'" % key)
+
+    if not params:
+        return default
 
     for k in key.split("."):
         params = params.get(k, default)
-        if not isinstance(params, dict) and not key.endswith(k):
-            raise ValueError("Can't read deep value from path: '%s'" % key)
+        # return dict in deep query
+        if not key.endswith(k) and not isinstance(params, dict):
+            params = dict()
 
     return params

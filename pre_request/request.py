@@ -8,21 +8,30 @@
 from functools import wraps
 from inspect import isfunction
 from inspect import getfullargspec
-
+# 3p
+from flask import g
+from werkzeug.datastructures import FileStorage
 # object
 from .exception import ParamsValueError
 from .filters.base import BaseFilter
-from .filters import simple_filters, complex_filters
-from .response import JSONResponse, HTMLResponse, BaseResponse
+from .filters import (
+    complex_filters,
+    simple_filters,
+)
+from .macro import (
+    K_CONTENT_TYPE,
+    K_FUZZY,
+    K_SKIP_FILTER,
+    K_STORE_KEY
+)
+from .response import (
+    BaseResponse,
+    HTMLResponse,
+    JSONResponse,
+)
 from .rules import Rule
 from .utils import get_deep_value
 from . import filters
-
-
-k_content_type = "PRE_CONTENT_TYPE"
-k_fuzzy = "PRE_FUZZY"
-k_store_key = "PRE_STORE_KEY"
-k_skip_filter = "PRE_SKIP_FILTER"
 
 
 class PreRequest:
@@ -65,10 +74,10 @@ class PreRequest:
             basic_config.update(config)
         config = basic_config
 
-        self.fuzzy = config.get(k_fuzzy, False)
-        self.content_type = config.get(k_content_type, "application/json")
-        self.store_key = config.get(k_store_key, "params")
-        self.skip_filter = config.get(k_skip_filter, False)
+        self.fuzzy = config.get(K_FUZZY, False)
+        self.content_type = config.get(K_CONTENT_TYPE, "application/json")
+        self.store_key = config.get(K_STORE_KEY, "params")
+        self.skip_filter = config.get(K_SKIP_FILTER, False)
 
         self.app = app
         app.extensions["pre_request"] = self
@@ -200,7 +209,7 @@ class PreRequest:
             fmt_params.append(f)
         return fmt_params
 
-    def _handler_simple_filter(self, k, r):
+    def _handler_simple_filter(self, k, v, r):  # noqa
         """ Handler filter rules with simple ways
 
         :param k: params key
@@ -209,7 +218,7 @@ class PreRequest:
         if isinstance(r, dict):
             fmt_result = dict()
             for key, rule in r.items():
-                fmt_value = self._handler_simple_filter(k + "." + key, rule)
+                fmt_value = self._handler_simple_filter(k + "." + key, v, rule)
                 fmt_result[rule.key_map if isinstance(rule, Rule) and rule.key_map else key] = fmt_value
 
             return fmt_result
@@ -217,39 +226,71 @@ class PreRequest:
         if not isinstance(r, Rule):
             raise TypeError("invalid rule type for key '%s'" % k)
 
-        # load file type of params from request
-        from werkzeug.datastructures import FileStorage
-        if r.direct_type == FileStorage:
-            value = self._fmt_file_params(k, r)
+        if v is None:
+            # load file type of params from request
+            if r.direct_type == FileStorage:
+                v = self._fmt_file_params(k, r)
 
-        # load simple params
-        else:
-            value = self._fmt_params(k, r)
+            # load simple params
+            else:
+                v = self._fmt_params(k, r)
+
+        if r.structure is not None:
+            # make sure that input value is not empty
+            if r.required and not v:
+                raise ParamsValueError(560, message="%s field cannot be empty" % k)
+
+            if not r.multi:
+                raise TypeError("invalid usage of `structure` params")
+
+            # structure params must be type of list
+            if not isinstance(v, list):
+                raise ParamsValueError(601, message="Input " + k + " invalid type")
+
+            if not v:
+                return list()
+
+            # storage sub array
+            fmt_result = list()
+            for idx, sub_v in enumerate(v):
+                # make sure that array item must be type of dict
+                if not isinstance(sub_v, dict):
+                    raise ParamsValueError(600, message="Input " + k + "." + str(idx) + " invalid type")
+
+                # format every k-v with structure
+                fmt_item = dict()
+                fmt_result.append(fmt_item)
+                for sub_k, sub_r in r.structure.items():
+                    new_k = k + "." + str(idx) + "." + sub_k
+                    v = self._handler_simple_filter(new_k, sub_v.get(sub_k), sub_r)
+                    fmt_item[sub_r.key_map if isinstance(sub_r, Rule) and sub_r.key_map else sub_k] = v
+
+            return fmt_result
 
         if r.skip or self.skip_filter:
-            return value
+            return v
 
         # filter request params
         for f in self.filters:
             filter_obj = None
             # system filter object
             if isinstance(f, str):
-                filter_obj = getattr(filters, f)(k, value, r)
+                filter_obj = getattr(filters, f)(k, v, r)
 
             # custom filter object
             elif issubclass(f, BaseFilter):
-                filter_obj = f(k, value, r)
+                filter_obj = f(k, v, r)
 
             # ignore invalid and not required filter
             if not filter_obj or not filter_obj.filter_required():
                 continue
 
-            value = filter_obj()
+            v = filter_obj()
 
         if r.callback is not None and isfunction(r.callback):
-            value = r.callback(value)
+            v = r.callback(v)
 
-        return value
+        return v
 
     def _handler_complex_filter(self, k, r, rst):
         """ Handler complex rule filters
@@ -257,6 +298,7 @@ class PreRequest:
         :param k: params key
         :param r: params rule
         :param rst: handler result
+        :param rules: request rules
         """
         if isinstance(r, dict):
             for key, value in r.items():
@@ -309,7 +351,7 @@ class PreRequest:
 
         # use simple filter to handler params
         for k, r in rules.items():
-            value = self._handler_simple_filter(k, r)
+            value = self._handler_simple_filter(k, None, r)
             # simple filter handler
             fmt_rst[r.key_map if isinstance(r, Rule) and r.key_map else k] = value
 
@@ -336,7 +378,6 @@ class PreRequest:
                     return self.fmt_resp(e)
 
                 # assignment params to func args
-                from flask import g
                 setattr(g, self.store_key, fmt_rst)
                 if self.store_key in getfullargspec(func).args:
                     kwargs[self.store_key] = fmt_rst

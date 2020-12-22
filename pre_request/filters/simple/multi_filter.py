@@ -15,7 +15,7 @@ class MultiFilter(BaseFilter):
         super(MultiFilter, self).__call__()
 
         if self.rule.multi and not isinstance(self.value, list):
-            return [self.value]
+            return [self.value] if self.value is not None else []
 
         if not self.rule.multi and isinstance(self.value, list):
             return self.value[-1] if self.value else None

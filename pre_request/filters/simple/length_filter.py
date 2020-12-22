@@ -23,18 +23,18 @@ class LengthFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == 574:
-            return "%s字段长度必须大于%s!" % (self.key, str(self.rule.gt))
+            return "%s field content length must be greater than %s" % (self.key, str(self.rule.gt))
 
         if code == 575:
-            return "%s字段长度必须大于等于%s!" % (self.key, str(self.rule.gte))
+            return "%s field content length must be greater than or equal to %s" % (self.key, str(self.rule.gte))
 
         if code == 576:
-            return "%s字段长度必须小于%s!" % (self.key, str(self.rule.lt))
+            return "%s field content length must be less than %s" % (self.key, str(self.rule.lt))
 
         if code == 577:
-            return "%s字段长度必须小于等于%s!" % (self.key, str(self.rule.lte))
+            return "%s field content length must be less than or equal to %s" % (self.key, str(self.rule.lte))
 
-        return "%s字段未通过'LengthFilter'过滤器检查!" % self.key
+        return "%s field fails the 'LengthFilter' filter check" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行

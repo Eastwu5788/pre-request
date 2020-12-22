@@ -5,7 +5,6 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:34'
 # flake8: noqa
-
 from pre_request.filters.simple.empty_filter import EmptyFilter
 from pre_request.filters.simple.trim_filter import TrimFilter
 from pre_request.filters.simple.length_filter import LengthFilter
@@ -28,6 +27,7 @@ from pre_request.filters.simple.multi_filter import MultiFilter
 
 from pre_request.filters.cross.equal_key_filter import EqualKeyFilter
 from pre_request.filters.cross.required_with_filter import RequiredWithFilter
+
 
 simple_filters = [
     "EmptyFilter",  # 1.判断字段是否为空的过滤器

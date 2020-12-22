@@ -52,4 +52,5 @@ class TestFlaskExt:
         pre.init_app(app=app)
 
         assert resp1.json == {"params": "wudong@eastwu.cn"}
-        assert resp2.json == {'respCode': 564, 'respMsg': '参数验证失败，请检查您的输入!', 'result': {}}
+        assert resp2.json == {'respCode': 564, 'respMsg': 'Parameter verification failed, please check your input',
+                              'result': {}}

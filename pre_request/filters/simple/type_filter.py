@@ -6,7 +6,8 @@
 # @Time: '2020-03-17 15:43'
 # sys
 from datetime import datetime
-
+# 3p
+from werkzeug.datastructures import FileStorage
 # project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
@@ -19,6 +20,7 @@ class TypeFilter(BaseFilter):
     """
     数据类型过滤器
     """
+
     error_code = 562
     datetime_error_code = 530
 
@@ -26,13 +28,17 @@ class TypeFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == self.datetime_error_code:
-            return "%s字段转换成日期格式'%s'失败!" % (self.key, self.rule.fmt)
+            return "%s field conversion date format failed '%s'" % (self.key, self.rule.fmt)
 
-        return "%s字段无法转换成(%s)类型!" % (self.key, self.rule.direct_type.__name__)
+        return "%s field cannot be converted to %s type" % (self.key, self.rule.direct_type.__name__)
 
     def filter_required(self):
         """ 检查过滤器是否必须呗执行
         """
+        # Feature: Support type=None to get value directly
+        if self.rule.direct_type is None:
+            return False
+
         if not self.rule.required and self.value is None:
             return False
 
@@ -62,18 +68,17 @@ class TypeFilter(BaseFilter):
                 raise ParamsValueError(self.datetime_error_code, filter=self)
 
         # 文件处理
-        from werkzeug.datastructures import FileStorage
         if d_type == FileStorage:
             return value
 
         try:
             # FIX: invalid literal for int() with base 10
             # 处理int仅能转换纯数字字符串问题
-            if d_type == int and "." in value:
+            if d_type == int and isinstance(value, str) and "." in value:
                 value = value.split(".")[0]
 
             return d_type(value)
-        except ValueError:
+        except (ValueError, TypeError):
             raise ParamsValueError(self.error_code, filter=self)
 
     def __call__(self, *args, **kwargs):

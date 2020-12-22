@@ -12,12 +12,13 @@ class EmptyFilter(BaseFilter):
     """
     判断参数是否为空的过滤器
     """
+
     error_code = 560
 
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s字段不能为空!" % self.key
+        return "%s field cannot be empty" % self.key
 
     def __call__(self, *args, **kwargs):
         super(EmptyFilter, self).__call__()

@@ -10,12 +10,13 @@ from pre_request.filters.base import BaseFilter
 
 class EnumFilter(BaseFilter):
     """枚举过滤器"""
+
     error_code = 563
 
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s字段的取值只能是以下几种%s!" % (self.key, str(self.rule.enum))
+        return "%s field value can only be the following %s!" % (self.key, str(self.rule.enum))
 
     def filter_required(self):
         """ 检查过滤器是否必须执行

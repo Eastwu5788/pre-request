@@ -11,6 +11,7 @@ from pre_request.filters.base import BaseFilter
 class ContentFilter(BaseFilter):
     """ 字符串内容检查过滤器
     """
+
     not_contain_all_error = 581
     not_contain_any_error = 582
 
@@ -23,21 +24,21 @@ class ContentFilter(BaseFilter):
         """ 格式化错误信息
         """
         if code == self.not_contain_all_error:
-            return "%s字段缺少必要内容" % self.key
+            return "%s field is missing required content" % self.key
 
         if code == self.not_contain_any_error:
-            return "%s字段未包含指定内容" % self.key
+            return "%s field must contain the specified content" % self.key
 
         if code == self.excludes_error:
-            return "%s字段未包含禁止内容" % self.key
+            return "%s field contains prohibited content" % self.key
 
         if code == self.startswith_error:
-            return "%s字段必须以'%s'开头" % (self.key, self.rule.startswith)
+            return "%s field must start with '%s'" % (self.key, self.rule.startswith)
 
         if code == self.endswith_error:
-            return "%s字段必须以'%s'结尾" % (self.key, self.rule.startswith)
+            return "%s field must end with '%s'" % (self.key, self.rule.startswith)
 
-        return "%s字段未通过ContainFilter过滤器检查" % self.key
+        return "%s field fails the 'ContainFilter' filter check" % self.key
 
     def filter_required(self):
         """ 验证过滤器是否必须执行

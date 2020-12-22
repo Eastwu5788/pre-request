@@ -11,12 +11,13 @@ from pre_request.filters.base import BaseFilter
 
 class MobileFilter(BaseFilter):
     """手机号过滤器"""
+
     error_code = 565
 
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s字段不符合手机号格式!" % self.key
+        return "%s field is not a legal mobile phone number format" % self.key
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
