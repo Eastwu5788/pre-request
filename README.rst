@@ -89,11 +89,10 @@ We use a very complex example to show the powerful of this framework
         },
         "userSecond": {
             "userId": Rule(type=int, required=False, neq_key="userFirst.userId"),
-            "socialInfo": {
-                "gender": Rule(type=int, enum=[1, 2], default=1, neq_key="userFirst.socialInfo.gender"),
-                "age": Rule(type=int, gte=18, lt=80, required_with="userFirst.socialInfo.age"),
-                "country": Rule(required=True, deep=False)
-            }
+            "friends": Rule(type=dict, required=True, multi=True, structure={
+                "userId": Rule(type=int, required=True, dest="user_id"),
+                "userName": Rule(type=str, required=True, dest="user_name")
+            })
         }
     }
 
@@ -118,13 +117,15 @@ We use a very complex example to show the powerful of this framework
             },
             "userSecond": {
                 "userId": 14,
-                "socialInfo": {
-                    "age": 21
-                }
+                "friends": [
+                    {
+                        "userId": 13,
+                        "userName": "Trump"
+                    }
+                ]
             },
             "country": "CN",
-            "userFirst.socialInfo.gender": 1,
-            "userSecond.socialInfo.gender": 2,
+            "userFirst.socialInfo.gender": 1
         })
 
         print(resp.get_data(as_text=True))
