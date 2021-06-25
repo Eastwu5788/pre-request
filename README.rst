@@ -2,7 +2,7 @@
 
     <p align="center">
         <a href="#readme">
-            <img alt="Pre-request logo" src="https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg">
+            <img alt="Pre-request logo" src="https://pre-request.readthedocs.io/en/master/_images/logo.jpg">
         </a>
     </p>
     <p align="center">
