@@ -12,10 +12,6 @@ K_STORE_KEY = "PRE_STORE_KEY"
 K_SKIP_FILTER = "PRE_SKIP_FILTER"
 
 # Regexp key
-# email regexp
-K_EMAIL_REG = r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$'
-# mobile regexp
-K_MOBILE_REG = r'^0\d{2,3}\d{7,8}$|^1[3578]\d{9}$|^14[579]\d{8}$'
 # file path regexp
 K_FILE_REG = r'^(?<1>.*[\\/])(?<2>.+)\.(?<3>.+)?$|^(?<1>.*[\\/])(?<2>.+)$|^(?<2>.+)\.(?<3>.+)?$|^(?<2>.+)$'
 # mac address regexp

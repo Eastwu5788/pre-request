@@ -4,12 +4,10 @@ import re
 
 # project
 from .macro import (
-    K_EMAIL_REG,
     K_FILE_REG,
     K_LATITUDE_REG,
     K_LONGITUDE_REG,
     K_MAC_REG,
-    K_MOBILE_REG
 )
 
 
@@ -24,26 +22,6 @@ class Regexp:
 
     def __call__(self, data):
         return self.regex.match(data or '')
-
-
-class EmailRegexp(Regexp):
-    """ Regexp handler class for email
-    """
-    def __init__(self):
-        super().__init__(K_EMAIL_REG, re.IGNORECASE)
-
-    def __call__(self, email=None):
-        return super().__call__(email)
-
-
-class MobileRegexp(Regexp):
-    """ Regexp handler class for mobile
-    """
-    def __init__(self):
-        super().__init__(K_MOBILE_REG, re.IGNORECASE)
-
-    def __call__(self, mobile=None):
-        return super().__call__(mobile)
 
 
 class FileRegexp(Regexp):

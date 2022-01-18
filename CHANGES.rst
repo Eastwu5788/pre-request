@@ -1,6 +1,19 @@
 .. py:currentmodule:: pre_request
 
 
+Version 2.1.5 (UnReleased)
+---------------------------
+
+- 重构错误提示
+- CI/CD流水线调整为`github workflow`
+- 使用Python 3 style，不再支持Python2.x
+- 添加Typing Check
+- 增强自定义函数功能
+- 去除手机号、邮箱校验能力
+- 添加字符串、数组长度校验
+- 修复None值问题
+
+
 Version 2.1.4
 ------------------------------
 
@@ -10,6 +23,7 @@ Released 2020-12-22
 - 规整代码规范
 - 调整响应文本为英文
 - 支持数组类型嵌套
+
 
 Version 2.1.3
 ------------------------

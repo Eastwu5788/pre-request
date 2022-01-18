@@ -171,30 +171,6 @@ Use regular expressions to verity that the user input string meets the requireme
  }
 
 
-email
--------
-
-Ensure that the field entered by the user conform to the email address format.
-
-::
-
-  params = {
-    "email": Rule(email=True)
-  }
-
-
-mobile
----------
-
-Ensure that the field entered by the user conform to the mobile phone number format.
-
-::
-
-  params = {
-    "mobile": Rule(mobile=True)
-  }
-
-
 contains
 ----------
 

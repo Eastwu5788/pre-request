@@ -36,7 +36,7 @@ app.config["TESTING"] = True
 
 
 filter_params = {
-    "email": Rule(email=True)
+    "email": Rule(reg=r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$')
 }
 
 
@@ -67,7 +67,7 @@ class TestResponse:
         })
 
         assert resp.status_code == 200
-        assert resp.get_data(as_text=True) == '{"code": 464, "rst": {}}'
+        assert resp.get_data(as_text=True) == '{"code": 466, "rst": {}}'
 
     def test_resp_error(self):
         """ 测试重置response时报错问题
@@ -85,4 +85,5 @@ class TestResponse:
         })
 
         assert resp.status_code == 200
-        assert resp.json == {"respCode": 464, "respMsg": "email field does not match the message format", "result": {}}
+        assert resp.json == {"respCode": 466, "respMsg": "email field does not confirm to regular expression",
+                             "result": {}}

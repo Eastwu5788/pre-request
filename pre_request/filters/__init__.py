@@ -12,9 +12,7 @@ from pre_request.filters.simple.regexp_filter import RegexpFilter
 from pre_request.filters.simple.type_filter import TypeFilter
 from pre_request.filters.simple.range_filter import RangeFilter
 from pre_request.filters.simple.enum_filter import EnumFilter
-from pre_request.filters.simple.email_filter import EmailFilter
 from pre_request.filters.simple.equal_filter import EqualFilter
-from pre_request.filters.simple.mobile_filter import MobileFilter
 from pre_request.filters.simple.json_filter import JsonFilter
 from pre_request.filters.simple.default_filter import DefaultFilter
 from pre_request.filters.simple.content_filter import ContentFilter
@@ -38,15 +36,12 @@ simple_filters = [
     "StringFilter",  # 字符串处理过滤器
     "RegexpFilter",  # 3.正则表达式过滤器
     "ContentFilter",  # 内容检查过滤器
-    # "FileFilter",  # 文件路径检查过滤器
     "NetworkFilter",  # 网络检查过滤器
     "LocationFilter",  # 地理位置过滤器
     "LengthFilter",  # 5.字符长度过滤器
     "RangeFilter",  # 6.取值范围过滤器
     "EqualFilter",  # 7.取值相等过滤器
     "EnumFilter",  # 8.枚举过滤器
-    "EmailFilter",  # 9.邮箱过滤器
-    "MobileFilter",  # 10.手机号过滤器
     "JsonFilter",  # 11.Json解析器
     "DefaultFilter",  # 12.默认值填充
 ]

@@ -35,3 +35,15 @@ def get_deep_value(key, params, default=None, deep=True):
             params = {}
 
     return params
+
+
+class _Missing:
+
+    def __repr__(self):
+        return "no value"
+
+    def __reduce__(self):
+        return "_missing"
+
+
+_missing = _Missing
