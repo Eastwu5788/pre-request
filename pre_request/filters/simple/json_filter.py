@@ -14,7 +14,7 @@ from pre_request.filters.base import BaseFilter
 class JsonFilter(BaseFilter):
     """Json解析过滤器"""
 
-    error_code = 570
+    error_code = 470
 
     def fmt_error_message(self, _):
         """ 格式化错误信息

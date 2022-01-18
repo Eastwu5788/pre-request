@@ -12,7 +12,7 @@ from pre_request.filters.base import BaseFilter
 class FileFilter(BaseFilter):
     """文件过滤器"""
 
-    error_code = 586
+    error_code = 486
 
     def fmt_error_message(self, _):
         """ 格式化错误信息

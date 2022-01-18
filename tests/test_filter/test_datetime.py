@@ -58,7 +58,7 @@ class TestDatetime:
             "happyDay": "2019-01-01 11:12:15"
         })
 
-        assert resp.json["respCode"] == 593
+        assert resp.json["respCode"] == 493
 
     def test_datetime_571(self):
         resp = app.test_client().post("/datetime", data={
@@ -67,7 +67,7 @@ class TestDatetime:
             "happyDay": "2019-01-01 11:12:13"
         })
 
-        assert resp.json["respCode"] == 571
+        assert resp.json["respCode"] == 471
 
     def test_datetime_573(self):
         resp = app.test_client().post("/datetime", data={
@@ -76,4 +76,4 @@ class TestDatetime:
             "happyDay": "2019-01-01 11:12:13"
         })
 
-        assert resp.json["respCode"] == 573
+        assert resp.json["respCode"] == 473

@@ -13,16 +13,16 @@ class EqualFilter(BaseFilter):
     判断数值相等过滤器
     """
 
-    eq_code = 578
-    neq_code = 579
+    eq_code = 478
+    neq_code = 479
 
     def fmt_error_message(self, code):
         """ 格式化错误消息
         """
-        if code == 578:
+        if code == 478:
             return "%s field must be equal to %s" % (self.key, str(self.rule.eq))
 
-        if code == 579:
+        if code == 479:
             return "%s field cannot be equal to %s" % (self.key, str(self.rule.neq))
 
         return "%s field fails the 'EqualFilter' filter check" % self.key

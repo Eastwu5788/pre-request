@@ -15,24 +15,24 @@ from pre_request.filters.base import BaseFilter
 class RangeFilter(BaseFilter):
     """取值范围过滤器"""
 
-    range_code_gt = 568
-    range_code_gte = 571
-    range_code_lt = 572
-    range_code_lte = 573
+    range_code_gt = 468
+    range_code_gte = 471
+    range_code_lt = 472
+    range_code_lte = 473
 
     def fmt_error_message(self, code):
         """ 格式化错误消息
         """
-        if code == 568:
+        if code == 468:
             return "%s field value must be greater than %s" % (self.key, str(self.rule.gt))
 
-        if code == 571:
+        if code == 471:
             return "%s field value must be greater than or equal to %s" % (self.key, str(self.rule.gte))
 
-        if code == 572:
+        if code == 472:
             return "%s field value must be less than %s" % (self.key, str(self.rule.lt))
 
-        if code == 573:
+        if code == 473:
             return "%s field value must be less than or equal to %s" % (self.key, str(self.rule.lte))
 
         return "%s field fails the 'RangeFilter' filter check" % self.key

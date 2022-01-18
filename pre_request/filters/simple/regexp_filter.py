@@ -16,7 +16,7 @@ class RegexpFilter(BaseFilter):
     正则表达式过滤器
     """
 
-    error_code = 566
+    error_code = 466
 
     def fmt_error_message(self, _):
         """ 格式化错误消息

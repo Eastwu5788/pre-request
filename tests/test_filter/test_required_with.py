@@ -55,7 +55,7 @@ class TestRequiredWith:
             "p2": None
         })
 
-        assert resp.json["respCode"] == 599
+        assert resp.json["respCode"] == 499
 
         resp = app.test_client().get("/required/with", data={
             "p1": None,

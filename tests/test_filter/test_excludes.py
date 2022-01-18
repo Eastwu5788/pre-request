@@ -24,4 +24,4 @@ class TestExcludes:
             "p1": "aoe"
         })
 
-        assert resp.json["respCode"] == 583
+        assert resp.json["respCode"] == 483

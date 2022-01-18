@@ -11,7 +11,7 @@ from pre_request.filters.base import BaseFilter
 
 class RequiredWithFilter(BaseFilter):
 
-    required_with_error = 599
+    required_with_error = 499
 
     def fmt_error_message(self, code):
         """ 格式化错误消息

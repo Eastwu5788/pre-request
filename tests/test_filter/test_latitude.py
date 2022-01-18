@@ -24,4 +24,4 @@ class TestLatitude:
             "p1": "239.9077465200"
         })
 
-        assert resp.json["respCode"] == 590
+        assert resp.json["respCode"] == 490

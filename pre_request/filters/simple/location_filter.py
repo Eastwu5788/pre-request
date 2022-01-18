@@ -13,8 +13,8 @@ class LocationFilter(BaseFilter):
     """ 地址位置过滤器
     """
 
-    latitude_error_code = 590
-    longitude_error_code = 591
+    latitude_error_code = 490
+    longitude_error_code = 491
 
     def fmt_error_message(self, code):
         """ 格式化错误信息

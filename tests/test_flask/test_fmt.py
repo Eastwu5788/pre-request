@@ -59,7 +59,7 @@ class TestFormatter:
         })
 
         assert resp.status_code == 200
-        assert resp.get_data(as_text=True) == '{"code": 564, "msg": "hello", "sss": "tt"}'
+        assert resp.get_data(as_text=True) == '{"code": 464, "msg": "hello", "sss": "tt"}'
 
     def test_resp_error(self):
         """ 测试重置response时报错问题
@@ -80,4 +80,4 @@ class TestFormatter:
         })
 
         assert resp.status_code == 200
-        assert resp.json == {"respCode": 564, "respMsg": "email field does not match the message format", "result": {}}
+        assert resp.json == {"respCode": 464, "respMsg": "email field does not match the message format", "result": {}}

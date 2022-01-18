@@ -26,7 +26,7 @@ class TestLength:
             "params": "h",
             "params2": "aaa"
         })
-        assert resp.json["respCode"] == 574
+        assert resp.json["respCode"] == 474
 
     def test_length_filter_575(self, client):
         """ 测试 length_filter 575 错误
@@ -36,7 +36,7 @@ class TestLength:
             "params": "he",
             "params2": "aa"
         })
-        assert resp.json["respCode"] == 575
+        assert resp.json["respCode"] == 475
 
     def test_length_filter_576(self, client):
         """ 测试 length_filter 576 错误
@@ -46,7 +46,7 @@ class TestLength:
             "params": "hello",
             "params2": "aaa"
         })
-        assert resp.json["respCode"] == 576
+        assert resp.json["respCode"] == 476
 
     def test_length_filter_577(self, client):
         """ 测试 length_filter 577 错误
@@ -56,4 +56,4 @@ class TestLength:
             "params": "he",
             "params2": "jerry"
         })
-        assert resp.json["respCode"] == 577
+        assert resp.json["respCode"] == 477

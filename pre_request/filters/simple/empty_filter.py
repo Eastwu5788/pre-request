@@ -13,7 +13,7 @@ class EmptyFilter(BaseFilter):
     判断参数是否为空的过滤器
     """
 
-    error_code = 560
+    error_code = 460
 
     def fmt_error_message(self, _):
         """ 格式化错误消息

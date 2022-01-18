@@ -26,7 +26,7 @@ class TestRange:
             "params2": 10,
         })
 
-        assert resp.json["respCode"] == 568
+        assert resp.json["respCode"] == 468
 
     def test_range_filter_571(self, client):
         """ 测试 range_filter 571 错误
@@ -36,7 +36,7 @@ class TestRange:
             "params2": 9,
         })
 
-        assert resp.json["respCode"] == 571
+        assert resp.json["respCode"] == 471
 
     def test_range_filter_572(self, client):
         """ 测试 range_filter 572 错误
@@ -46,7 +46,7 @@ class TestRange:
             "params2": 10,
         })
 
-        assert resp.json["respCode"] == 572
+        assert resp.json["respCode"] == 472
 
     def test_range_filter_573(self, client):
         """ 测试 range_filter 573 错误
@@ -56,4 +56,4 @@ class TestRange:
             "params2": 18,
         })
 
-        assert resp.json["respCode"] == 573
+        assert resp.json["respCode"] == 473

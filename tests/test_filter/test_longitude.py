@@ -24,4 +24,4 @@ class TestLongitude:
             "p1": "180.3860159600"
         })
 
-        assert resp.json["respCode"] == 591
+        assert resp.json["respCode"] == 491

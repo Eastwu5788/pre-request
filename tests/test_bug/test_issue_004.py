@@ -50,4 +50,4 @@ class TestComplexStructure:
             }
         }
         resp = app.test_client().post("/structure", json=params)
-        assert resp.json["respCode"] == 560
+        assert resp.json["respCode"] == 460

@@ -17,9 +17,9 @@ class NetworkFilter(BaseFilter):
     """网络过滤器
     """
 
-    ipv4_error_code = 587
-    ipv6_error_code = 588
-    mac_error_code = 589
+    ipv4_error_code = 487
+    ipv6_error_code = 488
+    mac_error_code = 489
 
     def fmt_error_message(self, code):
         """ 格式化错误消息

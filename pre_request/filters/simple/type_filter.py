@@ -21,8 +21,8 @@ class TypeFilter(BaseFilter):
     数据类型过滤器
     """
 
-    error_code = 562
-    datetime_error_code = 530
+    error_code = 462
+    datetime_error_code = 430
 
     def fmt_error_message(self, code):
         """ 格式化错误消息

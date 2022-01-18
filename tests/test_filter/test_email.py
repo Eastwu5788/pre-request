@@ -26,7 +26,7 @@ class TestEmail:
         })
 
         assert resp.status_code == 200
-        assert resp.json["respCode"] == 564
+        assert resp.json["respCode"] == 464
 
     def test_email_filter_560(self, client):
         """ 测试Email过滤器 触发 错误
@@ -36,4 +36,4 @@ class TestEmail:
         })
 
         assert resp.status_code == 200
-        assert resp.json["respCode"] == 560
+        assert resp.json["respCode"] == 460

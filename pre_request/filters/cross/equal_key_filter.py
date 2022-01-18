@@ -12,12 +12,12 @@ from pre_request.filters.base import BaseFilter
 class EqualKeyFilter(BaseFilter):
 
     support_rules = {
-        "eq_key": 593,
-        "neq_key": 594,
-        "gt_key": 595,
-        "gte_key": 596,
-        "lt_key": 597,
-        "lte_key": 598,
+        "eq_key": 493,
+        "neq_key": 494,
+        "gt_key": 495,
+        "gte_key": 496,
+        "lt_key": 497,
+        "lte_key": 498,
     }
 
     def fmt_error_message(self, code):
@@ -25,22 +25,22 @@ class EqualKeyFilter(BaseFilter):
 
         :param code: 错误码
         """
-        if code == 593:
+        if code == 493:
             return "the value of '%s' must be the same as the value of '%s'" % (self.key, self.rule.eq_key)
 
-        if code == 594:
+        if code == 494:
             return "the value of '%s' must be different from the value of '%s'" % (self.key, self.rule.neq_key)
 
-        if code == 595:
+        if code == 495:
             return "the value of '%s' must be greater than the value of'%s'" % (self.key, self.rule.gt_key)
 
-        if code == 596:
+        if code == 496:
             return "the value of '%s' must be greater than or equal to the value of'%s'" % (self.key, self.rule.gte_key)
 
-        if code == 597:
+        if code == 497:
             return "the value of '%s' must be less than the value of'%s'" % (self.key, self.rule.lt_key)
 
-        if code == 598:
+        if code == 498:
             return "the value of '%s' must be less than or equal to the value of'%s'" % (self.key, self.rule.lte_key)
 
         return "%s field fails the 'EqualKeyFilter' filter check" % self.key

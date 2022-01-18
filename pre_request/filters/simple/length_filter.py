@@ -13,25 +13,25 @@ class LengthFilter(BaseFilter):
     判断字符串长度的过滤器
     """
 
-    length_code_gt = 574
-    length_code_gte = 575
-    length_code_lt = 576
-    length_code_lte = 577
-    illegal_code = 580
+    length_code_gt = 474
+    length_code_gte = 475
+    length_code_lt = 476
+    length_code_lte = 477
+    illegal_code = 480
 
     def fmt_error_message(self, code):
         """ 格式化错误消息
         """
-        if code == 574:
+        if code == 474:
             return "%s field content length must be greater than %s" % (self.key, str(self.rule.gt))
 
-        if code == 575:
+        if code == 475:
             return "%s field content length must be greater than or equal to %s" % (self.key, str(self.rule.gte))
 
-        if code == 576:
+        if code == 476:
             return "%s field content length must be less than %s" % (self.key, str(self.rule.lt))
 
-        if code == 577:
+        if code == 477:
             return "%s field content length must be less than or equal to %s" % (self.key, str(self.rule.lte))
 
         return "%s field fails the 'LengthFilter' filter check" % self.key

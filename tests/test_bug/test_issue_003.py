@@ -77,7 +77,7 @@ class TestRangeDecimal:
             "p1": 0,
             "p2": 2
         })
-        assert resp.json["respCode"] == 568
+        assert resp.json["respCode"] == 468
 
     def test_range_decimal_572(self):
         """ 测试范围异常 572
@@ -87,4 +87,4 @@ class TestRangeDecimal:
             "p1": 20,
             "p2": 5
         })
-        assert resp.json["respCode"] == 572
+        assert resp.json["respCode"] == 472

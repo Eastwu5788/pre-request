@@ -24,10 +24,10 @@ class TestRegexp:
             "params": "2020-3-03"
         })
 
-        assert resp.json["respCode"] == 566
+        assert resp.json["respCode"] == 466
 
         resp = client.get("/regexp", data={
             "params": "2020-03"
         })
 
-        assert resp.json["respCode"] == 566
+        assert resp.json["respCode"] == 466

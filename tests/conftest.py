@@ -338,7 +338,7 @@ def test_longitude_handler(params):
 location_params = {
     "p1": Rule(type=int, location="args"),
     "p2": Rule(type=int, location="form"),
-    "p3": Rule(type=int, location="values"),
+    "p3": Rule(type=int, location="form"),
     "p4": Rule(type=int, location="headers"),
     "p5": Rule(type=int, location="cookies"),
     "p7": Rule(type=int, location=["cookies", "args", "headers"])

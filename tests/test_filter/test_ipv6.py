@@ -24,4 +24,4 @@ class TestIpv6:
             "p1": "1030::C9B4:FF12:48AA:1A2BA"
         })
 
-        assert resp.json["respCode"] == 588
+        assert resp.json["respCode"] == 488

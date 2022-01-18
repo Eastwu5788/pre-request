@@ -42,5 +42,5 @@ class TestStoreKey:
         })
 
         pre.fuzzy = False
-        assert resp.json == {"respCode": 564, "respMsg": "Parameter verification failed, please check your input",
+        assert resp.json == {"respCode": 464, "respMsg": "Parameter verification failed, please check your input",
                              "result": {}}

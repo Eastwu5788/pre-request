@@ -56,4 +56,4 @@ class TestGtKey:
             "p2": 15
         })
 
-        assert resp.json["respCode"] == 595
+        assert resp.json["respCode"] == 495

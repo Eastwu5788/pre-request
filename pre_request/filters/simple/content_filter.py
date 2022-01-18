@@ -12,13 +12,13 @@ class ContentFilter(BaseFilter):
     """ 字符串内容检查过滤器
     """
 
-    not_contain_all_error = 581
-    not_contain_any_error = 582
+    not_contain_all_error = 481
+    not_contain_any_error = 482
 
-    excludes_error = 583
+    excludes_error = 483
 
-    startswith_error = 584
-    endswith_error = 585
+    startswith_error = 484
+    endswith_error = 485
 
     def fmt_error_message(self, code):
         """ 格式化错误信息

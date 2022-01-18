@@ -23,14 +23,14 @@ class TestMobile:
         resp = client.get("/mobile", data={
             "params": "138999988880"
         })
-        assert resp.json["respCode"] == 565
+        assert resp.json["respCode"] == 465
 
         resp = client.get("/mobile", data={
             "params": "138999988a8"
         })
-        assert resp.json["respCode"] == 565
+        assert resp.json["respCode"] == 465
 
         resp = client.get("/mobile", data={
             "params": "1389999888"
         })
-        assert resp.json["respCode"] == 565
+        assert resp.json["respCode"] == 465

@@ -238,7 +238,7 @@ class PreRequest:
         if r.structure is not None:
             # make sure that input value is not empty
             if r.required and not v:
-                raise ParamsValueError(560, message="%s field cannot be empty" % k)
+                raise ParamsValueError(460, message="%s field cannot be empty" % k)
 
             if not r.multi:
                 raise TypeError("invalid usage of `structure` params")

@@ -24,10 +24,10 @@ class TestEnum:
             "params": 9,
             "params2": "a"
         })
-        assert resp.json["respCode"] == 563
+        assert resp.json["respCode"] == 463
 
         resp = client.get("/enum", data={
             "params": 1,
             "params2": "e"
         })
-        assert resp.json["respCode"] == 563
+        assert resp.json["respCode"] == 463

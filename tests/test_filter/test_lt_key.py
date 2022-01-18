@@ -56,11 +56,11 @@ class TestLtKey:
             "p2": 15
         })
 
-        assert resp.json["respCode"] == 597
+        assert resp.json["respCode"] == 497
 
         resp = app.test_client().get("/lt/key", data={
             "p1": 15,
             "p2": 16
         })
 
-        assert resp.json["respCode"] == 597
+        assert resp.json["respCode"] == 497

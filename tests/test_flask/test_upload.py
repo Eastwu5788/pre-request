@@ -68,4 +68,4 @@ class TestUpload:
     def test_upload_560(self):
         headers = {'content-Type': 'multipart/form-data'}
         resp = app.test_client().post("/upload", headers=headers)
-        assert resp.json["respCode"] == 560
+        assert resp.json["respCode"] == 460

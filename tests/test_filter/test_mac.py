@@ -24,4 +24,4 @@ class TestMac:
             "p1": "34:29:8f:98:16:eg"
         })
 
-        assert resp.json["respCode"] == 589
+        assert resp.json["respCode"] == 489

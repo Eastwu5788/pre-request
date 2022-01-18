@@ -56,4 +56,4 @@ class TestNotEqualKey:
             "p2": 15
         })
 
-        assert resp.json["respCode"] == 594
+        assert resp.json["respCode"] == 494
