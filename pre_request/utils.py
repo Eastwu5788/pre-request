@@ -23,7 +23,7 @@ def get_deep_value(key, params, default=None, deep=True):
 
     # invalid input params type
     if not isinstance(params, dict):
-        raise ValueError("Can't read deep value from path: '%s'" % key)
+        raise ValueError(f"Can't read deep value from path: '{key}'")
 
     if not params:
         return default
@@ -32,6 +32,6 @@ def get_deep_value(key, params, default=None, deep=True):
         params = params.get(k, default)
         # return dict in deep query
         if not key.endswith(k) and not isinstance(params, dict):
-            params = dict()
+            params = {}
 
     return params

@@ -23,18 +23,18 @@ class LengthFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == 474:
-            return "%s field content length must be greater than %s" % (self.key, str(self.rule.gt))
+            return f"{self.key} field content length must be greater than {str(self.rule.gt)}"
 
         if code == 475:
-            return "%s field content length must be greater than or equal to %s" % (self.key, str(self.rule.gte))
+            return f"{self.key} field content length must be greater than or equal to {str(self.rule.gte)}"
 
         if code == 476:
-            return "%s field content length must be less than %s" % (self.key, str(self.rule.lt))
+            return f"{self.key} field content length must be less than {str(self.rule.lt)}"
 
         if code == 477:
-            return "%s field content length must be less than or equal to %s" % (self.key, str(self.rule.lte))
+            return f"{self.key} field content length must be less than or equal to {str(self.rule.lte)}"
 
-        return "%s field fails the 'LengthFilter' filter check" % self.key
+        return f"{self.key} field fails the 'LengthFilter' filter check"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -60,7 +60,7 @@ class LengthFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(LengthFilter, self).__call__()
+        super().__call__()
 
         fmt_value = self.value if isinstance(self.value, list) else [self.value]
 

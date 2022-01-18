@@ -21,7 +21,7 @@ class RegexpFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s field does not confirm to regular expression" % self.key
+        return f"{self.key} field does not confirm to regular expression"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -35,7 +35,7 @@ class RegexpFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(RegexpFilter, self).__call__()
+        super().__call__()
 
         # 将参数转换成数组处理
         fmt_value = self.value if isinstance(self.value, list) else [self.value]

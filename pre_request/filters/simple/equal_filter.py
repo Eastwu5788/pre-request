@@ -20,12 +20,12 @@ class EqualFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == 478:
-            return "%s field must be equal to %s" % (self.key, str(self.rule.eq))
+            return f"{self.key} field must be equal to {str(self.rule.eq)}"
 
         if code == 479:
-            return "%s field cannot be equal to %s" % (self.key, str(self.rule.neq))
+            return f"{self.key} field cannot be equal to {str(self.rule.neq)}"
 
-        return "%s field fails the 'EqualFilter' filter check" % self.key
+        return f"{self.key} field fails the 'EqualFilter' filter check"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -42,7 +42,7 @@ class EqualFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(EqualFilter, self).__call__()
+        super().__call__()
 
         if self.rule.eq is not None and self.value != self.rule.eq:
             raise ParamsValueError(self.eq_code, filter=self)

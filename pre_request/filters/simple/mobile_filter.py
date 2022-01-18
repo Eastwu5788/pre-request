@@ -17,7 +17,7 @@ class MobileFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s field is not a legal mobile phone number format" % self.key
+        return f"{self.key} field is not a legal mobile phone number format"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -31,7 +31,7 @@ class MobileFilter(BaseFilter):
         return True
 
     def __call__(self, *args, **kwargs):
-        super(MobileFilter, self).__call__()
+        super().__call__()
 
         value = self.value if isinstance(self.value, list) else [self.value]
 

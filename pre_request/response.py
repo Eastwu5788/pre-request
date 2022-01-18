@@ -27,7 +27,7 @@ class JSONResponse(BaseResponse):
 
         :type error: special error
         """
-        result = super(JSONResponse, self).__call__(fuzzy, error)
+        result = super().__call__(fuzzy, error)
 
         # use formatter function to handler error message
         if formatter and error:
@@ -48,10 +48,10 @@ class HTMLResponse(BaseResponse):
 
         :type error: special error
         """
-        result = super(HTMLResponse, self).__call__(fuzzy, error)
+        result = super().__call__(fuzzy, error)
 
         from flask import make_response  # pylint: disable=import-outside-toplevel
-        html = '<p>code:%s message:%s</p>' % (result["code"], result["message"])
+        html = f'<p>code:{result["code"]} message:{result["message"]}</p>'
         if formatter and error:
             html = formatter(error.code, error.form_message(fuzzy))
 

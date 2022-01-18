@@ -20,12 +20,12 @@ class LocationFilter(BaseFilter):
         """ 格式化错误信息
         """
         if code == self.latitude_error_code:
-            return "%s field does not confirm to longitude format" % self.key
+            return f"{self.key} field does not confirm to longitude format"
 
         if code == self.longitude_error_code:
-            return "%s field does not confirm to latitude format" % self.key
+            return f"{self.key} field does not confirm to latitude format"
 
-        return "%s field fails the 'LocationFilter' filter check" % self.key
+        return f"{self.key} field fails the 'LocationFilter' filter check"
 
     def filter_required(self):
         """ 验证过滤器是否必须执行
@@ -42,7 +42,7 @@ class LocationFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(LocationFilter, self).__call__()
+        super().__call__()
 
         fmt_value = self.value if isinstance(self.value, list) else [self.value]
 

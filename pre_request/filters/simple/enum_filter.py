@@ -16,7 +16,7 @@ class EnumFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s field value can only be the following %s!" % (self.key, str(self.rule.enum))
+        return f"{self.key} field value can only be the following {str(self.rule.enum)}!"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -30,7 +30,7 @@ class EnumFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(EnumFilter, self).__call__()
+        super().__call__()
 
         if self.value not in self.rule.enum:
             raise ParamsValueError(self.error_code, filter=self)

@@ -30,40 +30,40 @@ class EmailRegexp(Regexp):
     """ Regexp handler class for email
     """
     def __init__(self):
-        super(EmailRegexp, self).__init__(K_EMAIL_REG, re.IGNORECASE)
+        super().__init__(K_EMAIL_REG, re.IGNORECASE)
 
     def __call__(self, email=None):
-        return super(EmailRegexp, self).__call__(email)
+        return super().__call__(email)
 
 
 class MobileRegexp(Regexp):
     """ Regexp handler class for mobile
     """
     def __init__(self):
-        super(MobileRegexp, self).__init__(K_MOBILE_REG, re.IGNORECASE)
+        super().__init__(K_MOBILE_REG, re.IGNORECASE)
 
     def __call__(self, mobile=None):
-        return super(MobileRegexp, self).__call__(mobile)
+        return super().__call__(mobile)
 
 
 class FileRegexp(Regexp):
     """ Regexp handler class for file
     """
     def __init__(self):
-        super(FileRegexp, self).__init__(K_FILE_REG, re.IGNORECASE)
+        super().__init__(K_FILE_REG, re.IGNORECASE)
 
     def __call__(self, f=None):
-        return super(FileRegexp, self).__call__(f)
+        return super().__call__(f)
 
 
 class MacRegexp(Regexp):
     """ Regexp handler class for mac address
     """
     def __init__(self):
-        super(MacRegexp, self).__init__(K_MAC_REG, re.IGNORECASE)
+        super().__init__(K_MAC_REG, re.IGNORECASE)
 
     def __call__(self, mac=None):
-        return super(MacRegexp, self).__call__(mac)
+        return super().__call__(mac)
 
 
 class LatitudeRegexp(Regexp):
@@ -71,17 +71,17 @@ class LatitudeRegexp(Regexp):
     """
 
     def __init__(self):
-        super(LatitudeRegexp, self).__init__(K_LATITUDE_REG, re.IGNORECASE)
+        super().__init__(K_LATITUDE_REG, re.IGNORECASE)
 
     def __call__(self, address=None):
-        return super(LatitudeRegexp, self).__call__(address)
+        return super().__call__(address)
 
 
 class LongitudeRegexp(Regexp):
     """ Regexp handler class for longitude
     """
     def __init__(self):
-        super(LongitudeRegexp, self).__init__(K_LONGITUDE_REG, re.IGNORECASE)
+        super().__init__(K_LONGITUDE_REG, re.IGNORECASE)
 
     def __call__(self, address=None):
-        return super(LongitudeRegexp, self).__call__(address)
+        return super().__call__(address)

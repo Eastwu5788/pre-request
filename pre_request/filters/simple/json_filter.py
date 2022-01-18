@@ -21,7 +21,7 @@ class JsonFilter(BaseFilter):
 
         :param _: 错误码
         """
-        return "%s field cannot be parsed by json" % self.key
+        return f"{self.key} field cannot be parsed by json"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -38,11 +38,11 @@ class JsonFilter(BaseFilter):
         return True
 
     def __call__(self, *args, **kwargs):
-        super(JsonFilter, self).__call__()
+        super().__call__()
 
         try:
             self.value = json.loads(self.value)
-        except JSONDecodeError:
-            raise ParamsValueError(self.error_code, filter=self)
+        except JSONDecodeError as err:
+            raise ParamsValueError(self.error_code, filter=self) from err
 
         return self.value

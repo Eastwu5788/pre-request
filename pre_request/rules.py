@@ -21,16 +21,16 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.default = kwargs.get("default", None)
         self.trim = kwargs.get("trim", False)
 
-        self.enum = kwargs.get("enum", list())
+        self.enum = kwargs.get("enum", [])
 
         self.reg = kwargs.get("reg", None)
 
         self.email = kwargs.get("email", False)
         self.mobile = kwargs.get("mobile", False)
 
-        self.contains = kwargs.get("contains", list())
-        self.contains_any = kwargs.get("contains_any", list())
-        self.excludes = kwargs.get("excludes", list())
+        self.contains = kwargs.get("contains", [])
+        self.contains_any = kwargs.get("contains_any", [])
+        self.excludes = kwargs.get("excludes", [])
         self.startswith = kwargs.get("startswith", None)
         self.endswith = kwargs.get("endswith", None)
         self.lower = kwargs.get("lower", False)

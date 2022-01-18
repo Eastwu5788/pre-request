@@ -25,15 +25,15 @@ class NetworkFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == self.ipv4_error_code:
-            return "%s field does not conform to ipv4 format" % self.key
+            return f"{self.key} field does not conform to ipv4 format"
 
         if code == self.ipv6_error_code:
-            return "%s field does not conform to ipv6 format" % self.key
+            return f"{self.key} field does not conform to ipv6 format"
 
         if code == self.mac_error_code:
-            return "%s field is not a valid MAC address" % self.key
+            return f"{self.key} field is not a valid MAC address"
 
-        return "%s field fails the 'NetworkFilter' filter check" % self.key
+        return f"{self.key} field fails the 'NetworkFilter' filter check"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -77,7 +77,7 @@ class NetworkFilter(BaseFilter):
         return True
 
     def __call__(self, *args, **kwargs):
-        super(NetworkFilter, self).__call__()
+        super().__call__()
 
         value = self.value if isinstance(self.value, list) else [self.value]
 

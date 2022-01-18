@@ -19,10 +19,10 @@ class RequiredWithFilter(BaseFilter):
         :param code: 错误码
         """
         if code == self.required_with_error:
-            return "when filling in the value of '%s', the value of `%s` must also be filled in" % \
-                   (self.rule.required_with, self.key)
+            return f"when filling in the value of '{self.rule.required_with}', " \
+                   f"the value of `{self.key}` must also be filled in"
 
-        return "过滤器'RequiredWithFilter'过滤器检查'%s'参数失败" % self.key
+        return f"过滤器'RequiredWithFilter'过滤器检查'{self.key}'参数失败"
 
     def filter_required(self):
         """ 验证是否需要进行过滤
@@ -35,10 +35,10 @@ class RequiredWithFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         """ 过滤器被调用时的处理
         """
-        super(RequiredWithFilter, self).__call__()
+        super().__call__()
 
         # 所有请求后的处理函数
-        params = kwargs.get("params", dict())
+        params = kwargs.get("params", {})
 
         other_v = get_deep_value(self.rule.required_with, params, None, deep=True)
 

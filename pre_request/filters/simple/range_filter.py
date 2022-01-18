@@ -24,18 +24,18 @@ class RangeFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == 468:
-            return "%s field value must be greater than %s" % (self.key, str(self.rule.gt))
+            return f"{self.key} field value must be greater than {str(self.rule.gt)}"
 
         if code == 471:
-            return "%s field value must be greater than or equal to %s" % (self.key, str(self.rule.gte))
+            return f"{self.key} field value must be greater than or equal to {str(self.rule.gte)}"
 
         if code == 472:
-            return "%s field value must be less than %s" % (self.key, str(self.rule.lt))
+            return f"{self.key} field value must be less than {str(self.rule.lt)}"
 
         if code == 473:
-            return "%s field value must be less than or equal to %s" % (self.key, str(self.rule.lte))
+            return f"{self.key} field value must be less than or equal to {str(self.rule.lte)}"
 
-        return "%s field fails the 'RangeFilter' filter check" % self.key
+        return f"{self.key} field fails the 'RangeFilter' filter check"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -61,7 +61,7 @@ class RangeFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(RangeFilter, self).__call__()
+        super().__call__()
 
         value = self.value if isinstance(self.value, list) else [self.value]
 

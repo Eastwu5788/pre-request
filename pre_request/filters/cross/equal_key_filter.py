@@ -26,24 +26,24 @@ class EqualKeyFilter(BaseFilter):
         :param code: 错误码
         """
         if code == 493:
-            return "the value of '%s' must be the same as the value of '%s'" % (self.key, self.rule.eq_key)
+            return f"the value of '{self.key}' must be the same as the value of '{self.rule.eq_key}'"
 
         if code == 494:
-            return "the value of '%s' must be different from the value of '%s'" % (self.key, self.rule.neq_key)
+            return f"the value of '{self.key}' must be different from the value of '{self.rule.neq_key}'"
 
         if code == 495:
-            return "the value of '%s' must be greater than the value of'%s'" % (self.key, self.rule.gt_key)
+            return f"the value of '{self.key}' must be greater than the value of'{self.rule.gt_key}'"
 
         if code == 496:
-            return "the value of '%s' must be greater than or equal to the value of'%s'" % (self.key, self.rule.gte_key)
+            return f"the value of '{self.key}' must be greater than or equal to the value of'{self.rule.gte_key}'"
 
         if code == 497:
-            return "the value of '%s' must be less than the value of'%s'" % (self.key, self.rule.lt_key)
+            return f"the value of '{self.key}' must be less than the value of'{self.rule.lt_key}'"
 
         if code == 498:
-            return "the value of '%s' must be less than or equal to the value of'%s'" % (self.key, self.rule.lte_key)
+            return f"the value of '{self.key}' must be less than or equal to the value of'{self.rule.lte_key}'"
 
-        return "%s field fails the 'EqualKeyFilter' filter check" % self.key
+        return f"{self.key} field fails the 'EqualKeyFilter' filter check"
 
     def filter_required(self):
         """ 验证是否需要进行过滤
@@ -62,10 +62,10 @@ class EqualKeyFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         """ 过滤器被调用时的处理
         """
-        super(EqualKeyFilter, self).__call__()
+        super().__call__()
 
         # 所有请求后的处理函数
-        params = kwargs.get("params", dict())
+        params = kwargs.get("params", {})
         value = get_deep_value(self.rule.key_map or self.key, params, None, deep=True)
 
         # BUG: complex filter value will be None

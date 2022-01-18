@@ -12,7 +12,7 @@ class MultiFilter(BaseFilter):
     """
 
     def __call__(self, *args, **kwargs):
-        super(MultiFilter, self).__call__()
+        super().__call__()
 
         if self.rule.multi and not isinstance(self.value, list):
             return [self.value] if self.value is not None else []

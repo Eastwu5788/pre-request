@@ -204,7 +204,7 @@ class PreRequest:
             return request.files.get(key)
 
         # load multi files
-        fmt_params = list()
+        fmt_params = []
         for f in request.files.getlist(key):
             fmt_params.append(f)
         return fmt_params
@@ -216,7 +216,7 @@ class PreRequest:
         :param r: params rule
         """
         if isinstance(r, dict):
-            fmt_result = dict()
+            fmt_result = {}
             for key, rule in r.items():
                 fmt_value = self._handler_simple_filter(k + "." + key, v, rule)
                 fmt_result[rule.key_map if isinstance(rule, Rule) and rule.key_map else key] = fmt_value
@@ -224,7 +224,7 @@ class PreRequest:
             return fmt_result
 
         if not isinstance(r, Rule):
-            raise TypeError("invalid rule type for key '%s'" % k)
+            raise TypeError(f"invalid rule type for key '{k}'")
 
         if v is None:
             # load file type of params from request
@@ -238,7 +238,7 @@ class PreRequest:
         if r.structure is not None:
             # make sure that input value is not empty
             if r.required and not v:
-                raise ParamsValueError(460, message="%s field cannot be empty" % k)
+                raise ParamsValueError(460, message=f"{k} field cannot be empty")
 
             if not r.multi:
                 raise TypeError("invalid usage of `structure` params")
@@ -248,17 +248,17 @@ class PreRequest:
                 raise ParamsValueError(601, message="Input " + k + " invalid type")
 
             if not v:
-                return list()
+                return []
 
             # storage sub array
-            fmt_result = list()
+            fmt_result = []
             for idx, sub_v in enumerate(v):
                 # make sure that array item must be type of dict
                 if not isinstance(sub_v, dict):
                     raise ParamsValueError(600, message="Input " + k + "." + str(idx) + " invalid type")
 
                 # format every k-v with structure
-                fmt_item = dict()
+                fmt_item = {}
                 fmt_result.append(fmt_item)
                 for sub_k, sub_r in r.structure.items():
                     new_k = k + "." + str(idx) + "." + sub_k
@@ -279,7 +279,7 @@ class PreRequest:
 
             # custom filter object
             elif issubclass(f, BaseFilter):
-                filter_obj = f(k, v, r)
+                filter_obj = f(k, v, r)  # pylint: disable=not-callable
 
             # ignore invalid and not required filter
             if not filter_obj or not filter_obj.filter_required():
@@ -306,7 +306,7 @@ class PreRequest:
             return
 
         if not isinstance(r, Rule):
-            raise TypeError("invalid rule type for key '%s'" % k)
+            raise TypeError(f"invalid rule type for key '{k}'")
 
         if r.skip or self.skip_filter:
             return
@@ -320,7 +320,7 @@ class PreRequest:
 
             # custom filter object
             elif issubclass(f, BaseFilter):
-                filter_obj = f(k, None, r)
+                filter_obj = f(k, None, r)  # pylint: disable=not-callable
 
             # ignore invalid and not required filter
             if not filter_obj or not filter_obj.filter_required():
@@ -331,7 +331,7 @@ class PreRequest:
     def parse(self, rule=None, **options):
         """ Parse input params
         """
-        fmt_rst = dict()
+        fmt_rst = {}
 
         # invalid input
         if not rule and not options:
@@ -347,7 +347,7 @@ class PreRequest:
 
         # ignore catch with empty rules
         if not rules:
-            raise ValueError("request method '%s' with invalid filter rule" % request.method)
+            raise ValueError(f"request method '{request.method}' with invalid filter rule")
 
         # use simple filter to handler params
         for k, r in rules.items():

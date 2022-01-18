@@ -26,7 +26,7 @@ class StringFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(StringFilter, self).__call__()
+        super().__call__()
 
         if isinstance(self.value, str):
             return self.value.lower() if self.rule.lower else self.value.upper()

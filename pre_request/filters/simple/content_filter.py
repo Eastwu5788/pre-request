@@ -24,21 +24,21 @@ class ContentFilter(BaseFilter):
         """ 格式化错误信息
         """
         if code == self.not_contain_all_error:
-            return "%s field is missing required content" % self.key
+            return f"{self.key} field is missing required content"
 
         if code == self.not_contain_any_error:
-            return "%s field must contain the specified content" % self.key
+            return f"{self.key} field must contain the specified content"
 
         if code == self.excludes_error:
-            return "%s field contains prohibited content" % self.key
+            return f"{self.key} field contains prohibited content"
 
         if code == self.startswith_error:
-            return "%s field must start with '%s'" % (self.key, self.rule.startswith)
+            return f"{self.key} field must start with '{self.rule.startswith}'"
 
         if code == self.endswith_error:
-            return "%s field must end with '%s'" % (self.key, self.rule.startswith)
+            return f"{self.key} field must end with '{self.rule.startswith}'"
 
-        return "%s field fails the 'ContainFilter' filter check" % self.key
+        return f"{self.key} field fails the 'ContainFilter' filter check"
 
     def filter_required(self):
         """ 验证过滤器是否必须执行
@@ -61,7 +61,7 @@ class ContentFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(ContentFilter, self).__call__()
+        super().__call__()
 
         if self.rule.startswith and not self.value.startswith(self.rule.startswith):
             raise ParamsValueError(self.startswith_error, filter=self)

@@ -22,5 +22,5 @@ class SplitFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(SplitFilter, self).__call__()
+        super().__call__()
         return self.value.split(self.rule.split)

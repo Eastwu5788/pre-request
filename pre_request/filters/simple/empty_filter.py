@@ -18,10 +18,10 @@ class EmptyFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误消息
         """
-        return "%s field cannot be empty" % self.key
+        return f"{self.key} field cannot be empty"
 
     def __call__(self, *args, **kwargs):
-        super(EmptyFilter, self).__call__()
+        super().__call__()
 
         if self.value is None and self.rule.required:
             raise ParamsValueError(self.error_code, filter=self)

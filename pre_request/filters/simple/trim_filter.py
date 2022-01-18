@@ -23,7 +23,7 @@ class TrimFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(TrimFilter, self).__call__()
+        super().__call__()
 
         if isinstance(self.value, str):
             return self.value.strip()

@@ -17,7 +17,7 @@ class FileFilter(BaseFilter):
     def fmt_error_message(self, _):
         """ 格式化错误信息
         """
-        return "%s字段不符合文件格式!" % self.key
+        return f"{self.key}字段不符合文件格式!"
 
     def filter_required(self):
         """ 验证过滤器是否必须执行
@@ -31,7 +31,7 @@ class FileFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(FileFilter, self).__call__()
+        super().__call__()
 
         if not FileRegexp()(self.value):
             raise ParamsValueError(self.error_code, filter=self)

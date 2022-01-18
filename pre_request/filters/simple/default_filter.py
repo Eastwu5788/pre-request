@@ -12,7 +12,7 @@ class DefaultFilter(BaseFilter):
     """
 
     def __call__(self, *args, **kwargs):
-        super(DefaultFilter, self).__call__()
+        super().__call__()
 
         if not self.rule.required and self.value is None:
             self.value = self.rule.default

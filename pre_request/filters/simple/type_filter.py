@@ -28,9 +28,9 @@ class TypeFilter(BaseFilter):
         """ 格式化错误消息
         """
         if code == self.datetime_error_code:
-            return "%s field conversion date format failed '%s'" % (self.key, self.rule.fmt)
+            return f"{self.key} field conversion date format failed '{self.rule.fmt}'"
 
-        return "%s field cannot be converted to %s type" % (self.key, self.rule.direct_type.__name__)
+        return f"{self.key} field cannot be converted to {self.rule.direct_type.__name__} type"
 
     def filter_required(self):
         """ 检查过滤器是否必须呗执行
@@ -64,8 +64,8 @@ class TypeFilter(BaseFilter):
         if d_type == datetime:
             try:
                 return datetime.strptime(value, self.rule.fmt)
-            except ValueError:
-                raise ParamsValueError(self.datetime_error_code, filter=self)
+            except ValueError as err:
+                raise ParamsValueError(self.datetime_error_code, filter=self) from err
 
         # 文件处理
         if d_type == FileStorage:
@@ -78,11 +78,11 @@ class TypeFilter(BaseFilter):
                 value = value.split(".")[0]
 
             return d_type(value)
-        except (ValueError, TypeError):
-            raise ParamsValueError(self.error_code, filter=self)
+        except (ValueError, TypeError) as err:
+            raise ParamsValueError(self.error_code, filter=self) from err
 
     def __call__(self, *args, **kwargs):
-        super(TypeFilter, self).__call__()
+        super().__call__()
 
         if isinstance(self.value, list):
             return [self._type_transform(self.rule.direct_type, value) for value in self.value]
