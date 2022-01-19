@@ -56,11 +56,11 @@ class TestLtKey:
             "p2": 15
         })
 
-        assert resp.json["respCode"] == 497
+        assert resp.json["respMsg"] == "the value of 'p2' must be less than the value of 'P1'"
 
         resp = app.test_client().get("/lt/key", data={
             "p1": 15,
             "p2": 16
         })
 
-        assert resp.json["respCode"] == 497
+        assert resp.json["respMsg"] == "the value of 'p2' must be less than the value of 'P1'"

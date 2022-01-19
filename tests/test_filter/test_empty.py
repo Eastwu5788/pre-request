@@ -35,18 +35,18 @@ class TestEmpty:
             "int2": 4,
             "str2": "5"
         })
-        assert resp.json["respCode"] == 460
+        assert resp.json["respMsg"] == "int field cannot be empty"
 
         # int 传值为None
         resp = client.get("/empty", data={
             "int": None,
             "str": "ds",
         })
-        assert resp.json["respCode"] == 460
+        assert resp.json["respMsg"] == "int field cannot be empty"
 
         # int 传值为0，str传值为None
         resp = client.get("/empty", data={
             "int": 0,
             "str": None,
         })
-        assert resp.json["respCode"] == 460
+        assert resp.json["respMsg"] == "str field cannot be empty"

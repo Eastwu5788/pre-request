@@ -12,34 +12,6 @@ class ContentFilter(BaseFilter):
     """ 字符串内容检查过滤器
     """
 
-    not_contain_all_error = 481
-    not_contain_any_error = 482
-
-    excludes_error = 483
-
-    startswith_error = 484
-    endswith_error = 485
-
-    def fmt_error_message(self, code):
-        """ 格式化错误信息
-        """
-        if code == self.not_contain_all_error:
-            return f"{self.key} field is missing required content"
-
-        if code == self.not_contain_any_error:
-            return f"{self.key} field must contain the specified content"
-
-        if code == self.excludes_error:
-            return f"{self.key} field contains prohibited content"
-
-        if code == self.startswith_error:
-            return f"{self.key} field must start with '{self.rule.startswith}'"
-
-        if code == self.endswith_error:
-            return f"{self.key} field must end with '{self.rule.startswith}'"
-
-        return f"{self.key} field fails the 'ContainFilter' filter check"
-
     def filter_required(self):
         """ 验证过滤器是否必须执行
         """
@@ -64,24 +36,24 @@ class ContentFilter(BaseFilter):
         super().__call__()
 
         if self.rule.startswith and not self.value.startswith(self.rule.startswith):
-            raise ParamsValueError(self.startswith_error, filter=self)
+            raise ParamsValueError(f"{self.key} field must start with '{self.rule.startswith}'")
 
         if self.rule.endswith and not self.value.endswith(self.rule.endswith):
-            raise ParamsValueError(self.endswith_error, filter=self)
+            raise ParamsValueError(f"{self.key} field must end with '{self.rule.startswith}'")
 
         for contain in self.rule.contains:
             if contain not in self.value:
-                raise ParamsValueError(self.not_contain_all_error, filter=self)
+                raise ParamsValueError(f"{self.key} field is missing required content")
 
         for contain in self.rule.excludes:
             if contain in self.value:
-                raise ParamsValueError(self.excludes_error, filter=self)
+                raise ParamsValueError(f"{self.key} field contains prohibited content")
 
         for contain in self.rule.contains_any:
             if contain in self.value:
                 return self.value
 
         if self.rule.contains_any:
-            raise ParamsValueError(self.not_contain_any_error, filter=self)
+            raise ParamsValueError(f"{self.key} field must contain the specified content")
 
         return self.value

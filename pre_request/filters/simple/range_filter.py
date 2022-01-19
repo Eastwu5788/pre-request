@@ -15,28 +15,6 @@ from pre_request.filters.base import BaseFilter
 class RangeFilter(BaseFilter):
     """取值范围过滤器"""
 
-    range_code_gt = 468
-    range_code_gte = 471
-    range_code_lt = 472
-    range_code_lte = 473
-
-    def fmt_error_message(self, code):
-        """ 格式化错误消息
-        """
-        if code == 468:
-            return f"{self.key} field value must be greater than {str(self.rule.gt)}"
-
-        if code == 471:
-            return f"{self.key} field value must be greater than or equal to {str(self.rule.gte)}"
-
-        if code == 472:
-            return f"{self.key} field value must be less than {str(self.rule.lt)}"
-
-        if code == 473:
-            return f"{self.key} field value must be less than or equal to {str(self.rule.lte)}"
-
-        return f"{self.key} field fails the 'RangeFilter' filter check"
-
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
@@ -69,24 +47,24 @@ class RangeFilter(BaseFilter):
         if self.rule.gt is not None:
             rst = [not v > self.rule.gt for v in value]
             if True in rst:
-                raise ParamsValueError(self.range_code_gt, filter=self)
+                raise ParamsValueError(f"{self.key} field value must be greater than {str(self.rule.gt)}")
 
         # 大于等于
         if self.rule.gte is not None:
             rst = [not v >= self.rule.gte for v in value]
             if True in rst:
-                raise ParamsValueError(self.range_code_gte, filter=self)
+                raise ParamsValueError(f"{self.key} field value must be greater than or equal to {str(self.rule.gte)}")
 
         # 小于
         if self.rule.lt is not None:
             rst = [not v < self.rule.lt for v in value]
             if True in rst:
-                raise ParamsValueError(self.range_code_lt, filter=self)
+                raise ParamsValueError(f"{self.key} field value must be less than {str(self.rule.lt)}")
 
         # 小于等于
         if self.rule.lte is not None:
             rst = [not v <= self.rule.lte for v in value]
             if True in rst:
-                raise ParamsValueError(self.range_code_lte, filter=self)
+                raise ParamsValueError(f"{self.key} field value must be less than or equal to {str(self.rule.lte)}")
 
         return self.value

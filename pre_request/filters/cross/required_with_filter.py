@@ -11,19 +11,6 @@ from pre_request.filters.base import BaseFilter
 
 class RequiredWithFilter(BaseFilter):
 
-    required_with_error = 499
-
-    def fmt_error_message(self, code):
-        """ 格式化错误消息
-
-        :param code: 错误码
-        """
-        if code == self.required_with_error:
-            return f"when filling in the value of '{self.rule.required_with}', " \
-                   f"the value of `{self.key}` must also be filled in"
-
-        return f"过滤器'RequiredWithFilter'过滤器检查'{self.key}'参数失败"
-
     def filter_required(self):
         """ 验证是否需要进行过滤
         """
@@ -43,6 +30,7 @@ class RequiredWithFilter(BaseFilter):
         other_v = get_deep_value(self.rule.required_with, params, None, deep=True)
 
         if other_v is not None and get_deep_value(self.rule.key_map or self.key, params, None, deep=True) is None:
-            raise ParamsValueError(self.required_with_error, filter=self)
+            raise ParamsValueError(f"when filling in the value of '{self.rule.required_with}', "
+                                   f"the value of `{self.key}` must also be filled in")
 
         return self.value

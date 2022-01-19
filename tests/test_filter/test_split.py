@@ -56,7 +56,7 @@ class TestSplit:
             "p1": "1,a,5,6,7"
         })
 
-        assert resp.json["respCode"] == 462
+        assert resp.json["respMsg"] == "p1 field cannot be converted to int type"
 
     def test_split_573(self):
         """ 测试数组内数据大小限制判断
@@ -67,4 +67,4 @@ class TestSplit:
             "p3": "5, 6"
         })
 
-        assert resp.json["respCode"] == 473
+        assert resp.json["respMsg"] == "p3 field value must be less than or equal to 5"

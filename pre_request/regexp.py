@@ -1,65 +1,16 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 # sys
 import re
 
-# project
-from .macro import (
-    K_FILE_REG,
-    K_LATITUDE_REG,
-    K_LONGITUDE_REG,
-    K_MAC_REG,
-)
+# RFC5322
+EMAIL_REG = r"""([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])"""
+LATITUDE_REG = r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$"
+LONGITUDE_REG = r"^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$"
+MAC_REG = r"[0-9a-f]{2}([-:])[0-9a-f]{2}(\1[0-9a-f]{2}){4}$"
 
 
-class Regexp:
-    """ Base class of regexp handler
-    """
-    def __init__(self, regex, flags=0):
-        if isinstance(regex, str):
-            regex = re.compile(regex, flags)
-
-        self.regex = regex
-
-    def __call__(self, data):
-        return self.regex.match(data or '')
-
-
-class FileRegexp(Regexp):
-    """ Regexp handler class for file
-    """
-    def __init__(self):
-        super().__init__(K_FILE_REG, re.IGNORECASE)
-
-    def __call__(self, f=None):
-        return super().__call__(f)
-
-
-class MacRegexp(Regexp):
-    """ Regexp handler class for mac address
-    """
-    def __init__(self):
-        super().__init__(K_MAC_REG, re.IGNORECASE)
-
-    def __call__(self, mac=None):
-        return super().__call__(mac)
-
-
-class LatitudeRegexp(Regexp):
-    """ Regexp handler class for latitude
-    """
-
-    def __init__(self):
-        super().__init__(K_LATITUDE_REG, re.IGNORECASE)
-
-    def __call__(self, address=None):
-        return super().__call__(address)
-
-
-class LongitudeRegexp(Regexp):
-    """ Regexp handler class for longitude
-    """
-    def __init__(self):
-        super().__init__(K_LONGITUDE_REG, re.IGNORECASE)
-
-    def __call__(self, address=None):
-        return super().__call__(address)
+email_regex = re.compile(EMAIL_REG)
+latitude_regex = re.compile(LATITUDE_REG)
+longitude_regex = re.compile(LONGITUDE_REG)
+mac_regex = re.compile(MAC_REG)

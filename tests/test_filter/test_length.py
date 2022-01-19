@@ -26,7 +26,7 @@ class TestLength:
             "params": "h",
             "params2": "aaa"
         })
-        assert resp.json["respCode"] == 474
+        assert resp.json["respMsg"] == "params field content length must be greater than 1"
 
     def test_length_filter_575(self, client):
         """ 测试 length_filter 575 错误
@@ -36,7 +36,7 @@ class TestLength:
             "params": "he",
             "params2": "aa"
         })
-        assert resp.json["respCode"] == 475
+        assert resp.json["respMsg"] == "params2 field content length must be greater than or equal to 3"
 
     def test_length_filter_576(self, client):
         """ 测试 length_filter 576 错误
@@ -46,7 +46,7 @@ class TestLength:
             "params": "hello",
             "params2": "aaa"
         })
-        assert resp.json["respCode"] == 476
+        assert resp.json["respMsg"] == "params field content length must be less than 3"
 
     def test_length_filter_577(self, client):
         """ 测试 length_filter 577 错误
@@ -56,4 +56,4 @@ class TestLength:
             "params": "he",
             "params2": "jerry"
         })
-        assert resp.json["respCode"] == 477
+        assert resp.json["respMsg"] == "params2 field content length must be less than or equal to 3"

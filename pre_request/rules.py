@@ -32,7 +32,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.endswith = kwargs.get("endswith", None)
         self.lower = kwargs.get("lower", False)
         self.upper = kwargs.get("upper", False)
-        # self.file = kwargs.get("file", False)
         self.split = kwargs.get("split", None)
 
         self.ipv4 = kwargs.get("ipv4", False)

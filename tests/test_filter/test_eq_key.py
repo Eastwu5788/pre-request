@@ -56,4 +56,4 @@ class TestEqualKey:
             "p2": 16
         })
 
-        assert resp.json["respCode"] == 493
+        assert resp.json["respMsg"] == "the value of 'p2' must be the same as the value of 'P1'"

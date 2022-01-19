@@ -14,15 +14,6 @@ from pre_request.filters.base import BaseFilter
 class JsonFilter(BaseFilter):
     """Json解析过滤器"""
 
-    error_code = 470
-
-    def fmt_error_message(self, _):
-        """ 格式化错误信息
-
-        :param _: 错误码
-        """
-        return f"{self.key} field cannot be parsed by json"
-
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
@@ -43,6 +34,6 @@ class JsonFilter(BaseFilter):
         try:
             self.value = json.loads(self.value)
         except JSONDecodeError as err:
-            raise ParamsValueError(self.error_code, filter=self) from err
+            raise ParamsValueError(f"{self.key} field cannot be parsed by json") from err
 
         return self.value
