@@ -25,9 +25,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
         self.reg = kwargs.get("reg", None)
 
-        self.email = kwargs.get("email", False)
-        self.mobile = kwargs.get("mobile", False)
-
         self.contains = kwargs.get("contains", [])
         self.contains_any = kwargs.get("contains_any", [])
         self.excludes = kwargs.get("excludes", [])
@@ -35,7 +32,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.endswith = kwargs.get("endswith", None)
         self.lower = kwargs.get("lower", False)
         self.upper = kwargs.get("upper", False)
-        # self.file = kwargs.get("file", False)
         self.split = kwargs.get("split", None)
 
         self.ipv4 = kwargs.get("ipv4", False)
@@ -56,6 +52,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
 
         self.eq = kwargs.get("eq", None)
         self.neq = kwargs.get("neq", None)
+        self.len = kwargs.get("len", None)
 
         self.gt = kwargs.get("gt", None)
         self.gte = kwargs.get("gte", None)

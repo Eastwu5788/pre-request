@@ -5,23 +5,24 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-08 09:19'
 # sys
+import typing as t
 import json
 # 3p
-import pytest
 from flask import Flask
 from pre_request import BaseResponse
-from pre_request import pre, Rule
+from pre_request import pre, Rule, ParamsValueError
 
 
 class CustomResponse(BaseResponse):
 
-    def __call__(self, fuzzy=False, formatter=None, error=None):
-        """
-        :type error: 错误
-        :return:
-        """
+    def make_response(
+            cls,
+            error: "ParamsValueError",
+            fuzzy: bool = False,
+            formatter: t.Optional[t.Callable] = None
+    ):
         result = {
-            "code": error.code,
+            "code": 900,
             "rst": {}
         }
 
@@ -36,7 +37,7 @@ app.config["TESTING"] = True
 
 
 filter_params = {
-    "email": Rule(email=True)
+    "email": Rule(reg=r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$')
 }
 
 
@@ -67,22 +68,16 @@ class TestResponse:
         })
 
         assert resp.status_code == 200
-        assert resp.get_data(as_text=True) == '{"code": 464, "rst": {}}'
-
-    def test_resp_error(self):
-        """ 测试重置response时报错问题
-        """
-        with pytest.raises(TypeError):
-            pre.add_response(TestResponse)
-
-        pre.add_response(None)
+        assert resp.get_data(as_text=True) == '{"code": 900, "rst": {}}'
 
     def test_response_none(self):
         """ 测试response恢复
         """
+        pre.add_response(None)
+
         resp = app.test_client().get("/email", data={
             "email": "wudong@e@astwu.cn"
         })
 
         assert resp.status_code == 200
-        assert resp.json == {"respCode": 464, "respMsg": "email field does not match the message format", "result": {}}
+        assert resp.json["respMsg"] == "email field does not confirm to regular expression"

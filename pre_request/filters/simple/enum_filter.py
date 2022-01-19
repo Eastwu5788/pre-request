@@ -11,13 +11,6 @@ from pre_request.filters.base import BaseFilter
 class EnumFilter(BaseFilter):
     """枚举过滤器"""
 
-    error_code = 463
-
-    def fmt_error_message(self, _):
-        """ 格式化错误消息
-        """
-        return f"{self.key} field value can only be the following {str(self.rule.enum)}!"
-
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
@@ -33,6 +26,6 @@ class EnumFilter(BaseFilter):
         super().__call__()
 
         if self.value not in self.rule.enum:
-            raise ParamsValueError(self.error_code, filter=self)
+            raise ParamsValueError(f"{self.key} field value can only be the following {str(self.rule.enum)}")
 
         return self.value

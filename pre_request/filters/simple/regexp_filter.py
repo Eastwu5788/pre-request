@@ -7,7 +7,6 @@
 import re
 
 from pre_request.exception import ParamsValueError
-from pre_request.regexp import Regexp
 from pre_request.filters.base import BaseFilter
 
 
@@ -15,13 +14,6 @@ class RegexpFilter(BaseFilter):
     """
     正则表达式过滤器
     """
-
-    error_code = 466
-
-    def fmt_error_message(self, _):
-        """ 格式化错误消息
-        """
-        return f"{self.key} field does not confirm to regular expression"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -42,7 +34,7 @@ class RegexpFilter(BaseFilter):
 
         for value in fmt_value:
             # 判断是否符合正则
-            if not Regexp(self.rule.reg, re.IGNORECASE)(value):
-                raise ParamsValueError(self.error_code, filter=self)
+            if not re.compile(self.rule.reg, re.IGNORECASE).match(value):
+                raise ParamsValueError(f"{self.key} field does not confirm to regular expression")
 
         return self.value

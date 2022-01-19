@@ -50,4 +50,4 @@ class TestComplexStructure:
             }
         }
         resp = app.test_client().post("/structure", json=params)
-        assert resp.json["respCode"] == 460
+        assert resp.json["respMsg"] == "userFirst.socialInfo.gender field cannot be empty"

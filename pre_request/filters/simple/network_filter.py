@@ -8,32 +8,14 @@
 import socket
 
 # project
-from pre_request.regexp import MacRegexp
 from pre_request.exception import ParamsValueError
+from pre_request.regexp import mac_regex
 from pre_request.filters.base import BaseFilter
 
 
 class NetworkFilter(BaseFilter):
     """网络过滤器
     """
-
-    ipv4_error_code = 487
-    ipv6_error_code = 488
-    mac_error_code = 489
-
-    def fmt_error_message(self, code):
-        """ 格式化错误消息
-        """
-        if code == self.ipv4_error_code:
-            return f"{self.key} field does not conform to ipv4 format"
-
-        if code == self.ipv6_error_code:
-            return f"{self.key} field does not conform to ipv6 format"
-
-        if code == self.mac_error_code:
-            return f"{self.key} field is not a valid MAC address"
-
-        return f"{self.key} field fails the 'NetworkFilter' filter check"
 
     def filter_required(self):
         """ 检查过滤器是否必须执行
@@ -83,12 +65,12 @@ class NetworkFilter(BaseFilter):
 
         for v in value:
             if self.rule.ipv4 and not self._is_ipv4(v):
-                raise ParamsValueError(self.ipv4_error_code, filter=self)
+                raise ParamsValueError(f"{self.key} field does not conform to ipv4 format")
 
             if self.rule.ipv6 and not self._is_ipv6(v):
-                raise ParamsValueError(self.ipv6_error_code, filter=self)
+                raise ParamsValueError(f"{self.key} field does not conform to ipv6 format")
 
-            if self.rule.mac and not MacRegexp()(v):
-                raise ParamsValueError(self.mac_error_code, filter=self)
+            if self.rule.mac and not mac_regex.match(v.lower()):
+                raise ParamsValueError(f"{self.key} field is not a valid MAC address")
 
         return self.value

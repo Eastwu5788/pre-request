@@ -5,27 +5,16 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-10 17:09'
 from pre_request.exception import ParamsValueError
-from pre_request.regexp import LongitudeRegexp, LatitudeRegexp
+from pre_request.regexp import (
+    latitude_regex,
+    longitude_regex
+)
 from pre_request.filters.base import BaseFilter
 
 
 class LocationFilter(BaseFilter):
     """ 地址位置过滤器
     """
-
-    latitude_error_code = 490
-    longitude_error_code = 491
-
-    def fmt_error_message(self, code):
-        """ 格式化错误信息
-        """
-        if code == self.latitude_error_code:
-            return f"{self.key} field does not confirm to longitude format"
-
-        if code == self.longitude_error_code:
-            return f"{self.key} field does not confirm to latitude format"
-
-        return f"{self.key} field fails the 'LocationFilter' filter check"
 
     def filter_required(self):
         """ 验证过滤器是否必须执行
@@ -47,10 +36,10 @@ class LocationFilter(BaseFilter):
         fmt_value = self.value if isinstance(self.value, list) else [self.value]
 
         for value in fmt_value:
-            if self.rule.longitude and not LongitudeRegexp()(value):
-                raise ParamsValueError(self.longitude_error_code, filter=self)
+            if self.rule.longitude and not longitude_regex.match(value):
+                raise ParamsValueError(f"{self.key} field does not confirm to longitude format")
 
-            if self.rule.latitude and not LatitudeRegexp()(value):
-                raise ParamsValueError(self.latitude_error_code, filter=self)
+            if self.rule.latitude and not latitude_regex.match(value):
+                raise ParamsValueError(f"{self.key} field does not confirm to latitude format")
 
         return self.value

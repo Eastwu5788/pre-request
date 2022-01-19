@@ -5,19 +5,15 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-08 09:50'
 # 3p
-import pytest
 from flask import Flask
 from pre_request import pre, Rule
 
 
-def custom_formatter(code, msg):
+def custom_formatter(error):
     """ 自定义结果格式化函数
-
-    :param code: 响应码
-    :param msg: 响应消息
     """
     return {
-        "code": code,
+        "code": 411,
         "msg": "hello",
         "sss": "tt",
     }
@@ -28,7 +24,7 @@ app.config["TESTING"] = True
 
 
 filter_params = {
-    "email": Rule(email=True)
+    "email": Rule(reg=r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$')
 }
 
 
@@ -59,17 +55,11 @@ class TestFormatter:
         })
 
         assert resp.status_code == 200
-        assert resp.get_data(as_text=True) == '{"code": 464, "msg": "hello", "sss": "tt"}'
+        assert resp.get_data(as_text=True) == '{"code": 411, "msg": "hello", "sss": "tt"}'
 
     def test_resp_error(self):
         """ 测试重置response时报错问题
         """
-        def cus_fun(code):
-            return code
-
-        with pytest.raises(TypeError):
-            pre.add_formatter(cus_fun)
-
         pre.add_formatter(None)
 
     def test_response_none(self):
@@ -80,4 +70,4 @@ class TestFormatter:
         })
 
         assert resp.status_code == 200
-        assert resp.json == {"respCode": 464, "respMsg": "email field does not match the message format", "result": {}}
+        assert resp.json["respMsg"] == "email field does not confirm to regular expression"

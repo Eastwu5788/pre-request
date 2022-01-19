@@ -13,20 +13,6 @@ class EqualFilter(BaseFilter):
     判断数值相等过滤器
     """
 
-    eq_code = 478
-    neq_code = 479
-
-    def fmt_error_message(self, code):
-        """ 格式化错误消息
-        """
-        if code == 478:
-            return f"{self.key} field must be equal to {str(self.rule.eq)}"
-
-        if code == 479:
-            return f"{self.key} field cannot be equal to {str(self.rule.neq)}"
-
-        return f"{self.key} field fails the 'EqualFilter' filter check"
-
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
@@ -45,9 +31,9 @@ class EqualFilter(BaseFilter):
         super().__call__()
 
         if self.rule.eq is not None and self.value != self.rule.eq:
-            raise ParamsValueError(self.eq_code, filter=self)
+            raise ParamsValueError(f"{self.key} field must be equal to {str(self.rule.eq)}")
 
         if self.rule.neq is not None and self.value == self.rule.neq:
-            raise ParamsValueError(self.neq_code, filter=self)
+            raise ParamsValueError(f"{self.key} field cannot be equal to {str(self.rule.neq)}")
 
         return self.value

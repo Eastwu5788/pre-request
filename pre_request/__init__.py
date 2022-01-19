@@ -15,7 +15,7 @@ Usage:
     >>>     print(params)
 
 
-:copyright: (c) 2020 by Wu Dong
+:copyright: (c) 2022 by Wu Dong
 :license: Apache 2.0, see LICENSE for more details.
 """
 from .request import PreRequest as _PreRequest

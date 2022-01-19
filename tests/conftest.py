@@ -24,19 +24,6 @@ def json_resp(result):
     return resp
 
 
-email_params = {
-    "email": Rule(email=True)
-}
-
-
-@app.route("/email", methods=['get', 'post'])
-@pre.catch(email_params)
-def test_email_handler(params):
-    """ 测试邮件验证
-    """
-    return json_resp(params)
-
-
 g_params = {
     "email": Rule(email=True)
 }
@@ -104,19 +91,6 @@ length_params = {
 @pre.catch(length_params)
 def test_length_handler(params):
     """ 测试字符串数据长度校验
-    """
-    return json_resp(params)
-
-
-mobile_params = {
-    "params": Rule(mobile=True)
-}
-
-
-@app.route("/mobile", methods=['get', 'post'])
-@pre.catch(mobile_params)
-def test_mobile_handler(params):
-    """ 测试手机号格式校验
     """
     return json_resp(params)
 

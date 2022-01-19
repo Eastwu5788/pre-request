@@ -56,4 +56,4 @@ class TestGtKey:
             "p2": 15
         })
 
-        assert resp.json["respCode"] == 495
+        assert resp.json["respMsg"] == "the value of 'p2' must be greater than the value of 'p1'"

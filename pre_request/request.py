@@ -5,15 +5,20 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-01 09:47'
 # sys
+import typing as t
 from functools import wraps
 from inspect import isfunction
 from inspect import getfullargspec
 # 3p
-from flask import g
+from flask import (  # pylint: disable=unused-import
+    Flask,
+    g,
+    request,
+)
 from werkzeug.datastructures import FileStorage
 # object
 from .exception import ParamsValueError
-from .filters.base import BaseFilter
+from .filters.base import BaseFilter  # pylint: disable=unused-import
 from .filters import (
     complex_filters,
     simple_filters,
@@ -31,14 +36,23 @@ from .response import (
 )
 from .rules import Rule
 from .utils import get_deep_value
-from . import filters
+# checking
+if t.TYPE_CHECKING:
+    from flask import Response  # pylint: disable=unused-import
 
 
 class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
-    def __init__(self, app=None, fuzzy=False, store_key=None, content_type=None, skip_filter=False):
+    def __init__(
+            self,
+            app: t.Optional["Flask"] = None,
+            fuzzy: bool = False,
+            store_key: t.Optional[str] = None,
+            content_type: t.Optional[str] = None,
+            skip_filter: bool = False
+    ):
         """ PreRequest init function
 
         :param fuzzy: formatter error message with fuzzy style
@@ -46,20 +60,20 @@ class PreRequest:
         :param content_type: response content type json/html
         :param skip_filter: skip all of the filter check
         """
-        self.filters = simple_filters
-        self.complex_filters = complex_filters
-        self.fuzzy = fuzzy
-        self.content_type = content_type or "application/json"
-        self.store_key = store_key or "params"
-        self.response = None
-        self.formatter = None
-        self.skip_filter = skip_filter
+        self.filters: t.List["BaseFilter"] = simple_filters
+        self.complex_filters: t.List["BaseFilter"] = complex_filters
+        self.fuzzy: bool = fuzzy
+        self.content_type: str = content_type or "application/json"
+        self.store_key: str = store_key or "params"
+        self.response: t.Optional[BaseResponse] = None
+        self.formatter: t.Optional[t.Callable] = None
+        self.skip_filter: bool = skip_filter
 
         if app is not None:
-            self.app = app
+            self.app: "Flask" = app
             self.init_app(app, None)
 
-    def init_app(self, app, config=None):
+    def init_app(self, app: "Flask", config: t.Optional[dict] = None):
         """ Flask extension initialize
 
         :param app: flask application
@@ -82,17 +96,14 @@ class PreRequest:
         self.app = app
         app.extensions["pre_request"] = self
 
-    def add_response(self, resp):
+    def add_response(self, resp: BaseResponse):
         """ Add custom response class
 
         :param resp: response class which is subclass of BaseResponse
         """
-        if resp and not issubclass(resp, BaseResponse):
-            raise TypeError("custom response must be subclass of `pre_request.BaseResponse`")
-
         self.response = resp
 
-    def add_formatter(self, fmt):
+    def add_formatter(self, fmt: t.Callable):
         """ Add custom format function for generate response content
 
         :param fmt: format function
@@ -100,20 +111,17 @@ class PreRequest:
         if fmt and not isfunction(fmt):
             raise TypeError("custom format function must be a type of function")
 
-        if fmt and fmt.__code__.co_argcount < 2:
-            raise TypeError("custom format function requires at least 2 arguments")
+        if fmt and fmt.__code__.co_argcount < 1:
+            raise TypeError("custom format function requires at least 1 arguments")
 
         self.formatter = fmt
 
-    def add_filter(self, cus_filter, index=None):
+    def add_filter(self, cus_filter: "BaseFilter", index: t.Optional[int] = None):
         """ Add custom filter class to extend pre-request
 
         :param cus_filter: custom filter class
         :param index: filter position
         """
-        if cus_filter and not issubclass(cus_filter, BaseFilter):
-            raise TypeError("custom filter must be subclass of `BaseFilter`")
-
         if index is not None and not isinstance(index, int):
             raise TypeError("index params must be type of Int")
 
@@ -122,13 +130,13 @@ class PreRequest:
         else:
             self.filters.append(cus_filter)
 
-    def remove_filter(self, cus_filter=None, index=None):
+    def remove_filter(self, cus_filter: t.Optional["BaseFilter"] = None, index: t.Optional[int] = None):
         """ Remove filters from object with index or filter name
 
         :param cus_filter: user filter name
         :param index: filter index
         """
-        if cus_filter and (isinstance(cus_filter, str) or issubclass(cus_filter, BaseFilter)):
+        if cus_filter:
             self.filters.remove(cus_filter)
 
         if index is not None and isinstance(index, int) and 0 <= index < len(self.filters):
@@ -143,8 +151,6 @@ class PreRequest:
         :param default: default value if special value is not exists
         :param deep: read params with deep search
         """
-        from flask import request  # pylint: disable=import-outside-toplevel
-
         location = location.lower()
 
         if location in ["args", "values", "form", "headers", "cookies"]:
@@ -171,7 +177,6 @@ class PreRequest:
         :param key: params key
         """
         df_location = ["values", "args", "form", "json", "headers", "cookies"]
-        from flask import request  # pylint: disable=import-outside-toplevel
 
         if len(key.split(".")) > 1 and rule.deep:
             rst = get_deep_value(key, getattr(request, "json"), default, deep=True)
@@ -197,8 +202,6 @@ class PreRequest:
         :param key: params key
         :param rule: params rule
         """
-        from flask import request  # pylint: disable=import-outside-toplevel
-
         # load single params
         if not rule.multi:
             return request.files.get(key)
@@ -238,14 +241,14 @@ class PreRequest:
         if r.structure is not None:
             # make sure that input value is not empty
             if r.required and not v:
-                raise ParamsValueError(460, message=f"{k} field cannot be empty")
+                raise ParamsValueError(message=f"{k} field cannot be empty")
 
             if not r.multi:
                 raise TypeError("invalid usage of `structure` params")
 
             # structure params must be type of list
             if not isinstance(v, list):
-                raise ParamsValueError(601, message="Input " + k + " invalid type")
+                raise ParamsValueError(message="Input " + k + " invalid type")
 
             if not v:
                 return []
@@ -255,7 +258,7 @@ class PreRequest:
             for idx, sub_v in enumerate(v):
                 # make sure that array item must be type of dict
                 if not isinstance(sub_v, dict):
-                    raise ParamsValueError(600, message="Input " + k + "." + str(idx) + " invalid type")
+                    raise ParamsValueError(message="Input " + k + "." + str(idx) + " invalid type")
 
                 # format every k-v with structure
                 fmt_item = {}
@@ -272,17 +275,10 @@ class PreRequest:
 
         # filter request params
         for f in self.filters:
-            filter_obj = None
-            # system filter object
-            if isinstance(f, str):
-                filter_obj = getattr(filters, f)(k, v, r)
-
-            # custom filter object
-            elif issubclass(f, BaseFilter):
-                filter_obj = f(k, v, r)  # pylint: disable=not-callable
+            filter_obj = f(k, v, r)
 
             # ignore invalid and not required filter
-            if not filter_obj or not filter_obj.filter_required():
+            if not filter_obj.filter_required():
                 continue
 
             v = filter_obj()
@@ -298,7 +294,6 @@ class PreRequest:
         :param k: params key
         :param r: params rule
         :param rst: handler result
-        :param rules: request rules
         """
         if isinstance(r, dict):
             for key, value in r.items():
@@ -313,17 +308,10 @@ class PreRequest:
 
         # simple filter handler
         for f in self.complex_filters:
-            filter_obj = None
-            # system filter object
-            if isinstance(f, str):
-                filter_obj = getattr(filters, f)(k, None, r)
-
-            # custom filter object
-            elif issubclass(f, BaseFilter):
-                filter_obj = f(k, None, r)  # pylint: disable=not-callable
+            filter_obj = f(k, None, r)
 
             # ignore invalid and not required filter
-            if not filter_obj or not filter_obj.filter_required():
+            if not filter_obj.filter_required():
                 continue
 
             filter_obj(params=rst)
@@ -338,7 +326,6 @@ class PreRequest:
             return fmt_rst
 
         # query rules with special method
-        from flask import request  # pylint: disable=import-outside-toplevel
         rules = options.get(request.method) or options.get(request.method.lower())
 
         # common rule
@@ -386,15 +373,15 @@ class PreRequest:
             return wrapper
         return decorator
 
-    def fmt_resp(self, error):
+    def fmt_resp(self, error: ParamsValueError) -> "Response":
         """ Handler not formatted request error
 
         :param error: ParamsValueError
         """
         if self.response is not None:
-            return self.response()(self.fuzzy, self.formatter, error)
+            return self.response.make_response(error, self.fuzzy, self.formatter)
 
         if self.content_type == "text/html":
-            return HTMLResponse()(self.fuzzy, self.formatter, error)
+            return HTMLResponse.make_response(error, self.fuzzy, self.formatter)
 
-        return JSONResponse()(self.fuzzy, self.formatter, error)
+        return JSONResponse.make_response(error, self.fuzzy, self.formatter)

@@ -24,4 +24,4 @@ class TestContains:
             "p1": "abdef"
         })
 
-        assert resp.json["respCode"] == 481
+        assert resp.json["respMsg"] == "p1 field is missing required content"

@@ -13,17 +13,10 @@ class EmptyFilter(BaseFilter):
     判断参数是否为空的过滤器
     """
 
-    error_code = 460
-
-    def fmt_error_message(self, _):
-        """ 格式化错误消息
-        """
-        return f"{self.key} field cannot be empty"
-
     def __call__(self, *args, **kwargs):
         super().__call__()
 
         if self.value is None and self.rule.required:
-            raise ParamsValueError(self.error_code, filter=self)
+            raise ParamsValueError(f"{self.key} field cannot be empty")
 
         return self.value
