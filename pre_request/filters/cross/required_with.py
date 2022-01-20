@@ -5,7 +5,9 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-13 10:39'
 from pre_request.exception import ParamsValueError
-from pre_request.utils import get_deep_value
+from pre_request.utils import (
+    get_deep_value
+)
 from pre_request.filters.base import BaseFilter
 
 
@@ -28,8 +30,8 @@ class RequiredWithFilter(BaseFilter):
         params = kwargs.get("params", {})
 
         other_v = get_deep_value(self.rule.required_with, params, None, deep=True)
-
-        if other_v is not None and get_deep_value(self.rule.key_map or self.key, params, None, deep=True) is None:
+        this_v = get_deep_value(self.rule.key_map or self.key, params, None, deep=True)
+        if other_v is not None and this_v is None:
             raise ParamsValueError(f"when filling in the value of '{self.rule.required_with}', "
                                    f"the value of `{self.key}` must also be filled in")
 

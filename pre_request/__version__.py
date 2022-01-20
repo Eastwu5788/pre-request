@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # (C) Wu Dong, 2018
 # All rights reserved
+
+
 __author__ = 'Wu Dong <wudong@eastwu.cn>'
 __title__ = 'pre_request'
 __description__ = 'Validate request arguments, Including Cross Field, Cross Struct'

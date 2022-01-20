@@ -10,6 +10,7 @@ from decimal import Decimal
 # project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class RangeFilter(BaseFilter):
@@ -18,7 +19,7 @@ class RangeFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if self.rule.direct_type not in [int, float, Decimal, datetime.datetime]:

@@ -10,6 +10,6 @@ class ParamsValueError(ValueError):
     """ Invalid input params value exception
     """
 
-    def __init__(self, message):
+    def __init__(self, message: str):
         super().__init__()
         self.message = message

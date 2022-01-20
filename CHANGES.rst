@@ -9,7 +9,7 @@ Version 2.1.5 (UnReleased)
 - 使用Python 3 style，不再支持Python2.x
 - 添加Typing Check
 - 增强自定义函数功能
-- 去除手机号、邮箱校验能力
+- 去除手机号校验能力
 - 添加字符串、数组长度校验
 - 修复None值问题
 

@@ -20,7 +20,7 @@ from werkzeug.datastructures import FileStorage
 from .exception import ParamsValueError
 from .filters.base import BaseFilter  # pylint: disable=unused-import
 from .filters import (
-    complex_filters,
+    cross_filters,
     simple_filters,
 )
 from .macro import (
@@ -35,7 +35,10 @@ from .response import (
     JSONResponse,
 )
 from .rules import Rule
-from .utils import get_deep_value
+from .utils import (
+    get_deep_value,
+    missing
+)
 # checking
 if t.TYPE_CHECKING:
     from flask import Response  # pylint: disable=unused-import
@@ -60,8 +63,9 @@ class PreRequest:
         :param content_type: response content type json/html
         :param skip_filter: skip all of the filter check
         """
-        self.filters: t.List["BaseFilter"] = simple_filters
-        self.complex_filters: t.List["BaseFilter"] = complex_filters
+        self.simple_filters: t.List["BaseFilter"] = simple_filters
+        self.cross_filters: t.List["BaseFilter"] = cross_filters
+
         self.fuzzy: bool = fuzzy
         self.content_type: str = content_type or "application/json"
         self.store_key: str = store_key or "params"
@@ -126,9 +130,9 @@ class PreRequest:
             raise TypeError("index params must be type of Int")
 
         if index is not None:
-            self.filters.insert(index, cus_filter)
+            self.simple_filters.insert(index, cus_filter)
         else:
-            self.filters.append(cus_filter)
+            self.simple_filters.append(cus_filter)
 
     def remove_filter(self, cus_filter: t.Optional["BaseFilter"] = None, index: t.Optional[int] = None):
         """ Remove filters from object with index or filter name
@@ -137,10 +141,10 @@ class PreRequest:
         :param index: filter index
         """
         if cus_filter:
-            self.filters.remove(cus_filter)
+            self.simple_filters.remove(cus_filter)
 
-        if index is not None and isinstance(index, int) and 0 <= index < len(self.filters):
-            self.filters.pop(index)
+        if index is not None and isinstance(index, int) and 0 <= index < len(self.simple_filters):
+            self.simple_filters.pop(index)
 
     @staticmethod
     def _location_params(key, location, default=None, deep=True):
@@ -236,7 +240,7 @@ class PreRequest:
 
             # load simple params
             else:
-                v = self._fmt_params(k, r)
+                v = self._fmt_params(k, r, default=missing)
 
         if r.structure is not None:
             # make sure that input value is not empty
@@ -274,7 +278,7 @@ class PreRequest:
             return v
 
         # filter request params
-        for f in self.filters:
+        for f in self.simple_filters:
             filter_obj = f(k, v, r)
 
             # ignore invalid and not required filter
@@ -288,7 +292,7 @@ class PreRequest:
 
         return v
 
-    def _handler_complex_filter(self, k, r, rst):
+    def _handler_cross_filter(self, k, r, rst):
         """ Handler complex rule filters
 
         :param k: params key
@@ -297,7 +301,7 @@ class PreRequest:
         """
         if isinstance(r, dict):
             for key, value in r.items():
-                self._handler_complex_filter(k + "." + key, value, rst)
+                self._handler_cross_filter(k + "." + key, value, rst)
             return
 
         if not isinstance(r, Rule):
@@ -307,7 +311,7 @@ class PreRequest:
             return
 
         # simple filter handler
-        for f in self.complex_filters:
+        for f in self.cross_filters:
             filter_obj = f(k, None, r)
 
             # ignore invalid and not required filter
@@ -316,7 +320,11 @@ class PreRequest:
 
             filter_obj(params=rst)
 
-    def parse(self, rule=None, **options):
+    def parse(
+            self,
+            rule: t.Optional[t.Dict[str, t.Union["Rule", dict]]] = None,
+            **options
+    ) -> dict:
         """ Parse input params
         """
         fmt_rst = {}
@@ -344,14 +352,18 @@ class PreRequest:
 
         # use complex filter to handler params
         for k, r in rules.items():
-            self._handler_complex_filter(k, r, fmt_rst)
+            self._handler_cross_filter(k, r, fmt_rst)
 
         return fmt_rst
 
-    def catch(self, rule=None, **options):
+    def catch(
+            self,
+            rule: t.Optional[t.Dict[str, t.Union["Rule", dict]]] = None,
+            **options
+    ) -> t.Callable:
         """ Catch request params
         """
-        def decorator(func):
+        def decorator(func: t.Callable) -> t.Callable:
             @wraps(func)
             def wrapper(*args, **kwargs):
                 # ignore with empty rule

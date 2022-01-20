@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# sys
+import typing as t
 from datetime import datetime
 from decimal import Decimal
 
@@ -8,62 +10,60 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     """
 
     def __init__(self, **kwargs):
-        self.location = kwargs.get("location", None)
-        self.direct_type = kwargs.get("type", str)
-        self.skip = kwargs.get("skip", False)
-        self.deep = kwargs.get("deep", True)
-        self.multi = kwargs.get("multi", False)
-        self.structure = kwargs.get("structure", None)
+        self.location: t.Optional[t.Union[t.List[str], str]] = kwargs.get("location", None)
+        self.direct_type: t.Type[t.Any] = kwargs.get("type", str)
+        self.skip: bool = kwargs.get("skip", False)
+        self.deep: bool = kwargs.get("deep", True)
+        self.multi: bool = kwargs.get("multi", False)
+        self.structure: t.Optional[t.Dict[str, t.Union[dict, "Rule"]]] = kwargs.get("structure", None)
 
-        self.required = kwargs.get("required", True)
-        self.required_with = kwargs.get("required_with", None)
+        self.required: bool = kwargs.get("required", True)
+        self.required_with: t.Optional[str] = kwargs.get("required_with", None)
 
-        self.default = kwargs.get("default", None)
-        self.trim = kwargs.get("trim", False)
+        self.default: t.Optional[t.Any] = kwargs.get("default", None)
+        self.trim: bool = kwargs.get("trim", False)
 
-        self.enum = kwargs.get("enum", [])
+        self.enum: t.List[t.Any] = kwargs.get("enum", [])
 
-        self.reg = kwargs.get("reg", None)
+        self.reg: t.Optional[str] = kwargs.get("reg", None)
 
-        self.contains = kwargs.get("contains", [])
-        self.contains_any = kwargs.get("contains_any", [])
-        self.excludes = kwargs.get("excludes", [])
-        self.startswith = kwargs.get("startswith", None)
-        self.endswith = kwargs.get("endswith", None)
-        self.lower = kwargs.get("lower", False)
-        self.upper = kwargs.get("upper", False)
-        self.split = kwargs.get("split", None)
+        self.contains: t.List[t.Any] = kwargs.get("contains", [])
+        self.contains_any: t.List[t.Any] = kwargs.get("contains_any", [])
+        self.excludes: t.List[t.Any] = kwargs.get("excludes", [])
+        self.startswith: t.Optional[str] = kwargs.get("startswith", None)
+        self.endswith: t.Optional[str] = kwargs.get("endswith", None)
+        self.lower: bool = kwargs.get("lower", False)
+        self.upper: bool = kwargs.get("upper", False)
+        self.split: t.Optional[str] = kwargs.get("split", None)
 
-        self.ipv4 = kwargs.get("ipv4", False)
-        self.ipv6 = kwargs.get("ipv6", False)
-        self.mac = kwargs.get("mac", False)
+        self.ipv4: bool = kwargs.get("ipv4", False)
+        self.ipv6: bool = kwargs.get("ipv6", False)
+        self.mac: bool = kwargs.get("mac", False)
 
-        self.latitude = kwargs.get("latitude", False)
-        self.longitude = kwargs.get("longitude", False)
+        self.latitude: bool = kwargs.get("latitude", False)
+        self.longitude: bool = kwargs.get("longitude", False)
 
-        self.fmt = kwargs.get("fmt", "%Y-%m-%d %H:%M:%S")
+        self.fmt: t.Optional[str] = kwargs.get("fmt", "%Y-%m-%d %H:%M:%S")
 
-        self.eq_key = kwargs.get("eq_key", None)
-        self.neq_key = kwargs.get("neq_key", None)
-        self.gt_key = kwargs.get("gt_key", None)
-        self.gte_key = kwargs.get("gte_key", None)
-        self.lt_key = kwargs.get("lt_key", None)
-        self.lte_key = kwargs.get("lte_key", None)
+        self.eq_key: t.Optional[str] = kwargs.get("eq_key", None)
+        self.neq_key: t.Optional[str] = kwargs.get("neq_key", None)
+        self.gt_key: t.Optional[str] = kwargs.get("gt_key", None)
+        self.gte_key: t.Optional[str] = kwargs.get("gte_key", None)
+        self.lt_key: t.Optional[str] = kwargs.get("lt_key", None)
+        self.lte_key: t.Optional[str] = kwargs.get("lte_key", None)
 
-        self.eq = kwargs.get("eq", None)
-        self.neq = kwargs.get("neq", None)
-        self.len = kwargs.get("len", None)
+        self.eq: t.Optional[t.Any] = kwargs.get("eq", None)
+        self.neq: t.Optional[t.Any] = kwargs.get("neq", None)
+        self.len: t.Optional[int] = kwargs.get("len", None)
 
-        self.gt = kwargs.get("gt", None)
-        self.gte = kwargs.get("gte", None)
-        self.lt = kwargs.get("lt", None)
-        self.lte = kwargs.get("lte", None)
+        self.gt: t.Optional[int] = kwargs.get("gt", None)
+        self.gte: t.Optional[int] = kwargs.get("gte", None)
+        self.lt: t.Optional[int] = kwargs.get("lt", None)
+        self.lte: t.Optional[int] = kwargs.get("lte", None)
 
-        self.key_map = kwargs.get("dest", None)
-
-        self.json_load = kwargs.get("json", False)
-
-        self.callback = kwargs.get("callback", None)
+        self.key_map: t.Optional[str] = kwargs.get("dest", None)
+        self.json_load: bool = kwargs.get("json", False)
+        self.callback: t.Optional[t.Callable] = kwargs.get("callback", None)
 
     @property
     def gt(self):

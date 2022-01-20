@@ -5,6 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:36'
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class TrimFilter(BaseFilter):
@@ -14,7 +15,7 @@ class TrimFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if self.rule.trim and self.rule.direct_type == str:

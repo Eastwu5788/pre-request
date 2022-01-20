@@ -6,6 +6,7 @@
 # @Time: '2020-03-17 15:34'
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class EmptyFilter(BaseFilter):
@@ -16,7 +17,7 @@ class EmptyFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super().__call__()
 
-        if self.value is None and self.rule.required:
+        if self.rule.required and (self.value is missing or self.value is None):
             raise ParamsValueError(f"{self.key} field cannot be empty")
 
         return self.value
