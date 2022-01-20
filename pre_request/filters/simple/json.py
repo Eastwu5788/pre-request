@@ -4,11 +4,13 @@
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:48'
+# sys
 import json
 from json.decoder import JSONDecodeError
-
+# project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class JsonFilter(BaseFilter):
@@ -17,7 +19,7 @@ class JsonFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if not self.rule.json_load:

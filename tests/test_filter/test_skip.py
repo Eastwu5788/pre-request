@@ -52,7 +52,7 @@ class TestSkip:
     def test_trim_filter_v1(self):
         """ 测试 skip 过滤器异常
         """
-        resp = app.test_client().get("/skip", data={
+        resp = app.test_client().post("/skip", json={
             "v1": None,
             "v2": None,
         })

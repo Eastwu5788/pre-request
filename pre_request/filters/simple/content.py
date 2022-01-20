@@ -6,6 +6,7 @@
 # @Time: '2020-04-10 16:41'
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class ContentFilter(BaseFilter):
@@ -15,7 +16,7 @@ class ContentFilter(BaseFilter):
     def filter_required(self):
         """ 验证过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if not isinstance(self.value, str):

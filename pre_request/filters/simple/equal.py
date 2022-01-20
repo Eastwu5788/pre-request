@@ -6,6 +6,7 @@
 # @Time: '2020-03-27 14:58'
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class EqualFilter(BaseFilter):
@@ -16,7 +17,7 @@ class EqualFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing and self.value is None):
             return False
 
         if self.rule.eq is not None:

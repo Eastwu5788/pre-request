@@ -5,7 +5,9 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-13 09:16'
 from pre_request.exception import ParamsValueError
-from pre_request.utils import get_deep_value
+from pre_request.utils import (
+    get_deep_value
+)
 from pre_request.filters.base import BaseFilter
 
 
@@ -23,7 +25,7 @@ class EqualKeyFilter(BaseFilter):
         value = get_deep_value(self.rule.key_map or self.key, params, None, deep=True)
 
         # BUG: complex filter value will be None
-        if not self.rule.required and (value == self.rule.default or value is None):
+        if not self.rule.required and value == self.rule.default:
             return value
 
         for r_key in self.support_rules:

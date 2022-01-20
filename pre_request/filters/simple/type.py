@@ -11,6 +11,7 @@ from werkzeug.datastructures import FileStorage
 # project
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 _false_str_list = ["False", "false", "No", "no"]
@@ -28,7 +29,7 @@ class TypeFilter(BaseFilter):
         if self.rule.direct_type is None:
             return False
 
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if isinstance(self.value, self.rule.direct_type):

@@ -10,6 +10,7 @@ from pre_request.regexp import (
     longitude_regex
 )
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class LocationFilter(BaseFilter):
@@ -19,7 +20,7 @@ class LocationFilter(BaseFilter):
     def filter_required(self):
         """ 验证过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if self.rule.direct_type != str:

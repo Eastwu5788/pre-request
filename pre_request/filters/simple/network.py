@@ -6,11 +6,11 @@
 # @Time: '2020-04-10 17:09'
 # sys
 import socket
-
 # project
 from pre_request.exception import ParamsValueError
 from pre_request.regexp import mac_regex
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class NetworkFilter(BaseFilter):
@@ -20,7 +20,7 @@ class NetworkFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if self.rule.direct_type != str:
