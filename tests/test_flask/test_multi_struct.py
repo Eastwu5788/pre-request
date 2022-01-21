@@ -91,7 +91,7 @@ class TestMultiStructure:
             ]
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respMsg"] == "userInfo.0.userId field cannot be converted to int type"
+        assert resp.json["respMsg"] == "'userInfo.0.userId' can't convert to 'int' type"
 
     def test_multi_structure_563(self):
         """ 测试560异常
@@ -127,4 +127,4 @@ class TestMultiStructure:
             ]
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respMsg"] == "userInfo.0.friends.0.userId field cannot be converted to int type"
+        assert resp.json["respMsg"] == "'userInfo.0.friends.0.userId' can't convert to 'int' type"

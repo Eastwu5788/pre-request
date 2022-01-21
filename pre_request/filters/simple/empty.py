@@ -18,6 +18,6 @@ class EmptyFilter(BaseFilter):
         super().__call__()
 
         if self.rule.required and (self.value is missing or self.value is None):
-            raise ParamsValueError(f"{self.key} field cannot be empty")
+            raise ParamsValueError(f"'{self.key}' can't be empty")
 
         return self.value

@@ -44,26 +44,21 @@ class EqualKeyFilter(BaseFilter):
                 raise TypeError("'eq_key' 规则仅支持相同数据类型参数判断")
 
             if r_key == "eq_key" and value != other_v:
-                raise ParamsValueError(f"the value of '{self.key}' must be "
-                                       f"the same as the value of '{self.rule.eq_key}'")
+                raise ParamsValueError(f"'{self.key}' should be the same as '{self.rule.eq_key}'")
 
             if r_key == "neq_key" and value == other_v:
-                raise ParamsValueError(f"the value of '{self.key}' must be "
-                                       f"different from the value of '{self.rule.neq_key}'")
+                raise ParamsValueError(f"'{self.key}' should be different from '{self.rule.neq_key}'")
 
             if r_key == "gt_key" and value <= other_v:
-                raise ParamsValueError(f"the value of '{self.key}' must be "
-                                       f"greater than the value of '{self.rule.gt_key}'")
+                raise ParamsValueError(f"'{self.key}' should be greater than '{self.rule.gt_key}'")
 
             if r_key == "gte_key" and value < other_v:
-                raise ParamsValueError(f"the value of '{self.key}' must be greater than or "
-                                       f"equal to the value of '{self.rule.gte_key}'")
+                raise ParamsValueError(f"'{self.key}' should be greater than or equal to '{self.rule.gte_key}'")
 
             if r_key == "lt_key" and value >= other_v:
-                raise ParamsValueError(f"the value of '{self.key}' must be less than the value of '{self.rule.lt_key}'")
+                raise ParamsValueError(f"'{self.key}' should be less than '{self.rule.lt_key}'")
 
             if r_key == "lte_key" and value > other_v:
-                raise ParamsValueError(f"the value of '{self.key}' must be less than or"
-                                       f" equal to the value of '{self.rule.lte_key}'")
+                raise ParamsValueError(f"'{self.key}' should be less than or equal to '{self.rule.lte_key}'")
 
         return value

@@ -53,7 +53,7 @@ class TestLocation:
             "latitude": "-74.01125485098078",
         })
 
-        assert resp.json["respMsg"] == "longitude field does not confirm to longitude format"
+        assert resp.json["respMsg"] == "'longitude' can't be converted to longitude"
 
     def test_latitude_invalid(self):
         """ 测试地理纬度
@@ -63,4 +63,4 @@ class TestLocation:
             "latitude": "-90.01125485098078",
         })
 
-        assert resp.json["respMsg"] == "latitude field does not confirm to latitude format"
+        assert resp.json["respMsg"] == "'latitude' can't be converted to latitude"

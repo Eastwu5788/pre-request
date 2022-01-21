@@ -55,7 +55,7 @@ class TestRequiredWith:
             "p2": None
         })
 
-        assert resp.json["respMsg"] == "when filling in the value of 'p1', the value of `p2` must also be filled in"
+        assert resp.json["respMsg"] == "'p2' is required while 'p1' is not empty"
 
         resp = app.test_client().get("/required/with", data={
             "p1": None,

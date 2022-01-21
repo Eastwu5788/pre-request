@@ -30,7 +30,7 @@ class TestEqual:
             "p4": "aaa"
         })
 
-        assert resp.json["respMsg"] == "p1 field must be equal to 1"
+        assert resp.json["respMsg"] == "'p1' should be equal to '1'"
 
         resp = client.get("/equal", data={
             "p1": 1,
@@ -39,7 +39,7 @@ class TestEqual:
             "p4": "aaa"
         })
 
-        assert resp.json["respMsg"] == "p2 field must be equal to 1"
+        assert resp.json["respMsg"] == "'p2' should be equal to '1'"
 
     def test_equal_filter_579(self, client):
         """ 测试 equal_filter 过滤器
@@ -51,7 +51,7 @@ class TestEqual:
             "p4": "aaa"
         })
 
-        assert resp.json["respMsg"] == "p3 field cannot be equal to 1"
+        assert resp.json["respMsg"] == "'p3' should be equal to '1'"
 
         resp = client.get("/equal", data={
             "p1": 1,
@@ -60,4 +60,4 @@ class TestEqual:
             "p4": "1"
         })
 
-        assert resp.json["respMsg"] == "p4 field cannot be equal to 1"
+        assert resp.json["respMsg"] == "'p4' should be equal to '1'"

@@ -49,4 +49,4 @@ class TestParse:
         resp = app.test_client().get("/email", data={
             "params": "wudong@@eastwu.cn"
         })
-        assert resp.json["respMsg"] == "params field does not confirm to regular expression"
+        assert resp.json["respMsg"] == "'params' does not match the regular expression"

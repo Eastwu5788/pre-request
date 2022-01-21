@@ -27,6 +27,6 @@ class EnumFilter(BaseFilter):
         super().__call__()
 
         if self.value not in self.rule.enum:
-            raise ParamsValueError(f"{self.key} field value can only be the following {str(self.rule.enum)}")
+            raise ParamsValueError(f"'{self.key}' must be one of the following '{str(self.rule.enum)}'")
 
         return self.value

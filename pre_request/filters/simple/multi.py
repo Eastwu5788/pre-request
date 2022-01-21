@@ -22,6 +22,10 @@ class MultiFilter(BaseFilter):
 
             return [self.value]
 
+        # BUG: split operate result is type of list
+        if self.rule.split:
+            return self.value
+
         if not self.rule.multi and isinstance(self.value, list):
             return self.value[-1] if self.value else None
 

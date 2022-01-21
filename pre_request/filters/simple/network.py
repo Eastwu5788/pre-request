@@ -65,12 +65,12 @@ class NetworkFilter(BaseFilter):
 
         for v in value:
             if self.rule.ipv4 and not self._is_ipv4(v):
-                raise ParamsValueError(f"{self.key} field does not conform to ipv4 format")
+                raise ParamsValueError(f"'{self.key}' is not a valid ipv4 address")
 
             if self.rule.ipv6 and not self._is_ipv6(v):
-                raise ParamsValueError(f"{self.key} field does not conform to ipv6 format")
+                raise ParamsValueError(f"'{self.key}' is not a valid ipv6 address")
 
             if self.rule.mac and not mac_regex.match(v.lower()):
-                raise ParamsValueError(f"{self.key} field is not a valid MAC address")
+                raise ParamsValueError(f"'{self.key}' is not a valid MAC address")
 
         return self.value

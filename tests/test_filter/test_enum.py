@@ -24,10 +24,10 @@ class TestEnum:
             "params": 9,
             "params2": "a"
         })
-        assert resp.json["respMsg"] == "params field value can only be the following [1, 2, 3]"
+        assert resp.json["respMsg"] == "'params' must be one of the following '[1, 2, 3]'"
 
         resp = client.get("/enum", data={
             "params": 1,
             "params2": "e"
         })
-        assert resp.json["respMsg"] == "params2 field value can only be the following ['a', 'b', 'c']"
+        assert resp.json["respMsg"] == "'params2' must be one of the following '['a', 'b', 'c']'"

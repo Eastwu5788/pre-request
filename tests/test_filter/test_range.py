@@ -26,7 +26,7 @@ class TestRange:
             "params2": 10,
         })
 
-        assert resp.json["respMsg"] == "params field value must be greater than 10"
+        assert resp.json["respMsg"] == "'params' should be greater than 10"
 
     def test_range_filter_571(self, client):
         """ 测试 range_filter 571 错误
@@ -36,7 +36,7 @@ class TestRange:
             "params2": 9,
         })
 
-        assert resp.json["respMsg"] == "params2 field value must be greater than or equal to 10"
+        assert resp.json["respMsg"] == "'params2' should be greater than or equal to 10"
 
     def test_range_filter_572(self, client):
         """ 测试 range_filter 572 错误
@@ -46,7 +46,7 @@ class TestRange:
             "params2": 10,
         })
 
-        assert resp.json["respMsg"] == "params field value must be less than 20"
+        assert resp.json["respMsg"] == "'params' should be less than 20"
 
     def test_range_filter_573(self, client):
         """ 测试 range_filter 573 错误
@@ -56,4 +56,4 @@ class TestRange:
             "params2": 18,
         })
 
-        assert resp.json["respMsg"] == "params2 field value must be less than or equal to 10"
+        assert resp.json["respMsg"] == "'params2' should be less than or equal to 10"
