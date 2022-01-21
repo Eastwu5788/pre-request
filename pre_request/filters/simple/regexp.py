@@ -37,6 +37,6 @@ class RegexpFilter(BaseFilter):
         for value in fmt_value:
             # 判断是否符合正则
             if not re.compile(self.rule.reg, re.IGNORECASE).match(value):
-                raise ParamsValueError(f"{self.key} field does not confirm to regular expression")
+                raise ParamsValueError(f"'{self.key}' does not match the regular expression")
 
         return self.value

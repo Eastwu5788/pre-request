@@ -56,4 +56,4 @@ class TestNotEqualKey:
             "p2": 15
         })
 
-        assert resp.json["respMsg"] == "the value of 'p2' must be different from the value of 'p1'"
+        assert resp.json["respMsg"] == "'p2' should be different from 'p1'"

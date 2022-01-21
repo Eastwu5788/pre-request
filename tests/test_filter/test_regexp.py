@@ -24,10 +24,10 @@ class TestRegexp:
             "params": "2020-3-03"
         })
 
-        assert resp.json["respMsg"] == "params field does not confirm to regular expression"
+        assert resp.json["respMsg"] == "'params' does not match the regular expression"
 
         resp = client.get("/regexp", data={
             "params": "2020-03"
         })
 
-        assert resp.json["respMsg"] == "params field does not confirm to regular expression"
+        assert resp.json["respMsg"] == "'params' does not match the regular expression"

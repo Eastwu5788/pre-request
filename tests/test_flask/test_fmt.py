@@ -70,4 +70,4 @@ class TestFormatter:
         })
 
         assert resp.status_code == 200
-        assert resp.json["respMsg"] == "email field does not confirm to regular expression"
+        assert resp.json["respMsg"] == "'email' does not match the regular expression"

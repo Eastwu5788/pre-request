@@ -81,20 +81,6 @@ def test_json_handler(params):
     return json_resp(params)
 
 
-length_params = {
-    "params": Rule(gt=1, lt=3),
-    "params2": Rule(gte=3, lte=3)
-}
-
-
-@app.route("/length", methods=['get', 'post'])
-@pre.catch(length_params)
-def test_length_handler(params):
-    """ 测试字符串数据长度校验
-    """
-    return json_resp(params)
-
-
 range_params = {
     "params": Rule(type=int, gt=10, lt=20),
     "params2": Rule(type=int, gte=10, lte=10)

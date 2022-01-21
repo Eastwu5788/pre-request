@@ -36,6 +36,6 @@ class JsonFilter(BaseFilter):
         try:
             self.value = json.loads(self.value)
         except JSONDecodeError as err:
-            raise ParamsValueError(f"{self.key} field cannot be parsed by json") from err
+            raise ParamsValueError(f"'{self.key}' can't be parsed by json") from err
 
         return self.value

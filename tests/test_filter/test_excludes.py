@@ -24,4 +24,4 @@ class TestExcludes:
             "p1": "aoe"
         })
 
-        assert resp.json["respMsg"] == "p1 field contains prohibited content"
+        assert resp.json["respMsg"] == "'p1' contain prohibited content"

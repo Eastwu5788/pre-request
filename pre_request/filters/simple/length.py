@@ -20,8 +20,20 @@ class LengthFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        if self.rule.direct_type not in [str, list]:
+        # Value的类型是list时将其作为一个整体进行考虑
+        if self.rule.direct_type == list:
+            return True
+
+        # 长度校验近对字符串、数组生效
+        if self.rule.direct_type != str:
             return False
+
+        # 排除子结构中的字符串
+        if self.rule.direct_type == str and isinstance(self.value, list):
+            return False
+
+        if self.rule.len is not None:
+            return True
 
         if self.rule.gt is not None:
             return True
@@ -43,22 +55,23 @@ class LengthFilter(BaseFilter):
         fmt_value = self.value if isinstance(self.value, list) else [self.value]
 
         for value in fmt_value:
+            if self.rule.len is not None and len(value) != self.rule.len:
+                raise ParamsValueError(f"the length of '{self.key}' should be equal to {self.rule.len}")
+
             # 大于
             if self.rule.gt is not None and not len(value) > self.rule.gt:
-                raise ParamsValueError(f"{self.key} field content length must be greater than {str(self.rule.gt)}")
+                raise ParamsValueError(f"the length of '{self.key}' should be greater than {self.rule.gt}")
 
             # 大于等于
             if self.rule.gte is not None and not len(value) >= self.rule.gte:
-                raise ParamsValueError(f"{self.key} field content length must be "
-                                       f"greater than or equal to {str(self.rule.gte)}")
+                raise ParamsValueError(f"the length of '{self.key}' should be greater than or equal to {self.rule.gte}")
 
             # 小于
             if self.rule.lt is not None and not len(value) < self.rule.lt:
-                raise ParamsValueError(f"{self.key} field content length must be less than {str(self.rule.lt)}")
+                raise ParamsValueError(f"the length of '{self.key}' should be less than {self.rule.lt}")
 
             # 小于等于
             if self.rule.lte is not None and not len(value) <= self.rule.lte:
-                raise ParamsValueError(f"{self.key} field content length must be "
-                                       f"less than or equal to {str(self.rule.lte)}")
+                raise ParamsValueError(f"the length of '{self.key}' should be less than or equal to {self.rule.lte}")
 
         return self.value

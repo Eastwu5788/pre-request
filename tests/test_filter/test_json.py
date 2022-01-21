@@ -25,10 +25,10 @@ class TestJson:
             "params": "T"
         })
 
-        assert resp.json["respMsg"] == "params field cannot be parsed by json"
+        assert resp.json["respMsg"] == "'params' can't be parsed by json"
 
         resp = client.get("/json", data={
             "params": {"tt": "ss"}
         })
 
-        assert resp.json["respMsg"] == "params field cannot be parsed by json"
+        assert resp.json["respMsg"] == "'params' can't be parsed by json"

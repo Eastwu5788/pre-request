@@ -10,23 +10,16 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     """
 
     def __init__(self, **kwargs):
-        self.location: t.Optional[t.Union[t.List[str], str]] = kwargs.get("location", None)
+        # Type
         self.direct_type: t.Type[t.Any] = kwargs.get("type", str)
-        self.skip: bool = kwargs.get("skip", False)
-        self.deep: bool = kwargs.get("deep", True)
-        self.multi: bool = kwargs.get("multi", False)
-        self.structure: t.Optional[t.Dict[str, t.Union[dict, "Rule"]]] = kwargs.get("structure", None)
 
-        self.required: bool = kwargs.get("required", True)
-        self.required_with: t.Optional[str] = kwargs.get("required_with", None)
+        # Flask
+        self.location: t.Optional[t.Union[t.List[str], str]] = kwargs.get("location", None)
 
-        self.default: t.Optional[t.Any] = kwargs.get("default", None)
+        # Strings
+        self.len: t.Optional[int] = kwargs.get("len", None)
         self.trim: bool = kwargs.get("trim", False)
-
-        self.enum: t.List[t.Any] = kwargs.get("enum", [])
-
         self.reg: t.Optional[str] = kwargs.get("reg", None)
-
         self.contains: t.List[t.Any] = kwargs.get("contains", [])
         self.contains_any: t.List[t.Any] = kwargs.get("contains_any", [])
         self.excludes: t.List[t.Any] = kwargs.get("excludes", [])
@@ -36,15 +29,21 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.upper: bool = kwargs.get("upper", False)
         self.split: t.Optional[str] = kwargs.get("split", None)
 
+        # Network
         self.ipv4: bool = kwargs.get("ipv4", False)
         self.ipv6: bool = kwargs.get("ipv6", False)
         self.mac: bool = kwargs.get("mac", False)
 
+        # Format
+        self.skip: bool = kwargs.get("skip", False)
+        self.deep: bool = kwargs.get("deep", True)
+        self.multi: bool = kwargs.get("multi", False)
+        self.structure: t.Optional[t.Dict[str, t.Union[dict, "Rule"]]] = kwargs.get("structure", None)
         self.latitude: bool = kwargs.get("latitude", False)
         self.longitude: bool = kwargs.get("longitude", False)
-
         self.fmt: t.Optional[str] = kwargs.get("fmt", "%Y-%m-%d %H:%M:%S")
 
+        # Field
         self.eq_key: t.Optional[str] = kwargs.get("eq_key", None)
         self.neq_key: t.Optional[str] = kwargs.get("neq_key", None)
         self.gt_key: t.Optional[str] = kwargs.get("gt_key", None)
@@ -52,15 +51,19 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.lt_key: t.Optional[str] = kwargs.get("lt_key", None)
         self.lte_key: t.Optional[str] = kwargs.get("lte_key", None)
 
+        # Comparisons
         self.eq: t.Optional[t.Any] = kwargs.get("eq", None)
         self.neq: t.Optional[t.Any] = kwargs.get("neq", None)
-        self.len: t.Optional[int] = kwargs.get("len", None)
-
         self.gt: t.Optional[int] = kwargs.get("gt", None)
         self.gte: t.Optional[int] = kwargs.get("gte", None)
         self.lt: t.Optional[int] = kwargs.get("lt", None)
         self.lte: t.Optional[int] = kwargs.get("lte", None)
 
+        # Other
+        self.default: t.Optional[t.Any] = kwargs.get("default", None)
+        self.enum: t.List[t.Any] = kwargs.get("enum", [])
+        self.required: bool = kwargs.get("required", True)
+        self.required_with: t.Optional[str] = kwargs.get("required_with", None)
         self.key_map: t.Optional[str] = kwargs.get("dest", None)
         self.json_load: bool = kwargs.get("json", False)
         self.callback: t.Optional[t.Callable] = kwargs.get("callback", None)

@@ -5,7 +5,10 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:43'
 # sys
-from datetime import datetime
+from datetime import (
+    date,
+    datetime
+)
 # 3p
 from werkzeug.datastructures import FileStorage
 # project
@@ -14,7 +17,7 @@ from pre_request.filters.base import BaseFilter
 from pre_request.utils import missing
 
 
-_false_str_list = ["False", "false", "No", "no"]
+_false_str_list = {"false", "no"}
 
 
 class TypeFilter(BaseFilter):
@@ -48,16 +51,17 @@ class TypeFilter(BaseFilter):
 
         # 特殊的字符串转bool类型
         if d_type == bool and isinstance(value, str):
-            return value not in _false_str_list
+            return value.lower() not in _false_str_list
 
-        # 日期转换
-        if d_type == datetime:
+        # datetime/date convert
+        if d_type in {datetime, date}:
             try:
-                return datetime.strptime(value, self.rule.fmt)
+                dt = datetime.strptime(value, self.rule.fmt)
+                return dt if d_type == datetime else dt.date()
             except ValueError as err:
-                raise ParamsValueError(f"{self.key} field conversion date format failed '{self.rule.fmt}'") from err
+                raise ParamsValueError(f"'{self.key}' convert to date failed") from err
 
-        # 文件处理
+        # file don't need to convert
         if d_type == FileStorage:
             return value
 
@@ -69,8 +73,8 @@ class TypeFilter(BaseFilter):
 
             return d_type(value)
         except (ValueError, TypeError) as err:
-            raise ParamsValueError(f"{self.key} field cannot be "
-                                   f"converted to {self.rule.direct_type.__name__} type") from err
+            raise ParamsValueError(f"'{self.key}' can't convert "
+                                   f"to '{self.rule.direct_type.__name__}' type") from err
 
     def __call__(self, *args, **kwargs):
         super().__call__()

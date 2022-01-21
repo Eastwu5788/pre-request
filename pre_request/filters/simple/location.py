@@ -38,9 +38,9 @@ class LocationFilter(BaseFilter):
 
         for value in fmt_value:
             if self.rule.longitude and not longitude_regex.match(value):
-                raise ParamsValueError(f"{self.key} field does not confirm to longitude format")
+                raise ParamsValueError(f"'{self.key}' can't be converted to longitude")
 
             if self.rule.latitude and not latitude_regex.match(value):
-                raise ParamsValueError(f"{self.key} field does not confirm to latitude format")
+                raise ParamsValueError(f"'{self.key}' can't be converted to latitude")
 
         return self.value

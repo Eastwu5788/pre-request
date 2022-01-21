@@ -5,7 +5,10 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-03-17 15:45'
 # sys
-import datetime
+from datetime import (
+    date,
+    datetime
+)
 from decimal import Decimal
 # project
 from pre_request.exception import ParamsValueError
@@ -22,7 +25,8 @@ class RangeFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        if self.rule.direct_type not in [int, float, Decimal, datetime.datetime]:
+        # 取值范围检查器，在type=list时不生效，此时将value视为一个整体
+        if self.rule.direct_type not in {int, float, Decimal, datetime, date}:
             return False
 
         if self.rule.gt is not None:
@@ -48,24 +52,24 @@ class RangeFilter(BaseFilter):
         if self.rule.gt is not None:
             rst = [not v > self.rule.gt for v in value]
             if True in rst:
-                raise ParamsValueError(f"{self.key} field value must be greater than {str(self.rule.gt)}")
+                raise ParamsValueError(f"'{self.key}' should be greater than {self.rule.gt}")
 
         # 大于等于
         if self.rule.gte is not None:
             rst = [not v >= self.rule.gte for v in value]
             if True in rst:
-                raise ParamsValueError(f"{self.key} field value must be greater than or equal to {str(self.rule.gte)}")
+                raise ParamsValueError(f"'{self.key}' should be greater than or equal to {self.rule.gte}")
 
         # 小于
         if self.rule.lt is not None:
             rst = [not v < self.rule.lt for v in value]
             if True in rst:
-                raise ParamsValueError(f"{self.key} field value must be less than {str(self.rule.lt)}")
+                raise ParamsValueError(f"'{self.key}' should be less than {self.rule.lt}")
 
         # 小于等于
         if self.rule.lte is not None:
             rst = [not v <= self.rule.lte for v in value]
             if True in rst:
-                raise ParamsValueError(f"{self.key} field value must be less than or equal to {str(self.rule.lte)}")
+                raise ParamsValueError(f"'{self.key}' should be less than or equal to {self.rule.lte}")
 
         return self.value

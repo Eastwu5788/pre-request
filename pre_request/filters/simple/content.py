@@ -37,24 +37,24 @@ class ContentFilter(BaseFilter):
         super().__call__()
 
         if self.rule.startswith and not self.value.startswith(self.rule.startswith):
-            raise ParamsValueError(f"{self.key} field must start with '{self.rule.startswith}'")
+            raise ParamsValueError(f"'{self.key}' should start with '{self.rule.startswith}'")
 
         if self.rule.endswith and not self.value.endswith(self.rule.endswith):
-            raise ParamsValueError(f"{self.key} field must end with '{self.rule.startswith}'")
+            raise ParamsValueError(f"'{self.key}' should end with '{self.rule.startswith}'")
 
         for contain in self.rule.contains:
             if contain not in self.value:
-                raise ParamsValueError(f"{self.key} field is missing required content")
+                raise ParamsValueError(f"'{self.key}' need required content")
 
         for contain in self.rule.excludes:
             if contain in self.value:
-                raise ParamsValueError(f"{self.key} field contains prohibited content")
+                raise ParamsValueError(f"'{self.key}' contain prohibited content")
 
         for contain in self.rule.contains_any:
             if contain in self.value:
                 return self.value
 
         if self.rule.contains_any:
-            raise ParamsValueError(f"{self.key} field must contain the specified content")
+            raise ParamsValueError(f"'{self.key}' should contain special content")
 
         return self.value

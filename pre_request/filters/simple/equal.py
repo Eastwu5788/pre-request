@@ -32,9 +32,9 @@ class EqualFilter(BaseFilter):
         super().__call__()
 
         if self.rule.eq is not None and self.value != self.rule.eq:
-            raise ParamsValueError(f"{self.key} field must be equal to {str(self.rule.eq)}")
+            raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.eq}'")
 
         if self.rule.neq is not None and self.value == self.rule.neq:
-            raise ParamsValueError(f"{self.key} field cannot be equal to {str(self.rule.neq)}")
+            raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.neq}'")
 
         return self.value

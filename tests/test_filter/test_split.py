@@ -22,9 +22,9 @@ def json_resp(result):
 
 
 args = {
-    "p1": Rule(type=int, split=",", multi=True, required=True),
-    "p2": Rule(split=",", trim=True, multi=True, lower=True),
-    "p3": Rule(type=int, split=",", multi=True, lte=5)
+    "p1": Rule(type=int, split=",", required=True),
+    "p2": Rule(split=",", trim=True, lower=True),
+    "p3": Rule(type=int, split=",", lte=5)
 }
 
 
@@ -56,7 +56,7 @@ class TestSplit:
             "p1": "1,a,5,6,7"
         })
 
-        assert resp.json["respMsg"] == "p1 field cannot be converted to int type"
+        assert resp.json["respMsg"] == "'p1' can't convert to 'int' type"
 
     def test_split_573(self):
         """ 测试数组内数据大小限制判断
@@ -67,4 +67,4 @@ class TestSplit:
             "p3": "5, 6"
         })
 
-        assert resp.json["respMsg"] == "p3 field value must be less than or equal to 5"
+        assert resp.json["respMsg"] == "'p3' should be less than or equal to 5"
