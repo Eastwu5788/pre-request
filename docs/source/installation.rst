@@ -10,7 +10,7 @@ We recommend using the latest version of python 3. pre-request supports Python 3
 Dependencies
 ---------------
 
-This framework is designed for Flask, therefore Flask will be installed automatically when installing pre-request
+This framework is designed for `Flask`, therefore `Flask` will be installed automatically when installing pre-request
 
 
 Install pre-request with pip

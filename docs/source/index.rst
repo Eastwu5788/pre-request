@@ -3,7 +3,7 @@
    :align: center
    :target: https://github.com/Eastwu5788/pre-request
 
-Welcome to pre-request's document. This framework is designed to validate params for Restful api request,
+Welcome to pre-request's document. This framework is designed to validate params for `Flask` request params,
 this framework can validate complex struct and field, including Cross Field, Cross Struct.
 
 

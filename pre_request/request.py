@@ -184,7 +184,7 @@ class PreRequest:
 
         if len(key.split(".")) > 1 and rule.deep:
             rst = get_deep_value(key, getattr(request, "json"), default, deep=True)
-            # load value from depth json structure failed
+            # load value from depth json struct failed
             if rst != default:
                 return rst
 
@@ -242,15 +242,15 @@ class PreRequest:
             else:
                 v = self._fmt_params(k, r, default=missing)
 
-        if r.structure is not None:
+        if r.struct is not None:
             # make sure that input value is not empty
             if r.required and not v:
                 raise ParamsValueError(message=f"{k} field cannot be empty")
 
             if not r.multi:
-                raise TypeError("invalid usage of `structure` params")
+                raise TypeError("invalid usage of `struct` params")
 
-            # structure params must be type of list
+            # struct params must be type of list
             if not isinstance(v, list):
                 raise ParamsValueError(message="Input " + k + " invalid type")
 
@@ -264,10 +264,10 @@ class PreRequest:
                 if not isinstance(sub_v, dict):
                     raise ParamsValueError(message="Input " + k + "." + str(idx) + " invalid type")
 
-                # format every k-v with structure
+                # format every k-v with struct
                 fmt_item = {}
                 fmt_result.append(fmt_item)
-                for sub_k, sub_r in r.structure.items():
+                for sub_k, sub_r in r.struct.items():
                     new_k = k + "." + str(idx) + "." + sub_k
                     v = self._handler_simple_filter(new_k, sub_v.get(sub_k), sub_r)
                     fmt_item[sub_r.key_map if isinstance(sub_r, Rule) and sub_r.key_map else sub_k] = v

@@ -1,11 +1,103 @@
 Validate Rules
 =====================
 
+**Control:**
+
+==============   ==============================================
+  Rule                      Desc
+==============   ==============================================
+  type              Direct type
+  required          Param is required
+  default          Default value if param is empty
+  dest             Direct key for result
+required_with      Required with other key
+ location           Which location to read value for request
+ skip               Skip all of the filters
+==============   ==============================================
+
+**Other:**
+
+==============   ==============================================
+  Rule                      Desc
+==============   ==============================================
+  json              Json deserialize value
+  callback          Custom callback function
+==============   ==============================================
+
+**Fields:**
+
+===========   ==============================================
+  Rule                      Desc
+===========   ==============================================
+  eq_key          Field equal to another field
+  neq_key        Field not equal to another field
+  gt_key        Field greater than another field
+  gte_key       Field greater than or equal to another field
+  lt_key        Field less than another field
+  lte_key       Field less than or equal to another field
+===========   ==============================================
+
+**Network:**
+
+===========   ==========================================
+  Rule                      Desc
+===========   ==========================================
+  ipv4           Internet protocol address IPv4
+  ipv6           Internet protocol address IPv6
+  mac           Media access control address MAC
+===========   ==========================================
+
+**Strings:**
+
+===============   ==========================================
+  Rule                      Desc
+===============   ==========================================
+  len               Content length for string or array
+  trim              Trim space characters
+  reg               Regex expression
+ contains           Contains
+ contains_any       Contains any items
+ excludes           Excludes
+ startswith         Starts with
+ endswith           Ends with
+ lower              Lowercase
+ upper              Uppercase
+ Split              Split string with special character
+===============   ==========================================
+
+**Format:**
+
+===============   ==========================================
+  Rule                      Desc
+===============   ==========================================
+    fmt              `date` or `datetime` format
+  latitude            Latitude
+  longitude           Longitude
+  structure        Describe substructure for array or dict
+   multi           Value is array
+   deep               Find value from substructure
+   enum             Enum value
+===============   ==========================================
+
+**Comparison:**
+
+===============   ==========================================
+  Rule                      Desc
+===============   ==========================================
+   eq                   Equals
+   neq                  Not equal
+   gt                   Greater than
+   gte                  Greater than or equal
+   lt                   Less than
+   lte                  Less than or equal
+===============   ==========================================
+
+
 location
 -------------
 
-By default, pre-request try to parse values form `flask.Request.values` and `flask.Request.json`. Use `location`
-to specify location to pull the values from. current support ["args", "form", "values", "headers", "cookies", "json"]
+By default, `pre-request` try to parse values form `flask.Request.values` and `flask.Request.json`. Use `location`
+to specify location to get values. current support ["args", "form", "values", "headers", "cookies", "json"]
 
 ::
 
@@ -18,7 +110,7 @@ to specify location to pull the values from. current support ["args", "form", "v
 deep
 ---------
 
-By default, pre-request can parse value from complex structure. we can use `deep=False` to turn off this feature, pre-request
+By default, `pre-request` can parse value from complex structure. we can use `deep=False` to turn off this feature, pre-request
 will parse values from top level.
 
 ::
@@ -37,7 +129,7 @@ will parse values from top level.
 type
 -------------
 
-Pre-request try to convert value type to special type.
+`pre-request` try to convert value to special type.
 
 ::
 
@@ -49,7 +141,7 @@ Pre-request try to convert value type to special type.
 skip
 -------
 
-Tells the pre-request to skip validate this field. we will put origin value in the result structure.
+`pre-request` will skip validate value at this field. we will put origin value in the result structure.
 
 ::
 
@@ -61,8 +153,7 @@ Tells the pre-request to skip validate this field. we will put origin value in t
 multi
 --------
 
-Pre-request try to convert input value to list type. if you set multi value to false and input value is the type of list,
-pre-request will use last value as input value. You can use `split` or `json` to get list type of input.
+if you set `multi=True`, we will check every items in array. otherwise it will be regarded as a whole。
 
 ::
 
@@ -73,6 +164,7 @@ pre-request will use last value as input value. You can use `split` or `json` to
 
 structure
 -------------
+
 You can use `structure` field to define sub structure in array. This field will be only valid in `multi=True`.
 
 ::
@@ -88,8 +180,8 @@ params = {
 required
 ----------
 
-Pre-request validate the value is not None or user do not input this value.
-
+`pre-request` validate the value is not None or user do not input this value. Specially, if user don't input this value and `skip=True`,
+`pre-request` will fill it with `missing` type.
 
 ::
 
@@ -114,7 +206,7 @@ The field under validation must be present and not empty only if any of the othe
 default
 ---------
 
-Pre-request will fill the default value into the field only if the field is not required and current value is None
+`pre-request` will fill the default value into the field only if the field is not required and current value is None
 
 ::
 
@@ -126,7 +218,7 @@ Pre-request will fill the default value into the field only if the field is not 
 split
 --------
 
-Pre-request will split origin string value with special char and the check rule will filter to every value in the result array。
+`pre-request` will split origin string value with special char and the check rule will filter to every value in the result array。
 
 ::
 
@@ -138,7 +230,7 @@ Pre-request will split origin string value with special char and the check rule 
 trim
 ------
 
-Pre-request will try to remove the space characters at the beginning and end of the string.
+`pre-request` will try to remove the space characters at the beginning and end of the string.
 
 ::
 
@@ -233,7 +325,7 @@ Ensure that the input string value must be end with special substring
 lower
 --------
 
-Pre-request will convert all characters in the string to lowercase style.
+`pre-request` will convert all characters in the string to lowercase style.
 
 ::
 
@@ -245,7 +337,7 @@ Pre-request will convert all characters in the string to lowercase style.
 upper
 ------
 
-Pre-request will convert all characters in the string to uppercase style.
+`pre-request` will convert all characters in the string to uppercase style.
 
 ::
 
@@ -282,7 +374,7 @@ Ensure that the field entered by the user conform to the MAC address format.
 fmt
 --------
 
-Provides the style when the string is converted to `datetime` type. This is valid only on `type=datetime.datetime`
+Provides the style when the string is converted to `datetime` or `date` type. This is valid only on `type=datetime.datetime`
 
 
 ::
@@ -295,7 +387,7 @@ Provides the style when the string is converted to `datetime` type. This is vali
 latitude / longitude
 --------------------
 
-Ensure that the field entered by the user conform to the latitude/longitude format.
+Ensure that the field entered by the user conform to the `latitude/longitude` format.
 
 ::
 
@@ -394,7 +486,7 @@ We will convert the key of the parameter to another value specified.
 ::
 
   params = {
-    "userId": Rule(direct_type=int, dest="user_id")
+    "userId": Rule(type=int, dest="user_id")
   }
 
 
@@ -405,11 +497,11 @@ We will try to use the `json.loads` method to parse the value of the parameter t
 a `list` or `dict` type.
 
 
-call_back
+callback
 ---------------
 
 If the function we provide cannot meet your needs, you can pass in the parse function you defied
-through the `call_back` method.
+through the `callback` method.
 
 ::
 
@@ -417,5 +509,5 @@ through the `call_back` method.
     return value + 100
 
   params = {
-    "userId": Rule(direct_type=int, call_back=hand)
+    "userId": Rule(type=int, callback=hand)
   }

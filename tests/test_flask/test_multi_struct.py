@@ -22,10 +22,10 @@ def json_resp(result):
 
 
 args = {
-    "userInfo": Rule(type=dict, multi=True, required=True, structure={
+    "userInfo": Rule(type=dict, multi=True, required=True, struct={
         "userId": Rule(type=int, required=True),
         "userName": Rule(type=str, required=True),
-        "friends": Rule(type=dict, multi=True, required=True, structure={
+        "friends": Rule(type=dict, multi=True, required=True, struct={
             "userId": Rule(type=int, required=True),
             "userName": Rule(type=str, required=True)
         })

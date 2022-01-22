@@ -11,7 +11,7 @@ Version 2.1.5 (UnReleased)
 ---------------------------
 
 - 重构错误处理机制
-- CI/CD流水线调整为`github workflow`
+- CI/CD流水线调整为 `github workflow`
 - 使用Python 3 style，不再支持Python2.x
 - 添加Typing Check
 - 增强日期、自定义函数功能

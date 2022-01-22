@@ -10,11 +10,18 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     """
 
     def __init__(self, **kwargs):
-        # Type
+        # Control
         self.direct_type: t.Type[t.Any] = kwargs.get("type", str)
-
-        # Flask
+        self.required: bool = kwargs.get("required", True)
+        self.default: t.Optional[t.Any] = kwargs.get("default", None)
+        self.key_map: t.Optional[str] = kwargs.get("dest", None)
+        self.required_with: t.Optional[str] = kwargs.get("required_with", None)
         self.location: t.Optional[t.Union[t.List[str], str]] = kwargs.get("location", None)
+        self.skip: bool = kwargs.get("skip", False)
+
+        # Other
+        self.json_load: bool = kwargs.get("json", False)
+        self.callback: t.Optional[t.Callable] = kwargs.get("callback", None)
 
         # Strings
         self.len: t.Optional[int] = kwargs.get("len", None)
@@ -35,13 +42,13 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.mac: bool = kwargs.get("mac", False)
 
         # Format
-        self.skip: bool = kwargs.get("skip", False)
         self.deep: bool = kwargs.get("deep", True)
         self.multi: bool = kwargs.get("multi", False)
-        self.structure: t.Optional[t.Dict[str, t.Union[dict, "Rule"]]] = kwargs.get("structure", None)
+        self.struct: t.Optional[t.Dict[str, t.Union[dict, "Rule"]]] = kwargs.get("struct", None)
         self.latitude: bool = kwargs.get("latitude", False)
         self.longitude: bool = kwargs.get("longitude", False)
         self.fmt: t.Optional[str] = kwargs.get("fmt", "%Y-%m-%d %H:%M:%S")
+        self.enum: t.List[t.Any] = kwargs.get("enum", [])
 
         # Field
         self.eq_key: t.Optional[str] = kwargs.get("eq_key", None)
@@ -58,15 +65,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.gte: t.Optional[int] = kwargs.get("gte", None)
         self.lt: t.Optional[int] = kwargs.get("lt", None)
         self.lte: t.Optional[int] = kwargs.get("lte", None)
-
-        # Other
-        self.default: t.Optional[t.Any] = kwargs.get("default", None)
-        self.enum: t.List[t.Any] = kwargs.get("enum", [])
-        self.required: bool = kwargs.get("required", True)
-        self.required_with: t.Optional[str] = kwargs.get("required_with", None)
-        self.key_map: t.Optional[str] = kwargs.get("dest", None)
-        self.json_load: bool = kwargs.get("json", False)
-        self.callback: t.Optional[t.Callable] = kwargs.get("callback", None)
 
     @property
     def gt(self):
