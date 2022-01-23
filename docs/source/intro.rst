@@ -380,7 +380,8 @@ Provides the style when the string is converted to `datetime` or `date` type. Th
 ::
 
   params = {
-    "birthday": Rule(type=datetime.datetime, fmt="%Y-%m-%d")
+    "birthday": Rule(type=datetime.datetime, fmt="%Y-%m-%d"),
+    "otherDate": Rule(type=datetime.date, fmt="%Y-%m-%d")
   }
 
 
@@ -500,12 +501,14 @@ a `list` or `dict` type.
 callback
 ---------------
 
-If the function we provide cannot meet your needs, you can pass in the parse function you defied
+If the filters we provide cannot meet your needs, you can pass in the parse function you defied
 through the `callback` method.
 
 ::
 
   def hand(value):
+    if value <= 10:
+        raise ParamsValueError("'userId' must be greater than 10")
     return value + 100
 
   params = {

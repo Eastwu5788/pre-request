@@ -4,11 +4,11 @@ Pre-request
 .. image:: https://raw.githubusercontent.com/Eastwu5788/pre-request/master/docs/static/logo.jpg
    :align: center
 
-..  image:: https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master
-    :target: https://www.travis-ci.org/Eastwu5788/pre-request
+..  image:: https://github.com/Eastwu5788/pre-request/actions/workflows/intergration.yml/badge.svg
+    :target: https://github.com/Eastwu5788/pre-request/actions/workflows/intergration.yml
 
-..  image:: https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master
-    :target: https://coveralls.io/github/Eastwu5788/pre-request?branch=master
+..  image:: https://codecov.io/gh/Eastwu5788/pre-request/branch/master/graph/badge.svg?token=KAB3VL6B7J
+    :target: https://codecov.io/gh/Eastwu5788/pre-request
 
 ..  image:: https://img.shields.io/pypi/l/pre-request?color=brightgreen
     :alt: PyPI - License
