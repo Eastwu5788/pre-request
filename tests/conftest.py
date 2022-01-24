@@ -111,19 +111,6 @@ def test_eq_handler(params):
     return json_resp(params)
 
 
-regexp_params = {
-    "params": Rule(reg=r"^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
-}
-
-
-@app.route("/regexp", methods=['get', 'post'])
-@pre.catch(regexp_params)
-def test_regexp_handler(params):
-    """ 测试正则校验
-    """
-    return json_resp(params)
-
-
 trim_params = {
     "params": Rule(trim=True)
 }

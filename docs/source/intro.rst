@@ -45,6 +45,8 @@ required_with      Required with other key
   ipv4           Internet protocol address IPv4
   ipv6           Internet protocol address IPv6
   mac           Media access control address MAC
+ url_encode     Url encode with `urllib.parse.quote`
+ url_decode     Url decode with `urllib.parse.unquote`
 ===========   ==========================================
 
 **Strings:**
@@ -59,6 +61,8 @@ required_with      Required with other key
  contains_any       Contains any items
  excludes           Excludes
  startswith         Starts with
+ not_startswith     Not start with
+ not_endswith       Not end with
  endswith           Ends with
  lower              Lowercase
  upper              Uppercase
@@ -310,6 +314,17 @@ Ensure that the input string value must be start with special substring
  }
 
 
+not_endswith
+-----------------
+
+Ensure that the input string value must be not start with special substring
+
+::
+
+ params = {
+    "nickName": Rule(not_startswith="USA")
+ }
+
 endswith
 ----------
 
@@ -319,6 +334,18 @@ Ensure that the input string value must be end with special substring
 
  params = {
     "email": Rule(endswith="@eastwu.cn")
+ }
+
+
+not_endswith
+----------------
+
+Ensure that the input string value must be not end with special substring
+
+::
+
+ params = {
+    "email": Rule(not_endswith="@eastwu.cn")
  }
 
 
@@ -370,6 +397,30 @@ Ensure that the field entered by the user conform to the MAC address format.
     "macAddress": Rule(mac=True)
   }
 
+url_encode
+---------------
+
+Encode url by function `urllib.parse.quote`. This rule is only valid for parameters of type `str`.
+You can select the encoding type through the `encoding` parameter.
+
+::
+
+  params = {
+    "url": Rule(type=str, url_encode=True, encoding="GB2312")
+  }
+
+
+url_decode
+---------------
+
+Decode url by function `urllib.parse.unquote`. This rule is only valid for parameters of type `str`.
+You can select the encoding type through the `encoding` parameter.
+
+::
+
+  params = {
+    "url": Rule(type=str, url_decode=True, encoding="GB2312")
+  }
 
 fmt
 --------

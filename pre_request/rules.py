@@ -26,20 +26,25 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         # Strings
         self.len: t.Optional[int] = kwargs.get("len", None)
         self.trim: bool = kwargs.get("trim", False)
-        self.reg: t.Optional[str] = kwargs.get("reg", None)
         self.contains: t.List[t.Any] = kwargs.get("contains", [])
         self.contains_any: t.List[t.Any] = kwargs.get("contains_any", [])
         self.excludes: t.List[t.Any] = kwargs.get("excludes", [])
         self.startswith: t.Optional[str] = kwargs.get("startswith", None)
+        self.not_startswith: t.Optional[str] = kwargs.get("not_startswith", None)
         self.endswith: t.Optional[str] = kwargs.get("endswith", None)
+        self.not_endswith: t.Optional[str] = kwargs.get("not_endswith", None)
         self.lower: bool = kwargs.get("lower", False)
         self.upper: bool = kwargs.get("upper", False)
         self.split: t.Optional[str] = kwargs.get("split", None)
+        self.encoding: t.Optional[str] = kwargs.get("encoding", None)
 
         # Network
         self.ipv4: bool = kwargs.get("ipv4", False)
         self.ipv6: bool = kwargs.get("ipv6", False)
         self.mac: bool = kwargs.get("mac", False)
+        self.url_encode: bool = kwargs.get("url_encode", False)
+        self.url_decode: bool = kwargs.get("url_decode", False)
+        self.data_uri: bool = kwargs.get("data_uri", False)
 
         # Format
         self.deep: bool = kwargs.get("deep", True)
@@ -49,6 +54,12 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.longitude: bool = kwargs.get("longitude", False)
         self.fmt: t.Optional[str] = kwargs.get("fmt", "%Y-%m-%d %H:%M:%S")
         self.enum: t.List[t.Any] = kwargs.get("enum", [])
+        self.email: bool = kwargs.get("email", False)
+        self.reg: t.Optional[str] = kwargs.get("reg", None)
+        self.alpha: t.Optional[bool] = kwargs.get("alpha", False)
+        self.alphanum: t.Optional[bool] = kwargs.get("alphanum", False)
+        self.numeric: bool = kwargs.get("numeric", False)
+        self.number: bool = kwargs.get("number", False)
 
         # Field
         self.eq_key: t.Optional[str] = kwargs.get("eq_key", None)

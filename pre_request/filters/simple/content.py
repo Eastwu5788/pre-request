@@ -19,13 +19,16 @@ class ContentFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        if not isinstance(self.value, str):
+        if self.rule.direct_type != str or not isinstance(self.value, (str, list)):
             return False
 
         if self.rule.contains or self.rule.contains_any:
             return True
 
         if self.rule.startswith or self.rule.endswith:
+            return True
+
+        if self.rule.not_startswith or self.rule.not_endswith:
             return True
 
         if self.rule.excludes:
@@ -36,25 +39,38 @@ class ContentFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super().__call__()
 
-        if self.rule.startswith and not self.value.startswith(self.rule.startswith):
-            raise ParamsValueError(f"'{self.key}' should start with '{self.rule.startswith}'")
+        value = self.value if isinstance(self.value, list) else [self.value]
 
-        if self.rule.endswith and not self.value.endswith(self.rule.endswith):
-            raise ParamsValueError(f"'{self.key}' should end with '{self.rule.startswith}'")
+        for v in value:
+            if self.rule.startswith and not v.startswith(self.rule.startswith):
+                raise ParamsValueError(f"'{self.key}' should start with '{self.rule.startswith}'")
 
-        for contain in self.rule.contains:
-            if contain not in self.value:
-                raise ParamsValueError(f"'{self.key}' need required content")
+            if self.rule.endswith and not v.endswith(self.rule.endswith):
+                raise ParamsValueError(f"'{self.key}' should end with '{self.rule.startswith}'")
 
-        for contain in self.rule.excludes:
-            if contain in self.value:
-                raise ParamsValueError(f"'{self.key}' contain prohibited content")
+            if self.rule.not_startswith and v.startswith(self.rule.not_startswith):
+                raise ParamsValueError(f"'{self.key}' should not start with '{self.rule.not_startswith}'")
 
-        for contain in self.rule.contains_any:
-            if contain in self.value:
-                return self.value
+            if self.rule.not_endswith and v.endswith(self.rule.not_endswith):
+                raise ParamsValueError(f"'{self.key}' should not end with '{self.rule.not_endswith}'")
 
-        if self.rule.contains_any:
-            raise ParamsValueError(f"'{self.key}' should contain special content")
+            for contain in self.rule.contains:
+                if contain not in v:
+                    raise ParamsValueError(f"'{self.key}' need required content")
+
+            for contain in self.rule.excludes:
+                if contain in v:
+                    raise ParamsValueError(f"'{self.key}' contain prohibited content")
+
+            if self.rule.contains_any:
+                # check any contents
+                contains_any = False
+                for contain in self.rule.contains_any:
+                    if contain in v:
+                        contains_any = True
+                        break
+
+                if not contains_any:
+                    raise ParamsValueError(f"'{self.key}' should contain special content")
 
         return self.value

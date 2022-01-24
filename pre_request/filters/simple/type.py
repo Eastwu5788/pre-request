@@ -47,7 +47,7 @@ class TypeFilter(BaseFilter):
         :return:
         """
         if d_type == str and isinstance(value, bytes):
-            return value.decode('utf-8')
+            return value.decode(self.rule.encoding or "UTF-8")
 
         # 特殊的字符串转bool类型
         if d_type == bool and isinstance(value, str):

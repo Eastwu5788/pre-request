@@ -13,7 +13,6 @@ from .enum import EnumFilter
 from .equal import EqualFilter
 from .json import JsonFilter
 from .length import LengthFilter
-from .location import LocationFilter
 from .multi import MultiFilter
 from .network import NetworkFilter
 from .range import RangeFilter
