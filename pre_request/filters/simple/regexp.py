@@ -10,6 +10,7 @@ import re
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
 from pre_request.utils import missing
+from pre_request.regexp import REGEX_PARAMS
 
 
 class RegexpFilter(BaseFilter):
@@ -23,8 +24,15 @@ class RegexpFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        if self.rule.reg and self.rule.direct_type == str:
+        if self.rule.direct_type != str:
+            return False
+
+        if self.rule.reg:
             return True
+
+        for key, _ in REGEX_PARAMS.items():
+            if getattr(self.rule, key) is True:
+                return True
 
         return False
 
@@ -32,11 +40,18 @@ class RegexpFilter(BaseFilter):
         super().__call__()
 
         # 将参数转换成数组处理
-        fmt_value = self.value if isinstance(self.value, list) else [self.value]
+        value = self.value if isinstance(self.value, list) else [self.value]
 
-        for value in fmt_value:
+        for v in value:
             # 判断是否符合正则
-            if not re.compile(self.rule.reg, re.IGNORECASE).match(value):
+            if self.rule.reg and not re.compile(self.rule.reg, re.IGNORECASE).match(v):
                 raise ParamsValueError(f"'{self.key}' does not match the regular expression")
+
+            for key, item in REGEX_PARAMS.items():
+                if not getattr(self.rule, key):
+                    continue
+
+                if not item["regex"].match(v):
+                    raise ParamsValueError(item["message"] % self.key)
 
         return self.value

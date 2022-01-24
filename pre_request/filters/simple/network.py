@@ -6,9 +6,12 @@
 # @Time: '2020-04-10 17:09'
 # sys
 import socket
+from urllib.parse import (
+    quote,
+    unquote
+)
 # project
 from pre_request.exception import ParamsValueError
-from pre_request.regexp import mac_regex
 from pre_request.filters.base import BaseFilter
 from pre_request.utils import missing
 
@@ -27,6 +30,9 @@ class NetworkFilter(BaseFilter):
             return False
 
         if self.rule.ipv4 or self.rule.ipv6 or self.rule.mac:
+            return True
+
+        if self.rule.url_decode or self.rule.url_encode:
             return True
 
         return False
@@ -70,7 +76,13 @@ class NetworkFilter(BaseFilter):
             if self.rule.ipv6 and not self._is_ipv6(v):
                 raise ParamsValueError(f"'{self.key}' is not a valid ipv6 address")
 
-            if self.rule.mac and not mac_regex.match(v.lower()):
-                raise ParamsValueError(f"'{self.key}' is not a valid MAC address")
+        # url_encode or url_decode
+        if self.rule.url_decode or self.rule.url_encode:
+            encoding = self.rule.encoding or "UTF-8"
+            if isinstance(self.value, list):
+                for idx, v in enumerate(self.value):
+                    self.value[idx] = unquote(v, encoding) if self.rule.url_decode else quote(v, encoding)
+            else:
+                self.value = unquote(self.value, encoding) if self.rule.url_decode else quote(self.value, encoding)
 
         return self.value
