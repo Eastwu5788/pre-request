@@ -81,6 +81,11 @@ required_with      Required with other key
    multi           Value is array
    deep               Find value from substructure
    enum             Enum value
+  alpha             Alpha only
+  alphanum          Alpha or numeric
+  numeric           Numeric
+  number            Number only
+  email             Email address for RFC5322
 ===============   ==========================================
 
 **Comparison:**
@@ -420,6 +425,65 @@ You can select the encoding type through the `encoding` parameter.
 
   params = {
     "url": Rule(type=str, url_decode=True, encoding="GB2312")
+  }
+
+
+alpha
+----------
+
+Check that a string can oly consist of letters.
+
+::
+
+  params = {
+    "p": Rule(type=str, alpha=True)
+  }
+
+
+
+alphanum
+-----------
+
+Check that a string can oly consist of letters or numeric.
+
+::
+
+  params = {
+    "p": Rule(type=str, alphanum=True)
+  }
+
+
+numeric
+-----------
+
+Check that a string can oly consist of numeric.
+
+::
+
+  params = {
+    "p": Rule(type=str, numeric=True)
+  }
+
+number
+-----------
+
+Check that a string can oly consist of number.
+
+::
+
+  params = {
+    "p": Rule(type=str, number=True)
+  }
+
+email
+-----------
+
+Check that a string is valid email address.
+
+::
+
+  params = {
+    "p": Rule(type=str, email=True)
   }
 
 fmt

@@ -44,7 +44,6 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.mac: bool = kwargs.get("mac", False)
         self.url_encode: bool = kwargs.get("url_encode", False)
         self.url_decode: bool = kwargs.get("url_decode", False)
-        self.data_uri: bool = kwargs.get("data_uri", False)
 
         # Format
         self.deep: bool = kwargs.get("deep", True)
@@ -60,6 +59,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.alphanum: t.Optional[bool] = kwargs.get("alphanum", False)
         self.numeric: bool = kwargs.get("numeric", False)
         self.number: bool = kwargs.get("number", False)
+        self.data_uri: bool = kwargs.get("data_uri", False)
 
         # Field
         self.eq_key: t.Optional[str] = kwargs.get("eq_key", None)
