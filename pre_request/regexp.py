@@ -11,9 +11,10 @@ EMAIL_REG = r"""([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|"([]!#-[^-~ \t]
 LATITUDE_REG = r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$"
 LONGITUDE_REG = r"^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$"
 MAC_REG = r"[0-9a-f]{2}([-:])[0-9a-f]{2}(\1[0-9a-f]{2}){4}$"
-DATA_URI_REG = r"^data:((?:\w+\/(?:([^;]|;[^;]).)+)?)"
+# DATA_URI_REG = r"^data:((?:\w+\/(?:([^;]|;[^;]).)+)?)"
 NUMERIC_REG = r"^[-+]?[0-9]+(?:\.[0-9]+)?$"
 NUMBER_REG = r"^[0-9]+$"
+# BASE64_REG = r"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$"
 
 
 REGEX_PARAMS = {
@@ -49,9 +50,8 @@ REGEX_PARAMS = {
         "regex": re.compile(EMAIL_REG),
         "message": "'%s' is not a valid email address"
     },
-    "data_uri": {
-        "regex": re.compile(DATA_URI_REG),
-        "message": "'%s' is not a valid data uri"
-    },
-
+    # "data_uri": {
+    #     "regex": re.compile(DATA_URI_REG),
+    #     "message": "'%s' is not a valid data uri"
+    # },
 }

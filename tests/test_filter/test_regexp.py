@@ -67,11 +67,11 @@ class TestRegexp:
         assert resp.json == {"p1": "2020-03-03", "p2": "req", "p3": "req123",
                              "p4": "wudong@eastwu.cn", "p5": "-1.2", "p6": "39"}
 
-    def test_regex_network_smoke(self):
-        resp = app.test_client().get("/network", data={
-            "t1": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==",
-        })
-        assert resp.json == {"t1": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=="}
+    # def test_regex_network_smoke(self):
+    #     resp = app.test_client().get("/network", data={
+    #         "t1": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==",
+    #     })
+    #     assert resp.json == {"t1": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=="}
 
     def test_regexp_filter_566(self):
         """ 测试 regexp_filter 566 错误
@@ -116,8 +116,8 @@ class TestRegexp:
         })
         assert resp.json["respMsg"] == "'p4' is not a valid email address"
 
-    def test_regex_network_data_uri(self):
-        resp = app.test_client().get("/network", data={
-            "t1": "dataSGVsbG8sIFdvcmxkIQ==",
-        })
-        assert resp.json["respMsg"] == "'t1' is not a valid data uri"
+    # def test_regex_network_data_uri(self):
+    #     resp = app.test_client().get("/network", data={
+    #         "t1": "dataSGVsbG8sIFdvcmxkIQ==",
+    #     })
+    #     assert resp.json["respMsg"] == "'t1' is not a valid data uri"
