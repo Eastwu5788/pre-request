@@ -1,22 +1,36 @@
 .. py:currentmodule:: pre_request
 
 
+Version 2.1.7 (UnReleased)
+-----------------------------
+
+- 剥离 `Flask` 依赖，增强核心能力
+- 构建 `Flask-Validator` 库
+- 重新编写文档，拆分中英文文档
+
+
 Version 2.1.6 (UnReleased)
 -----------------------------
 
 - 多语言错误消息
+- 支持 `json` 子结构解析
+- 增强子结构校验规则，增强 `multi` 字段功能
+- 核心能力封装，支持普通函数参数校验
+- 新增纯数组入参校验
+- 新增自定义Type, 增强文件类型校验
 
 
-Version 2.1.5 (UnReleased)
+Version 2.1.5
 ---------------------------
 
-- 重构错误处理机制
+Released 2022-01-26
+
 - CI/CD流水线调整为 `github workflow`
-- 使用Python 3 style，不再支持Python2.x
 - 添加Typing Check
 - 增强日期、自定义函数功能
 - 去除手机号校验能力
-- 添加字符串、数组长度校验
+- 增强了字符串、数组校验
+- 重构了过滤器、正则表达式，异常处理逻辑
 
 
 Version 2.1.4
