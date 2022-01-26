@@ -1,7 +1,7 @@
 Quickstart
 ===============
 
-Eager to get started? This page gives a good example to use pre-request. It assumes you already have pre-request installed
+Eager to get started? This page gives a good example to use pre-request. It assumes you already have `pre-request` installed
 If you do not, head over to the Installation section.
 
 Minimal Example
@@ -64,7 +64,7 @@ pre-request support flask extension configuration to load params.
    pre.init_app(app=app)
 
 
-use decorator
+Decorator
 --------------
 
 pre-request use decorator `pre.catch` to validate request params with special kind of method
@@ -82,7 +82,7 @@ pre-request use decorator `pre.catch` to validate request params with special ki
     def get_handler(params):
         return str(params)
 
-we can also support validate different rule for different request params
+we can also support validate different rule for different request method.
 
 .. code-block:: python
 
@@ -91,11 +91,20 @@ we can also support validate different rule for different request params
     def all_handler(params):
         return str(params)
 
+you can validate params for all of the request methods with no key.
+
+.. code-block:: python
+
+    @app.route("/all", methods=['get', 'post'])
+    @pre.catch(rules)
+    def all_handler(params):
+        return str(params)
+
 
 Use parse
 -------------
 
-We can use function `pre.parse` instead of decorator `@pre.catch()`
+We can use function `pre.parse` instead of decorator `@pre.catch()`. At this mode, you must catch `ParamsValueError` by yourself.
 
 .. code-block:: python
 

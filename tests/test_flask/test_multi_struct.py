@@ -22,10 +22,10 @@ def json_resp(result):
 
 
 args = {
-    "userInfo": Rule(type=dict, multi=True, required=True, structure={
+    "userInfo": Rule(type=dict, multi=True, required=True, struct={
         "userId": Rule(type=int, required=True),
         "userName": Rule(type=str, required=True),
-        "friends": Rule(type=dict, multi=True, required=True, structure={
+        "friends": Rule(type=dict, multi=True, required=True, struct={
             "userId": Rule(type=int, required=True),
             "userName": Rule(type=str, required=True)
         })
@@ -67,7 +67,7 @@ class TestMultiStructure:
             "userInfo": {}
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respCode"] == 560
+        assert resp.json["respMsg"] == "userInfo field cannot be empty"
 
     def test_multi_structure_601(self):
         """ 冒烟测试
@@ -78,7 +78,7 @@ class TestMultiStructure:
             }
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respCode"] == 601
+        assert resp.json["respMsg"] == "Input userInfo invalid type"
 
     def test_multi_structure_562(self):
         """ 冒烟测试
@@ -91,7 +91,7 @@ class TestMultiStructure:
             ]
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respCode"] == 562
+        assert resp.json["respMsg"] == "'userInfo.0.userId' can't convert to 'int' type"
 
     def test_multi_structure_563(self):
         """ 测试560异常
@@ -108,7 +108,7 @@ class TestMultiStructure:
             ]
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respCode"] == 560
+        assert resp.json["respMsg"] == "userInfo.0.friends field cannot be empty"
 
     def test_multi_structure_562_2(self):
         """ 测试二层562异常
@@ -127,4 +127,4 @@ class TestMultiStructure:
             ]
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respCode"] == 562
+        assert resp.json["respMsg"] == "'userInfo.0.friends.0.userId' can't convert to 'int' type"

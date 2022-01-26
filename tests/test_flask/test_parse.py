@@ -21,9 +21,8 @@ def json_resp(result):
     return resp
 
 
-# 指定email=True，此时框架会自动判断用户入参是否符合email正则
 email_params = {
-    "params": Rule(email=True)
+    "params": Rule(reg=r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$')
 }
 
 
@@ -50,4 +49,4 @@ class TestParse:
         resp = app.test_client().get("/email", data={
             "params": "wudong@@eastwu.cn"
         })
-        assert resp.json["respCode"] == 564
+        assert resp.json["respMsg"] == "'params' does not match the regular expression"

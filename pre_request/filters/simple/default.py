@@ -5,6 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-10 13:44'
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class DefaultFilter(BaseFilter):
@@ -12,9 +13,9 @@ class DefaultFilter(BaseFilter):
     """
 
     def __call__(self, *args, **kwargs):
-        super(DefaultFilter, self).__call__()
+        super().__call__()
 
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             self.value = self.rule.default
 
         return self.value

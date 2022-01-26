@@ -20,9 +20,8 @@ def json_resp(result):
     return resp
 
 
-# 指定email=True，此时框架会自动判断用户入参是否符合email正则
 args = {
-    "params": Rule(email=True)
+    "params": Rule(reg=r'^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$')
 }
 
 
@@ -52,5 +51,4 @@ class TestFlaskExt:
         pre.init_app(app=app)
 
         assert resp1.json == {"params": "wudong@eastwu.cn"}
-        assert resp2.json == {'respCode': 564, 'respMsg': 'Parameter verification failed, please check your input',
-                              'result': {}}
+        assert resp2.json["respMsg"] == 'parameter validate failed'

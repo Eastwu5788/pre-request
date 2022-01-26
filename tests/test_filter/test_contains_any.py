@@ -24,4 +24,4 @@ class TestContainsAny:
             "p1": "def"
         })
 
-        assert resp.json["respCode"] == 582
+        assert resp.json["respMsg"] == "'p1' should contain special content"

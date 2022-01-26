@@ -3,7 +3,7 @@
 # (C) Wu Dong, 2020
 # All rights reserved
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
-# @Time: '2020-04-15 09:26'
+# @Time: '2020-10-12 15:55'
 # sys
 import json
 # 3p
@@ -25,8 +25,8 @@ def json_resp(result):
 
 # 指定gte_key, 禁止两个参数相等
 gte_key_params = {
-    "p1": Rule(type=int),
-    "p2": Rule(type=int, gte_key="p1", dest="P2")
+    "p1": Rule(type=int, required=False, default=None),
+    "p2": Rule(type=int, required=False, default=None, gte_key="p1", dest="P2")
 }
 
 
@@ -42,18 +42,19 @@ class TestGteKey:
         """ 测试 gte_key 冒烟测试
         """
         resp = app.test_client().get("/gte/key", data={
-            "p1": 15,
             "p2": 16
         })
-
-        assert resp.json == {"p1": 15, "P2": 16}
+        assert resp.json == {"p1": None, "P2": 16}
 
         resp = app.test_client().get("/gte/key", data={
-            "p1": 15,
-            "p2": 15
         })
+        assert resp.json == {"p1": None, "P2": None}
 
-        assert resp.json == {"p1": 15, "P2": 15}
+        resp = app.test_client().get("/gte/key", data={
+            "p1": 14,
+            "p2": 16
+        })
+        assert resp.json == {"p1": 14, "P2": 16}
 
     def test_gte_key_596(self):
         """ 测试 gte_key 异常
@@ -63,4 +64,8 @@ class TestGteKey:
             "p2": 14
         })
 
-        assert resp.json["respMsg"] == "'p2' should be greater than or equal to 'p1'"
+        assert resp.json["respMsg"] == "the value of 'p2' must be greater than or equal to the value of 'p1'"
+
+
+if __name__ == "__main__":
+    TestGteKey().test_gte_key_smoke()

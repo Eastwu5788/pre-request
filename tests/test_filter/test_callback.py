@@ -9,7 +9,7 @@ import json
 # 3p
 from flask import Flask, make_response
 # project
-from pre_request import pre, Rule
+from pre_request import pre, Rule, ParamsValueError
 
 
 app = Flask(__name__)
@@ -26,6 +26,10 @@ def json_resp(result):
 def call_back_func(value):
     if value == "3":
         return 999
+
+    if value == "6":
+        raise ParamsValueError("Invalid input")
+
     return value
 
 
@@ -64,3 +68,9 @@ class TestCallBack:
         })
 
         assert resp.json == {"params": "5"}
+
+        resp = app.test_client().get("/callback", data={
+            "params": 6
+        })
+
+        assert resp.json["respMsg"] == "Invalid input"

@@ -27,10 +27,5 @@ class BaseFilter:
         """
         return True
 
-    def fmt_error_message(self, code):  # pylint: disable=unused-argument
-        """ 返回格式化的错误消息
-        """
-        return None
-
     def __call__(self, *args, **kwargs):
         pass

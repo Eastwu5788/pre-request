@@ -58,7 +58,7 @@ class TestDatetime:
             "happyDay": "2019-01-01 11:12:15"
         })
 
-        assert resp.json["respCode"] == 593
+        assert resp.json["respMsg"] == "'happyDay' should be the same as 'birthday'"
 
     def test_datetime_571(self):
         resp = app.test_client().post("/datetime", data={
@@ -67,7 +67,7 @@ class TestDatetime:
             "happyDay": "2019-01-01 11:12:13"
         })
 
-        assert resp.json["respCode"] == 571
+        assert resp.json["respMsg"] == "'publishDate' should be greater than or equal to 2019-11-11 00:00:00"
 
     def test_datetime_573(self):
         resp = app.test_client().post("/datetime", data={
@@ -76,4 +76,4 @@ class TestDatetime:
             "happyDay": "2019-01-01 11:12:13"
         })
 
-        assert resp.json["respCode"] == 573
+        assert resp.json["respMsg"] == "'publishDate' should be less than or equal to 2019-12-12 00:00:00"

@@ -11,7 +11,7 @@ The default JSON type of response format provided by pre-request is as follows:
 ::
 
     {
-        "respCode": 560,
+        "respCode": 400,
         "respMsg": "Error Message",
         "result": {}
     }
@@ -27,15 +27,23 @@ processing.
   from flask import make_response
   from pre_request import BaseResponse
 
-  class CusResponse(BaseResponse):
+  class CustomResponse(BaseResponse):
 
-    def __call__(self, fuzzy=False, formatter=None, error=None):
+    def make_response(
+            cls,
+            error: "ParamsValueError",
+            fuzzy: bool = False,
+            formatter: t.Optional[t.Callable] = None
+    ):
         result = {
-            "code": error.code,
+            "code": 900,
             "rst": {}
         }
-        return make_response(json.dumps(result))
 
+        from flask import make_response  # pylint: disable=import-outside-toplevel
+        response = make_response(json.dumps(result))
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
 
 ::
 
@@ -53,9 +61,11 @@ The pre-request will give priority to calling your custom function to generate a
 
 ::
 
-  def custom_formatter(code, msg):
+  def custom_formatter(error: ParamsValueError):
+    """ 自定义结果格式化函数
+    """
     return {
-        "code": code,
+        "code": 411,
         "msg": "hello",
         "sss": "tt",
     }
@@ -80,10 +90,6 @@ pre-request 提供了丰富的过滤器插件。但是面对各式各样的业�
 
     class CustomFilter(BaseFilter):
 
-        def fmt_error_message(self, code):
-            if code == 10086:
-                return "对不起，这里是中国电信"
-
         def filter_required(self):
             """ 检查当前过滤式，是否必须要执行
             """
@@ -92,16 +98,15 @@ pre-request 提供了丰富的过滤器插件。但是面对各式各样的业�
         def __call__(self, *args, **kwargs):
             """ 自定义过滤器时需要实现的主要功能
             """
-            super(CustomFilter, self).__call__()
+            super().__call__()
 
             if self.rule.direct_type == int and self.key == "number" and self.value != 10086:
-                raise ParamsValueError(code=10086, filter=self)
+                raise ParamsValueError(message="any error messages you want")
 
             return self.value + 1
 
-如上所示，您至少需要实现`fmt_error_message`、`filter_required` 和 `__call__` 方法。在运行您的过滤器之前，先调用
-`filter_required` 方法判断当前过滤器是否需要被执行，然后再调用 `__call__` 方法运行过滤器。当发现过滤失败后，会调用
-`fmt_error_message` 来通知过滤器格式化错误消息。
+如上所示，您至少需要实现 `filter_required` 和 `__call__` 方法。在运行您的过滤器之前，先调用
+`filter_required` 方法判断当前过滤器是否需要被执行，然后再调用 `__call__` 方法运行过滤器。
 
 最后，您需要在项目初始化时将自定义过滤器安装到pre-request中
 

@@ -24,4 +24,4 @@ class TestIpv4:
             "p1": "127.0.0.256"
         })
 
-        assert resp.json["respCode"] == 587
+        assert resp.json["respMsg"] == "'p1' is not a valid ipv4 address"

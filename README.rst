@@ -6,8 +6,8 @@
         </a>
     </p>
     <p align="center">
-        <a href="https://www.travis-ci.org/Eastwu5788/pre-request"><img alt="Travis" src="https://www.travis-ci.org/Eastwu5788/pre-request.svg?branch=master"></a>
-        <a href="https://coveralls.io/github/Eastwu5788/pre-request?branch=master"><img alt="Coveralls" src="https://coveralls.io/repos/github/Eastwu5788/pre-request/badge.svg?branch=master"></a>
+        <a href="https://github.com/Eastwu5788/pre-request/actions/workflows/intergration.yml"><img alt="CI" src="https://github.com/Eastwu5788/pre-request/actions/workflows/intergration.yml/badge.svg"></a>
+        <a href="https://codecov.io/gh/Eastwu5788/pre-request"><img alt="Coveralls" src="https://codecov.io/gh/Eastwu5788/pre-request/branch/master/graph/badge.svg?token=KAB3VL6B7J"></a>
         <a href="https://github.com/Eastwu5788/pre-request/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/pre-request?color=brightgreen"></a>
         <a href="https://pre-request.readthedocs.io/en/master/"><img alt="Docs" src="https://readthedocs.org/projects/pre-request/badge/?version=master"></a>
         <a href="https://pypi.org/project/pre-request/"><img alt="PyPI" src="https://img.shields.io/pypi/v/pre-request?color=brightgreen"></a>
@@ -17,14 +17,19 @@
 
 ========
 
-This framework is designed to validate params for Restful api request.
+This framework is designed to validate request params for `Flask` web framework.
 
-We can validate complex struct and field, including Cross Field, Cross Struct
+It has the following `unique` features:
+
+* Cross Field and Cross Struct validations
+* Array and Map diving, which allows any or all levels of a multidimensional field to be validated
+* Customizable error response
+
 
 Install
 -----------
 
-you can simply install it by:
+you can simply install it by PyPi:
 
 ::
 
@@ -34,7 +39,7 @@ you can simply install it by:
 Document
 ----------
 
-Pre-request manual could be found at: https://pre-request.readthedocs.io/en/master/index.html
+`pre-request` manual could be found at: https://pre-request.readthedocs.io/en/master/index.html
 
 
 A Simple Example
@@ -63,7 +68,7 @@ This is very easy to use `pre-request` in your project
 what happened in this code ?
 
 1. Use `pre-request` library to import a global object `pre`
-2. Define request params rule, `userId` must be type of `int` and required
+2. Define request params rule, e.g. `userId` must be type of `int` and required
 3. Use `@pre.catch(req_params)` to filter input value
 4. Use `~flask.g` or `def hello_world(params)` to get formatted input value。
 
@@ -71,7 +76,7 @@ what happened in this code ?
 Complex Example
 -----------------
 
-We use a very complex example to show the powerful of this framework
+We use a very complex example to show the powerful of this framework. Otherwise you can find amount of examples at: `https://github.com/Eastwu5788/pre-request/tree/master/examples`
 
 .. code-block:: python
 

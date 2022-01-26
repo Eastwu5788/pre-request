@@ -7,35 +7,61 @@
 """ 演示skip忽略请求参数功能，pre-request仅尝试将key和value添加到params参数字典中
 """
 
-from flask import Flask
+# sys
+import json
+# 3p
+from flask import Flask, make_response
+# project
 from pre_request import pre, Rule
 
 
 app = Flask(__name__)
 app.config["TESTING"] = True
-client = app.test_client()
 
 
-# 指定skip=True, pre-request将不应用任何规则，仅将数据添加到结果字典中
+def json_resp(result):
+    result = json.dumps(result)
+    resp = make_response(result)
+    resp.headers['Content-Type'] = 'application/json'
+    return resp
+
+
 skip_params = {
-    "params": Rule(skip=True, type=float, default=1, required=False)
+    "v1": Rule(skip=True, type=float, required=False, default=30.0),
+    "v2": Rule(skip=False, type=float, required=False, default=30.0),
 }
 
 
-@app.route("/skip", methods=["GET", "POST"])
+@app.route("/skip", methods=['get', 'post'])
 @pre.catch(skip_params)
-def example_skip_handler(params):
-    return str(params)
-
-
-def example_skip_filter():
-    """ 演示skip验证
+def skip_handler(params):
+    """ 测试 skip 功能
     """
-    resp = client.get("/skip", data={
-        "params": 123
-    })
-    print(resp.data)
+    return json_resp(params)
+
+
+class TestSkip:
+
+    def test_skip_filter_smoke(self):
+        """ 测试 skip_filter 冒烟测试
+        """
+        resp = app.test_client().get("/skip", data={
+            "v1": "Hello",
+            "v2": 18,
+        })
+
+        assert resp.json == {"v1": "Hello", "v2": 18.0}
+
+    def test_trim_filter_v1(self):
+        """ 测试 skip 过滤器异常
+        """
+        resp = app.test_client().post("/skip", json={
+            "v1": None,
+            "v2": None,
+        })
+
+        assert resp.json == {"v1": None, "v2": 30.0}
 
 
 if __name__ == "__main__":
-    example_skip_filter()
+    TestSkip().test_skip_filter_smoke()

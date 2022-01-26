@@ -13,10 +13,6 @@ from pre_request import ParamsValueError
 
 class CustomFilter(BaseFilter):
 
-    def fmt_error_message(self, code):
-        if code == 10086:
-            return "对不起，这里是中国电信"
-
     def filter_required(self):
         """ 检查当前过滤式，是否必须要执行
         """
@@ -28,7 +24,7 @@ class CustomFilter(BaseFilter):
         super(CustomFilter, self).__call__()
 
         if self.rule.direct_type == int and self.key == "number" and self.value != 10086:
-            raise ParamsValueError(code=10086, filter=self)
+            raise ParamsValueError("Sorry")
 
         return self.value + 1
 
@@ -76,6 +72,6 @@ class TestFilter:
         })
 
         assert resp.status_code == 200
-        assert resp.json["respCode"] == 10086
+        assert resp.json["respMsg"] == "Sorry"
 
         pre.remove_filter(index=1)

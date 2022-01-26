@@ -24,19 +24,6 @@ def json_resp(result):
     return resp
 
 
-email_params = {
-    "email": Rule(email=True)
-}
-
-
-@app.route("/email", methods=['get', 'post'])
-@pre.catch(email_params)
-def test_email_handler(params):
-    """ 测试邮件验证
-    """
-    return json_resp(params)
-
-
 g_params = {
     "email": Rule(email=True)
 }
@@ -94,33 +81,6 @@ def test_json_handler(params):
     return json_resp(params)
 
 
-length_params = {
-    "params": Rule(gt=1, lt=3),
-    "params2": Rule(gte=3, lte=3)
-}
-
-
-@app.route("/length", methods=['get', 'post'])
-@pre.catch(length_params)
-def test_length_handler(params):
-    """ 测试字符串数据长度校验
-    """
-    return json_resp(params)
-
-
-mobile_params = {
-    "params": Rule(mobile=True)
-}
-
-
-@app.route("/mobile", methods=['get', 'post'])
-@pre.catch(mobile_params)
-def test_mobile_handler(params):
-    """ 测试手机号格式校验
-    """
-    return json_resp(params)
-
-
 range_params = {
     "params": Rule(type=int, gt=10, lt=20),
     "params2": Rule(type=int, gte=10, lte=10)
@@ -147,19 +107,6 @@ eq_params = {
 @pre.catch(eq_params)
 def test_eq_handler(params):
     """ 测试eq判断
-    """
-    return json_resp(params)
-
-
-regexp_params = {
-    "params": Rule(reg=r"^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
-}
-
-
-@app.route("/regexp", methods=['get', 'post'])
-@pre.catch(regexp_params)
-def test_regexp_handler(params):
-    """ 测试正则校验
     """
     return json_resp(params)
 
@@ -338,7 +285,7 @@ def test_longitude_handler(params):
 location_params = {
     "p1": Rule(type=int, location="args"),
     "p2": Rule(type=int, location="form"),
-    "p3": Rule(type=int, location="values"),
+    "p3": Rule(type=int, location="form"),
     "p4": Rule(type=int, location="headers"),
     "p5": Rule(type=int, location="cookies"),
     "p7": Rule(type=int, location=["cookies", "args", "headers"])

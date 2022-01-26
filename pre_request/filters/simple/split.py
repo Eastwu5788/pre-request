@@ -5,6 +5,7 @@
 # @Author: 'Wu Dong <wudong@eastwu.cn>'
 # @Time: '2020-04-26 10:50'
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class SplitFilter(BaseFilter):
@@ -13,7 +14,7 @@ class SplitFilter(BaseFilter):
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if self.rule.split is not None and isinstance(self.value, str):
@@ -22,5 +23,5 @@ class SplitFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(SplitFilter, self).__call__()
+        super().__call__()
         return self.value.split(self.rule.split)

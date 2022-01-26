@@ -1,87 +1,57 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 # sys
 import re
 
-# project
-from .macro import (
-    K_EMAIL_REG,
-    K_FILE_REG,
-    K_LATITUDE_REG,
-    K_LONGITUDE_REG,
-    K_MAC_REG,
-    K_MOBILE_REG
-)
+
+ALPHA_REG = r"^[a-zA-Z]+$"
+ALPHA_NUMERIC_REG = r"^[a-zA-Z0-9]+$"
+# RFC5322
+EMAIL_REG = r"""([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])"""
+LATITUDE_REG = r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$"
+LONGITUDE_REG = r"^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$"
+MAC_REG = r"[0-9a-f]{2}([-:])[0-9a-f]{2}(\1[0-9a-f]{2}){4}$"
+# DATA_URI_REG = r"^data:((?:\w+\/(?:([^;]|;[^;]).)+)?)"
+NUMERIC_REG = r"^[-+]?[0-9]+(?:\.[0-9]+)?$"
+NUMBER_REG = r"^[0-9]+$"
+# BASE64_REG = r"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$"
 
 
-class Regexp:
-    """ Base class of regexp handler
-    """
-    def __init__(self, regex, flags=0):
-        if isinstance(regex, str):
-            regex = re.compile(regex, flags)
-
-        self.regex = regex
-
-    def __call__(self, data):
-        return self.regex.match(data or '')
-
-
-class EmailRegexp(Regexp):
-    """ Regexp handler class for email
-    """
-    def __init__(self):
-        super(EmailRegexp, self).__init__(K_EMAIL_REG, re.IGNORECASE)
-
-    def __call__(self, email=None):
-        return super(EmailRegexp, self).__call__(email)
-
-
-class MobileRegexp(Regexp):
-    """ Regexp handler class for mobile
-    """
-    def __init__(self):
-        super(MobileRegexp, self).__init__(K_MOBILE_REG, re.IGNORECASE)
-
-    def __call__(self, mobile=None):
-        return super(MobileRegexp, self).__call__(mobile)
-
-
-class FileRegexp(Regexp):
-    """ Regexp handler class for file
-    """
-    def __init__(self):
-        super(FileRegexp, self).__init__(K_FILE_REG, re.IGNORECASE)
-
-    def __call__(self, f=None):
-        return super(FileRegexp, self).__call__(f)
-
-
-class MacRegexp(Regexp):
-    """ Regexp handler class for mac address
-    """
-    def __init__(self):
-        super(MacRegexp, self).__init__(K_MAC_REG, re.IGNORECASE)
-
-    def __call__(self, mac=None):
-        return super(MacRegexp, self).__call__(mac)
-
-
-class LatitudeRegexp(Regexp):
-    """ Regexp handler class for latitude
-    """
-
-    def __init__(self):
-        super(LatitudeRegexp, self).__init__(K_LATITUDE_REG, re.IGNORECASE)
-
-    def __call__(self, address=None):
-        return super(LatitudeRegexp, self).__call__(address)
-
-
-class LongitudeRegexp(Regexp):
-    """ Regexp handler class for longitude
-    """
-    def __init__(self):
-        super(LongitudeRegexp, self).__init__(K_LONGITUDE_REG, re.IGNORECASE)
-
-    def __call__(self, address=None):
-        return super(LongitudeRegexp, self).__call__(address)
+REGEX_PARAMS = {
+    "alpha": {
+        "regex": re.compile(ALPHA_REG),
+        "message": "'%s' must consist of alpha"
+    },
+    "alphanum": {
+        "regex": re.compile(ALPHA_NUMERIC_REG),
+        "message": "'%s' must consist of alpha or numeric"
+    },
+    "number": {
+        "regex": re.compile(NUMBER_REG),
+        "message": "'%s' must consist of number"
+    },
+    "numeric": {
+        "regex": re.compile(NUMERIC_REG),
+        "message": "'%s' must consist of numeric"
+    },
+    "mac": {
+        "regex": re.compile(MAC_REG),
+        "message": "'%s' is not a valid MAC address"
+    },
+    "latitude": {
+        "regex": re.compile(LATITUDE_REG),
+        "message": "'%s' is not a valid latitude value"
+    },
+    "longitude": {
+        "regex": re.compile(LONGITUDE_REG),
+        "message": "'%s' is not a valid longitude value"
+    },
+    "email": {
+        "regex": re.compile(EMAIL_REG),
+        "message": "'%s' is not a valid email address"
+    },
+    # "data_uri": {
+    #     "regex": re.compile(DATA_URI_REG),
+    #     "message": "'%s' is not a valid data uri"
+    # },
+}

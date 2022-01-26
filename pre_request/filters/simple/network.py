@@ -6,45 +6,33 @@
 # @Time: '2020-04-10 17:09'
 # sys
 import socket
-
+from urllib.parse import (
+    quote,
+    unquote
+)
 # project
-from pre_request.regexp import MacRegexp
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class NetworkFilter(BaseFilter):
     """网络过滤器
     """
 
-    ipv4_error_code = 587
-    ipv6_error_code = 588
-    mac_error_code = 589
-
-    def fmt_error_message(self, code):
-        """ 格式化错误消息
-        """
-        if code == self.ipv4_error_code:
-            return "%s field does not conform to ipv4 format" % self.key
-
-        if code == self.ipv6_error_code:
-            return "%s field does not conform to ipv6 format" % self.key
-
-        if code == self.mac_error_code:
-            return "%s field is not a valid MAC address" % self.key
-
-        return "%s field fails the 'NetworkFilter' filter check" % self.key
-
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
         if self.rule.direct_type != str:
             return False
 
         if self.rule.ipv4 or self.rule.ipv6 or self.rule.mac:
+            return True
+
+        if self.rule.url_decode or self.rule.url_encode:
             return True
 
         return False
@@ -77,18 +65,24 @@ class NetworkFilter(BaseFilter):
         return True
 
     def __call__(self, *args, **kwargs):
-        super(NetworkFilter, self).__call__()
+        super().__call__()
 
         value = self.value if isinstance(self.value, list) else [self.value]
 
         for v in value:
             if self.rule.ipv4 and not self._is_ipv4(v):
-                raise ParamsValueError(self.ipv4_error_code, filter=self)
+                raise ParamsValueError(f"'{self.key}' is not a valid ipv4 address")
 
             if self.rule.ipv6 and not self._is_ipv6(v):
-                raise ParamsValueError(self.ipv6_error_code, filter=self)
+                raise ParamsValueError(f"'{self.key}' is not a valid ipv6 address")
 
-            if self.rule.mac and not MacRegexp()(v):
-                raise ParamsValueError(self.mac_error_code, filter=self)
+        # url_encode or url_decode
+        if self.rule.url_decode or self.rule.url_encode:
+            encoding = self.rule.encoding or "UTF-8"
+            if isinstance(self.value, list):
+                for idx, v in enumerate(self.value):
+                    self.value[idx] = unquote(v, encoding) if self.rule.url_decode else quote(v, encoding)
+            else:
+                self.value = unquote(self.value, encoding) if self.rule.url_decode else quote(self.value, encoding)
 
         return self.value

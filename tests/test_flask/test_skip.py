@@ -10,7 +10,7 @@ import json
 from flask import Flask, make_response
 # project
 from pre_request import pre, Rule
-
+from pre_request import missing
 
 app = Flask(__name__)
 app.config["TESTING"] = True
@@ -34,6 +34,8 @@ skip_params = {
 def skip_handler(params):
     """ 测试 skip 功能
     """
+    if params["v2"] is missing:
+        params["v2"] = None
     return json_resp(params)
 
 

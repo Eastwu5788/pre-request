@@ -6,6 +6,7 @@
 # @Time: '2020-03-27 14:58'
 from pre_request.exception import ParamsValueError
 from pre_request.filters.base import BaseFilter
+from pre_request.utils import missing
 
 
 class EqualFilter(BaseFilter):
@@ -13,24 +14,10 @@ class EqualFilter(BaseFilter):
     判断数值相等过滤器
     """
 
-    eq_code = 578
-    neq_code = 579
-
-    def fmt_error_message(self, code):
-        """ 格式化错误消息
-        """
-        if code == 578:
-            return "%s field must be equal to %s" % (self.key, str(self.rule.eq))
-
-        if code == 579:
-            return "%s field cannot be equal to %s" % (self.key, str(self.rule.neq))
-
-        return "%s field fails the 'EqualFilter' filter check" % self.key
-
     def filter_required(self):
         """ 检查过滤器是否必须执行
         """
-        if not self.rule.required and self.value is None:
+        if not self.rule.required and (self.value is missing and self.value is None):
             return False
 
         if self.rule.eq is not None:
@@ -42,12 +29,12 @@ class EqualFilter(BaseFilter):
         return False
 
     def __call__(self, *args, **kwargs):
-        super(EqualFilter, self).__call__()
+        super().__call__()
 
         if self.rule.eq is not None and self.value != self.rule.eq:
-            raise ParamsValueError(self.eq_code, filter=self)
+            raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.eq}'")
 
         if self.rule.neq is not None and self.value == self.rule.neq:
-            raise ParamsValueError(self.neq_code, filter=self)
+            raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.neq}'")
 
         return self.value

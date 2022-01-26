@@ -24,4 +24,4 @@ class TestStartswith:
             "p1": "aoe"
         })
 
-        assert resp.json["respCode"] == 584
+        assert resp.json["respMsg"] == "'p1' should start with 'abc'"
