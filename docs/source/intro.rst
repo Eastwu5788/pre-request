@@ -178,12 +178,12 @@ You can use `structure` field to define sub structure in array. This field will 
 
 ::
 
-params = {
-    "friends": Rule(multi=True, structure={
-        "userId": Rule(type=int, required=True),
-        "userName": Rule(type=str, required=True)
-    })
-}
+    params = {
+        "friends": Rule(multi=True, structure={
+            "userId": Rule(type=int, required=True),
+            "userName": Rule(type=str, required=True)
+        })
+    }
 
 
 required
