@@ -22,10 +22,10 @@ def json_resp(result):
 
 
 args = {
-    "userInfo": Rule(type=dict, multi=True, required=True, structure={
+    "userInfo": Rule(type=dict, multi=True, required=True, struct={
         "userId": Rule(type=int, required=True),
         "userName": Rule(type=str, required=True),
-        "friends": Rule(type=dict, multi=True, required=True, structure={
+        "friends": Rule(type=dict, multi=True, required=True, struct={
             "userId": Rule(type=int, required=True),
             "userName": Rule(type=str, required=True)
         })
@@ -41,18 +41,7 @@ def structure_handler(params):
 
 if __name__ == "__main__":
     params = {
-        "userInfo": [
-            {
-                "userId": 0,
-                "userName": "ss",
-                "friends": [
-                    {
-                        "userId": "3",
-                        "userName": "sfd"
-                    }
-                ]
-            }
-        ]
+        "userInfo": {}
     }
     resp = app.test_client().post("/structure", json=params)
     print(resp.json)

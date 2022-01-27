@@ -64,10 +64,10 @@ class TestMultiStructure:
         """ 冒烟测试
         """
         params = {
-            "userInfo": {}
+            "userInfo": []
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respMsg"] == "userInfo field cannot be empty"
+        assert resp.json["respMsg"] == "'userInfo' field cannot be empty"
 
     def test_multi_structure_601(self):
         """ 冒烟测试
@@ -78,7 +78,7 @@ class TestMultiStructure:
             }
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respMsg"] == "Input userInfo invalid type"
+        assert resp.json["respMsg"] == "'userInfo' must by type of array"
 
     def test_multi_structure_562(self):
         """ 冒烟测试
@@ -108,7 +108,7 @@ class TestMultiStructure:
             ]
         }
         resp = app.test_client().get("/structure", json=params)
-        assert resp.json["respMsg"] == "userInfo.0.friends field cannot be empty"
+        assert resp.json["respMsg"] == "'userInfo.0.friends' field cannot be empty"
 
     def test_multi_structure_562_2(self):
         """ 测试二层562异常

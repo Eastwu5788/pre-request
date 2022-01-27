@@ -13,23 +13,21 @@ from pre_request import ParamsValueError
 
 class CustomFilter(BaseFilter):
 
-    def fmt_error_message(self, code):
-        if code == 10086:
-            return "对不起，这里是中国电信"
+    def filter_required(self):
+        """ 检查当前过滤式，是否必须要执行
+        """
+        return True
 
     def __call__(self, *args, **kwargs):
         """ 自定义过滤器时需要实现的主要功能
         """
-        super(CustomFilter, self).__call__()
+        super().__call__()
 
         if self.rule.direct_type == int and self.key == "number" and self.value != 10086:
-            raise ParamsValueError(code=10086, filter=self)
+            raise ParamsValueError("Sorry")
 
         return self.value + 1
 
-
-# 将自定义过滤器添加进去
-pre.add_filter(CustomFilter, index=4)
 
 app = Flask(__name__)
 app.config["TESTING"] = True
@@ -48,12 +46,36 @@ def custom_filter_handler(params):
     return str(params)
 
 
+class ExampleFilter:
+
+    def test_filter(self):
+        """ 测试自定义formatter
+        """
+        pre.add_filter(CustomFilter)
+
+        resp = app.test_client().get("/number", data={
+            "number": "10086"
+        })
+
+        assert resp.status_code == 200
+        assert resp.get_data(as_text=True) == "{'number': 10087}"
+
+        pre.remove_filter(CustomFilter)
+
+    def test_filter_index(self):
+        """ 测试在指定位置插入formatter
+        """
+        pre.add_filter(CustomFilter, index=1)
+
+        resp = app.test_client().get("/number", data={
+            "number": "10087"
+        })
+
+        assert resp.status_code == 200
+        assert resp.json["respMsg"] == "Sorry"
+
+        pre.remove_filter(index=1)
+
+
 if __name__ == "__main__":
-
-    resp = app.test_client().get("/number", data={
-        "number": "10086"
-    })
-
-    print(resp.get_data(as_text=True))
-
-    pre.remove_filter(CustomFilter)
+    ExampleFilter().test_filter_index()

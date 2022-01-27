@@ -20,7 +20,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
         self.skip: bool = kwargs.get("skip", False)
 
         # Other
-        self.json_load: bool = kwargs.get("json", False)
+        self.json: bool = kwargs.get("json", False)
         self.callback: t.Optional[t.Callable] = kwargs.get("callback", None)
 
         # Strings

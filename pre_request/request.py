@@ -20,6 +20,7 @@ from werkzeug.datastructures import FileStorage
 from .exception import ParamsValueError
 from .filters.base import BaseFilter  # pylint: disable=unused-import
 from .filters import (
+    basic_filters,
     cross_filters,
     simple_filters,
 )
@@ -63,6 +64,7 @@ class PreRequest:
         :param content_type: response content type json/html
         :param skip_filter: skip all of the filter check
         """
+        self.basic_filters: t.List["BaseFilter"] = basic_filters
         self.simple_filters: t.List["BaseFilter"] = simple_filters
         self.cross_filters: t.List["BaseFilter"] = cross_filters
 
@@ -175,6 +177,21 @@ class PreRequest:
 
         return default
 
+    def _filter_basic_rules(self, k, v, r):
+        """ Filter basic rules
+        """
+        # filter request params
+        for f in self.basic_filters:
+            obj = f(k, v, r)
+
+            # ignore invalid and not required filter
+            if not obj.filter_required():
+                continue
+
+            v = obj()
+
+        return v
+
     def _fmt_params(self, key, rule, default=None):
         """ Query request params from flask request object
 
@@ -211,10 +228,60 @@ class PreRequest:
             return request.files.get(key)
 
         # load multi files
-        fmt_params = []
+        params = []
         for f in request.files.getlist(key):
-            fmt_params.append(f)
-        return fmt_params
+            params.append(f)
+        return params
+
+    def _sub_struct_filter(self, k, sub_k, v, r):
+        """ Filter sub struct k-v
+        """
+        sub_v = self._filter_basic_rules(k, v.get(sub_k), r)
+        fmt_v = self._handler_simple_filter(k, sub_v, r)
+        # The target key needs to be mapped
+        return r.key_map if isinstance(r, Rule) and r.key_map else sub_k, fmt_v
+
+    def _handler_sub_struct(self, k, v, r):
+        """ Handler filter rules for sub struct
+
+        :param k: params key
+        :param v: params value
+        :param r: params rule
+        """
+        # make sure that input value is not empty
+        if r.required and not v:
+            raise ParamsValueError(message=f"'{k}' field cannot be empty")
+
+        # Invalid struct config
+        if not r.multi and not r.json:
+            raise TypeError("invalid usage of `struct` params")
+
+        if not v:
+            return [] if r.multi else {}
+
+        if isinstance(v, dict):
+            fmt_result = {}
+            for sub_k, sub_r in r.struct.items():
+                fmt_k, fmt_v = self._sub_struct_filter(k + "." + sub_k, sub_k, v, sub_r)
+                fmt_result[fmt_k] = fmt_v
+            return fmt_result
+
+        # storage sub array
+        fmt_result = []
+        for idx, sub_v in enumerate(v):
+            # make sure that array item must be type of dict
+            if not isinstance(sub_v, dict):
+                raise ParamsValueError(message="Input " + k + "." + str(idx) + " invalid type")
+
+            # format every k-v with struct
+            fmt_item = {}
+            fmt_result.append(fmt_item)
+            for sub_k, sub_r in r.struct.items():
+                fmt_k, fmt_v = self._sub_struct_filter(k + "." + str(idx) + "." + sub_k, sub_k, sub_v, sub_r)
+                fmt_item[fmt_k] = fmt_v
+
+        return fmt_result
+
 
     def _handler_simple_filter(self, k, v, r):  # noqa
         """ Handler filter rules with simple ways
@@ -227,7 +294,6 @@ class PreRequest:
             for key, rule in r.items():
                 fmt_value = self._handler_simple_filter(k + "." + key, v, rule)
                 fmt_result[rule.key_map if isinstance(rule, Rule) and rule.key_map else key] = fmt_value
-
             return fmt_result
 
         if not isinstance(r, Rule):
@@ -242,37 +308,12 @@ class PreRequest:
             else:
                 v = self._fmt_params(k, r, default=missing)
 
+        # Basic filters for every value
+        v = v if r.skip or self.skip_filter else self._filter_basic_rules(k, v, r)
+
+        # Filter sub struct
         if r.struct is not None:
-            # make sure that input value is not empty
-            if r.required and not v:
-                raise ParamsValueError(message=f"{k} field cannot be empty")
-
-            if not r.multi:
-                raise TypeError("invalid usage of `struct` params")
-
-            # struct params must be type of list
-            if not isinstance(v, list):
-                raise ParamsValueError(message="Input " + k + " invalid type")
-
-            if not v:
-                return []
-
-            # storage sub array
-            fmt_result = []
-            for idx, sub_v in enumerate(v):
-                # make sure that array item must be type of dict
-                if not isinstance(sub_v, dict):
-                    raise ParamsValueError(message="Input " + k + "." + str(idx) + " invalid type")
-
-                # format every k-v with struct
-                fmt_item = {}
-                fmt_result.append(fmt_item)
-                for sub_k, sub_r in r.struct.items():
-                    new_k = k + "." + str(idx) + "." + sub_k
-                    v = self._handler_simple_filter(new_k, sub_v.get(sub_k), sub_r)
-                    fmt_item[sub_r.key_map if isinstance(sub_r, Rule) and sub_r.key_map else sub_k] = v
-
-            return fmt_result
+            return self._handler_sub_struct(k, v, r)
 
         if r.skip or self.skip_filter:
             return v

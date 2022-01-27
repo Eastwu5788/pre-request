@@ -28,11 +28,16 @@ from .cross import (
 )
 
 
-simple_filters = [
+basic_filters = [
     EmptyFilter,
     SplitFilter,
     MultiFilter,
     TypeFilter,
+    JsonFilter,
+]
+
+
+simple_filters = [
     TrimFilter,
     StringFilter,
     RegexpFilter,
@@ -42,7 +47,6 @@ simple_filters = [
     RangeFilter,
     EqualFilter,
     EnumFilter,
-    JsonFilter,
     DefaultFilter,
 ]
 

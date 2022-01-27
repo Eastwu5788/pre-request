@@ -35,7 +35,7 @@ def network_handler(params):
 class TestNetwork:
 
     def test_network_smoke(self):
-        resp = app.test_client().post("/network", data={
+        resp = app.test_client().post("/network", json={
             "p1": "https%3A%2F%2Fwww.test.com%2Fsd%3Fid%3D%B9%FE",
             "p2": ["https://www.test.com/sd?id=哈"]
         })
