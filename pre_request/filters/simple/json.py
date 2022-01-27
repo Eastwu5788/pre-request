@@ -22,7 +22,7 @@ class JsonFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        if not self.rule.json_load:
+        if not self.rule.json:
             return False
 
         if not isinstance(self.value, str):

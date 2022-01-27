@@ -35,12 +35,15 @@ def structure_handler(params):
 def example_issue_001():
     """ 演示回调函数
     """
-    resp = client.get("/bug", json={
-        "userId": [
-            1,
-            2
-        ]
-    })
+    # resp = client.get("/bug", json={
+    #     "userId": [
+    #         1,
+    #         2
+    #     ]
+    # })
+    # print(resp.data)
+
+    resp = client.get("/bug", json={})
     print(resp.data)
 
 

@@ -18,21 +18,27 @@ client = app.test_client()
 
 # json=True，此时框架会自动将params数据进行json解析
 json_params = {
-    "params": Rule(json=True)
+    "params": Rule(json=True, struct={
+        "test": Rule(type=str, required=True, gte=3),
+        "v2": Rule(type=int)
+    })
 }
 
 
 @app.route("/json", methods=["GET", "POST"])
 @pre.catch(json_params)
 def example_json_handler(params):
-    return str(params)
+    return params
 
 
 def example_json_filter():
     """ 演示邮箱验证
     """
     resp = client.post("/json", json={
-        "params": json.dumps(["hello", "work", "!"])
+        "params": json.dumps({
+            "test": "k1133",
+            "v2": "st"
+        })
     })
     print(resp.data)
 

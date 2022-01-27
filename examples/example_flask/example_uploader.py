@@ -16,7 +16,7 @@ client = app.test_client()
 
 
 upload_params = {
-    "params": Rule(type=FileStorage, multi=False, required=False)
+    "params": Rule(type=FileStorage, multi=False, required=True)
 }
 
 
@@ -31,12 +31,12 @@ def example_upload_filter():
     """ 演示邮箱验证
     """
 
-    with open("./static/logo.jpg", "rb") as f:
-        img_io = BytesIO(f.read())
+    # with open("./static/logo.jpg", "rb") as f:
+    #     img_io = BytesIO(f.read())
 
     headers = {'content-Type': 'multipart/form-data'}
     resp = client.post("/upload", headers=headers, data={
-        "params": (img_io, "logo.jpg")
+
     })
     print(resp.data)
 

@@ -68,7 +68,7 @@ class TestFilter:
         pre.add_filter(CustomFilter, index=1)
 
         resp = app.test_client().get("/number", data={
-            "number": "10086"
+            "number": "10087"
         })
 
         assert resp.status_code == 200

@@ -6,6 +6,7 @@
 # @Time: '2020-05-12 09:56'
 from pre_request.filters.base import BaseFilter
 from pre_request.utils import missing
+from pre_request.exception import ParamsValueError
 
 
 class MultiFilter(BaseFilter):
@@ -20,7 +21,7 @@ class MultiFilter(BaseFilter):
             if self.value is missing or self.value is None:
                 return []
 
-            return [self.value]
+            raise ParamsValueError(f"'{self.key}' must by type of array")
 
         # BUG: split operate result is type of list
         if self.rule.split:
