@@ -29,6 +29,9 @@ class NetworkFilter(BaseFilter):
         if self.rule.direct_type != str:
             return False
 
+        if isinstance(self.value, list) and not self.rule.multi:
+            return False
+
         if self.rule.ipv4 or self.rule.ipv6 or self.rule.mac:
             return True
 

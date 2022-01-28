@@ -19,7 +19,10 @@ class ContentFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        if self.rule.direct_type != str or not isinstance(self.value, (str, list)):
+        if self.rule.direct_type != str:
+            return False
+
+        if isinstance(self.value, list) and not self.rule.multi:
             return False
 
         if self.rule.contains or self.rule.contains_any:

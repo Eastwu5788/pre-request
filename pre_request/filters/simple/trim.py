@@ -29,7 +29,7 @@ class TrimFilter(BaseFilter):
         if isinstance(self.value, str):
             return self.value.strip()
 
-        if isinstance(self.value, list):
+        if isinstance(self.value, list) and self.rule.multi:
             return [value.strip() for value in self.value]
 
         return self.value

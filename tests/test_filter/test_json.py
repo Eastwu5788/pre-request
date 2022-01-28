@@ -16,7 +16,7 @@ class TestJson:
             "params": json.dumps({"hello": "world"})
         })
 
-        assert resp.json == {"params": {"hello": "world"}}
+        assert resp.json == {'params': "{'hello': 'world'}"}
 
     def test_json_filter_570(self, client):
         """ 测试 json_filter 570错误

@@ -41,10 +41,7 @@ class TypeFilter(BaseFilter):
         return True
 
     def _type_transform(self, d_type, value):
-        """
-        :param d_type:
-        :param value:
-        :return:
+        """ 执行类型转换
         """
         if d_type == str and isinstance(value, bytes):
             return value.decode(self.rule.encoding or "UTF-8")
