@@ -27,6 +27,9 @@ class RegexpFilter(BaseFilter):
         if self.rule.direct_type != str:
             return False
 
+        if isinstance(self.value, list) and not self.rule.multi:
+            return False
+
         if self.rule.reg:
             return True
 

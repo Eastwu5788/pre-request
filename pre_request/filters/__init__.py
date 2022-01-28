@@ -30,10 +30,10 @@ from .cross import (
 
 basic_filters = [
     EmptyFilter,
+    JsonFilter,
     SplitFilter,
     MultiFilter,
     TypeFilter,
-    JsonFilter,
 ]
 
 

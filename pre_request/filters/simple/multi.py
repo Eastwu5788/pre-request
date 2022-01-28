@@ -23,11 +23,4 @@ class MultiFilter(BaseFilter):
 
             raise ParamsValueError(f"'{self.key}' must by type of array")
 
-        # BUG: split operate result is type of list
-        if self.rule.split:
-            return self.value
-
-        if not self.rule.multi and isinstance(self.value, list):
-            return self.value[-1] if self.value else None
-
         return self.value

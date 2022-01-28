@@ -25,6 +25,9 @@ class RangeFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
+        if isinstance(self.value, list) and not self.rule.multi:
+            return False
+
         # 取值范围检查器，在type=list时不生效，此时将value视为一个整体
         if self.rule.direct_type not in {int, float, Decimal, datetime, date}:
             return False
@@ -50,25 +53,25 @@ class RangeFilter(BaseFilter):
 
         # 大于
         if self.rule.gt is not None:
-            rst = [not v > self.rule.gt for v in value]
+            rst = {not v > self.rule.gt for v in value}
             if True in rst:
                 raise ParamsValueError(f"'{self.key}' should be greater than {self.rule.gt}")
 
         # 大于等于
         if self.rule.gte is not None:
-            rst = [not v >= self.rule.gte for v in value]
+            rst = {not v >= self.rule.gte for v in value}
             if True in rst:
                 raise ParamsValueError(f"'{self.key}' should be greater than or equal to {self.rule.gte}")
 
         # 小于
         if self.rule.lt is not None:
-            rst = [not v < self.rule.lt for v in value]
+            rst = {not v < self.rule.lt for v in value}
             if True in rst:
                 raise ParamsValueError(f"'{self.key}' should be less than {self.rule.lt}")
 
         # 小于等于
         if self.rule.lte is not None:
-            rst = [not v <= self.rule.lte for v in value]
+            rst = {not v <= self.rule.lte for v in value}
             if True in rst:
                 raise ParamsValueError(f"'{self.key}' should be less than or equal to {self.rule.lte}")
 

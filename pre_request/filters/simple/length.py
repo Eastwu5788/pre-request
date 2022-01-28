@@ -20,16 +20,11 @@ class LengthFilter(BaseFilter):
         if not self.rule.required and (self.value is missing or self.value is None):
             return False
 
-        # Value的类型是list时将其作为一个整体进行考虑
-        if self.rule.direct_type == list:
-            return True
-
-        # 长度校验近对字符串、数组生效
-        if self.rule.direct_type != str:
+        # 长度过滤器仅针对字符串、数组结构有效
+        if not isinstance(self.value, (list, str)):
             return False
 
-        # 排除子结构中的字符串
-        if self.rule.direct_type == str and isinstance(self.value, list):
+        if self.rule.direct_type != str:
             return False
 
         if self.rule.len is not None:
@@ -52,9 +47,8 @@ class LengthFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super().__call__()
 
-        fmt_value = self.value if isinstance(self.value, list) else [self.value]
-
-        for value in fmt_value:
+        # 数据类型为list但multi!=True时，当成整体判断长度
+        for value in self.value if isinstance(self.value, list) and self.rule.multi else [self.value]:
             if self.rule.len is not None and len(value) != self.rule.len:
                 raise ParamsValueError(f"the length of '{self.key}' should be equal to {self.rule.len}")
 

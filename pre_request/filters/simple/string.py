@@ -32,7 +32,7 @@ class StringFilter(BaseFilter):
         if isinstance(self.value, str):
             return self.value.lower() if self.rule.lower else self.value.upper()
 
-        if isinstance(self.value, list):
+        if isinstance(self.value, list) and self.rule.multi:
             return [value.lower() if self.rule.lower else value.upper() for value in self.value]
 
         return self.value

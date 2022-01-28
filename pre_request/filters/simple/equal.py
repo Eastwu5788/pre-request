@@ -20,6 +20,9 @@ class EqualFilter(BaseFilter):
         if not self.rule.required and (self.value is missing and self.value is None):
             return False
 
+        if isinstance(self.value, list) and not self.rule.multi:
+            return False
+
         if self.rule.eq is not None:
             return True
 
@@ -31,10 +34,11 @@ class EqualFilter(BaseFilter):
     def __call__(self, *args, **kwargs):
         super().__call__()
 
-        if self.rule.eq is not None and self.value != self.rule.eq:
-            raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.eq}'")
+        for v in self.value if isinstance(self.value, list) else [self.value]:
+            if self.rule.eq is not None and v != self.rule.eq:
+                raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.eq}'")
 
-        if self.rule.neq is not None and self.value == self.rule.neq:
-            raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.neq}'")
+            if self.rule.neq is not None and v == self.rule.neq:
+                raise ParamsValueError(f"'{self.key}' should be equal to '{self.rule.neq}'")
 
         return self.value
