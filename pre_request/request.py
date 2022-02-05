@@ -18,11 +18,25 @@ from flask import (  # pylint: disable=unused-import
 from werkzeug.datastructures import FileStorage
 # object
 from .exception import ParamsValueError
-from .filters.base import BaseFilter  # pylint: disable=unused-import
-from .filters import (
-    basic_filters,
-    cross_filters,
-    simple_filters,
+from .filters import (  # pylint: disable=unused-import
+    BaseFilter,
+    ContentFilter,
+    DefaultFilter,
+    EmptyFilter,
+    EnumFilter,
+    EqualFilter,
+    EqualKeyFilter,
+    JsonFilter,
+    LengthFilter,
+    MultiFilter,
+    NetworkFilter,
+    RangeFilter,
+    RegexpFilter,
+    RequiredWithFilter,
+    SplitFilter,
+    StringFilter,
+    TypeFilter,
+    TrimFilter,
 )
 from .macro import (
     K_CONTENT_TYPE,
@@ -49,6 +63,32 @@ class PreRequest:
     """ An object to dispatch filters to handler request params
     """
 
+    basic_filters: t.List["BaseFilter"] = [
+        EmptyFilter,
+        JsonFilter,
+        SplitFilter,
+        MultiFilter,
+        TypeFilter,
+    ]
+
+    simple_filters: t.List["BaseFilter"] = [
+        TrimFilter,
+        StringFilter,
+        RegexpFilter,
+        ContentFilter,
+        NetworkFilter,
+        LengthFilter,
+        RangeFilter,
+        EqualFilter,
+        EnumFilter,
+        DefaultFilter,
+    ]
+
+    cross_filters: t.List["BaseFilter"] = [
+        RequiredWithFilter,
+        EqualKeyFilter
+    ]
+
     def __init__(
             self,
             app: t.Optional["Flask"] = None,
@@ -64,10 +104,6 @@ class PreRequest:
         :param content_type: response content type json/html
         :param skip_filter: skip all of the filter check
         """
-        self.basic_filters: t.List["BaseFilter"] = basic_filters
-        self.simple_filters: t.List["BaseFilter"] = simple_filters
-        self.cross_filters: t.List["BaseFilter"] = cross_filters
-
         self.fuzzy: bool = fuzzy
         self.content_type: str = content_type or "application/json"
         self.store_key: str = store_key or "params"
