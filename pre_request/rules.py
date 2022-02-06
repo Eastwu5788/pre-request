@@ -5,6 +5,22 @@ from datetime import datetime
 from decimal import Decimal
 
 
+class Length:
+    """ This class is designed to describe the length of string or array
+    """
+
+    def __init__(self, **kwargs):
+        # left
+        self.lt: t.Optional[int] = kwargs.get("lt", None)
+        self.lte: t.Optional[int] = kwargs.get("lte", None)
+        # mid
+        self.eq: t.Optional[int] = kwargs.get("eq", None)
+        self.neq: t.Optional[int] = kwargs.get("neq", None)
+        # right
+        self.gt: t.Optional[int] = kwargs.get("gt", None)
+        self.gte: t.Optional[int] = kwargs.get("gte", None)
+
+
 class Rule:  # pylint: disable=too-many-instance-attributes
     """ This class is designed to describe special rule that params must follow
     """
