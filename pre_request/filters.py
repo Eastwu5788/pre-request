@@ -443,7 +443,7 @@ class NetworkFilter(BaseFilter):
 
 
 class LengthFilter(BaseFilter):
-    """ 判断字符串长度的过滤器
+    """ 判断数组、字符串长度的过滤器
     """
 
     def filter_required(self):
@@ -456,22 +456,10 @@ class LengthFilter(BaseFilter):
         if not isinstance(self.value, (list, str)):
             return False
 
-        if self.rule.direct_type != str:
+        if self.rule.multi and self.rule.direct_type != str:
             return False
 
         if self.rule.len is not None:
-            return True
-
-        if self.rule.gt is not None:
-            return True
-
-        if self.rule.gte is not None:
-            return True
-
-        if self.rule.lt is not None:
-            return True
-
-        if self.rule.lte is not None:
             return True
 
         return False
@@ -481,24 +469,29 @@ class LengthFilter(BaseFilter):
 
         # 数据类型为list但multi!=True时，当成整体判断长度
         for value in self.value if isinstance(self.value, list) and self.rule.multi else [self.value]:
-            if self.rule.len is not None and len(value) != self.rule.len:
-                raise ParamsValueError(f"the length of '{self.key}' should be equal to {self.rule.len}")
+            if self.rule.len.eq is not None and len(value) != self.rule.len.eq:
+                raise ParamsValueError(f"the length of '{self.key}' should be equal to {self.rule.len.eq}")
+
+            if self.rule.len.neq is not None and len(value) == self.rule.len.neq:
+                raise ParamsValueError(f"the length of '{self.key}' should not be equal to {self.rule.len.neq}")
 
             # 大于
-            if self.rule.gt is not None and not len(value) > self.rule.gt:
-                raise ParamsValueError(f"the length of '{self.key}' should be greater than {self.rule.gt}")
+            if self.rule.len.gt is not None and not len(value) > self.rule.len.gt:
+                raise ParamsValueError(f"the length of '{self.key}' should be greater than {self.rule.len.gt}")
 
             # 大于等于
-            if self.rule.gte is not None and not len(value) >= self.rule.gte:
-                raise ParamsValueError(f"the length of '{self.key}' should be greater than or equal to {self.rule.gte}")
+            if self.rule.len.gte is not None and not len(value) >= self.rule.len.gte:
+                raise ParamsValueError(f"the length of '{self.key}' should be greater than or "
+                                       f"equal to {self.rule.len.gte}")
 
             # 小于
-            if self.rule.lt is not None and not len(value) < self.rule.lt:
-                raise ParamsValueError(f"the length of '{self.key}' should be less than {self.rule.lt}")
+            if self.rule.len.lt is not None and not len(value) < self.rule.len.lt:
+                raise ParamsValueError(f"the length of '{self.key}' should be less than {self.rule.len.lt}")
 
             # 小于等于
-            if self.rule.lte is not None and not len(value) <= self.rule.lte:
-                raise ParamsValueError(f"the length of '{self.key}' should be less than or equal to {self.rule.lte}")
+            if self.rule.len.lte is not None and not len(value) <= self.rule.len.lte:
+                raise ParamsValueError(f"the length of '{self.key}' should be less than or "
+                                       f"equal to {self.rule.len.lte}")
 
         return self.value
 

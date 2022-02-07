@@ -6,7 +6,7 @@
 # @Time: '2020-03-18 10:42'
 import json
 from flask import make_response, Flask
-from pre_request import pre, Rule
+from pre_request import pre, Rule, Length
 
 
 app = Flask(__name__)
@@ -14,9 +14,9 @@ app.config["TESTING"] = True
 
 
 rule = {
-    "params": Rule(gt=1, lt=3),
-    "params2": Rule(gte=3, lte=3),
-    "p3": Rule(len=3, required=False, default="1")
+    "params": Rule(len=Length(gt=1, lt=3)),
+    "params2": Rule(len=Length(eq=3)),
+    "p3": Rule(len=Length(eq=3), required=False, default="1")
 }
 
 
@@ -61,7 +61,7 @@ class TestLength:
             "params": "he",
             "params2": "aa"
         })
-        assert resp.json["respMsg"] == "the length of 'params2' should be greater than or equal to 3"
+        assert resp.json["respMsg"] == "the length of 'params2' should be equal to 3"
 
     def test_length_filter_576(self):
         """ 测试 length_filter 576 错误
@@ -81,7 +81,7 @@ class TestLength:
             "params": "he",
             "params2": "jerry"
         })
-        assert resp.json["respMsg"] == "the length of 'params2' should be less than or equal to 3"
+        assert resp.json["respMsg"] == "the length of 'params2' should be equal to 3"
 
     def test_length_filter_1(self):
         resp = app.test_client().get("/length", data={
