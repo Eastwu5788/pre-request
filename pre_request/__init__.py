@@ -21,7 +21,10 @@ Usage:
 from .request import PreRequest as _PreRequest
 from .response import BaseResponse
 from .filters import BaseFilter
-from .rules import Rule
+from .rules import (
+    Length,
+    Rule
+)
 from .exception import ParamsValueError
 from .utils import missing
 from .__version__ import __version__

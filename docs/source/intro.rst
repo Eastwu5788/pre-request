@@ -513,6 +513,20 @@ Ensure that the field entered by the user conform to the `latitude/longitude` fo
   }
 
 
+len
+-----------
+
+This parameter is used to describe the length of the string or array and needs to be an instance
+of `Length`
+
+::
+
+  params = {
+    "pass": Rule(len=Length(gte=3, lte=20)),
+  }
+
+
+
 eq / eq_key
 -----------
 
