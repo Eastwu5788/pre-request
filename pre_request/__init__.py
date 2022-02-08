@@ -27,6 +27,7 @@ from .rules import (
 )
 from .exception import ParamsValueError
 from .utils import missing
+from .validator import validator
 from .__version__ import __version__
 
 
