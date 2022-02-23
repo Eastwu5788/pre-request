@@ -64,6 +64,11 @@ class EmptyFilter(BaseFilter):
         if self.rule.required and (self.value is missing or self.value is None):
             raise ParamsValueError(f"'{self.key}' can't be empty")
 
+        # In some non-standard request scenarios, the user will
+        # only pass in the key without passing in any value
+        if self.rule.direct_type != str and self.value == "":
+            return missing
+
         return self.value
 
 

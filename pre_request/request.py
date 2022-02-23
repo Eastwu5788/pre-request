@@ -195,7 +195,7 @@ class PreRequest:
         """
         location = location.lower()
 
-        if location in ["args", "values", "form", "headers", "cookies"]:
+        if location in {"args", "values", "form", "headers", "cookies"}:
             # query deep value with special key like `userInfo.userId`
             if len(key.split(".")) > 1 and deep:
                 return getattr(request, location).get(key, default)
