@@ -4,7 +4,7 @@ Pallets-Sphinx-Themes==1.2.3
 pylint==2.12.2
 pytest==6.2.5
 pytest-cov==3.0.0
-requests==2.27.1
+requests==2.31.0
 Sphinx==3.0.0
 sphinxcontrib-applehelp==1.0.2
 sphinxcontrib-devhelp==1.0.2
